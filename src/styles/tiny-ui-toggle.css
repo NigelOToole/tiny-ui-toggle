@@ -1,0 +1,55 @@
+.toggle-panel {
+  --toggle-speed: 1.5s;
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  transition: height var(--toggle-speed) ease-out, min-height var(--toggle-speed) ease-out, visibility var(--toggle-speed), flex var(--toggle-speed), opacity var(--toggle-speed);
+}
+.toggle-panel.is-active, .toggle-panel.is-anim {
+  visibility: visible;
+}
+.toggle-panel.is-active:not(.is-anim) {
+  height: auto;
+  overflow: visible;
+}
+.toggle-panel--partial {
+  height: 0.5em;
+  visibility: visible;
+}
+
+.toggle-panel--opacity {
+  opacity: 0;
+  height: auto;
+}
+.toggle-panel--opacity.is-active {
+  opacity: 1;
+}
+
+.toggle-panel--100h {
+  min-height: 0;
+}
+.toggle-panel--100h.is-active {
+  min-height: 100%;
+}
+
+.toggle-panel--flex.is-active {
+  flex-grow: 1;
+}
+
+.toggle-panel--none {
+  display: none;
+  transition-duration: 0;
+}
+.toggle-panel--none.is-active, .toggle-panel--none.is-anim {
+  display: block;
+}
+
+.toggle-panel--opacity--none {
+  display: none;
+  opacity: 0;
+  height: auto;
+}
+.toggle-panel--opacity--none.is-active {
+  display: block;
+  opacity: 1;
+}
