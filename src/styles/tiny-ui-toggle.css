@@ -1,5 +1,9 @@
+.toggle-outer {
+  position: relative;
+}
+
 .toggle-panel {
-  --toggle-speed: 1.5s;
+  --toggle-speed: .5s;
   height: 0;
   visibility: hidden;
   overflow: hidden;
@@ -13,7 +17,7 @@
   overflow: visible;
 }
 .toggle-panel--partial {
-  height: 0.5em;
+  height: calc(2.5em + 0.75rem);
   visibility: visible;
 }
 
@@ -25,31 +29,83 @@
   opacity: 1;
 }
 
-.toggle-panel--100h {
-  min-height: 0;
-}
-.toggle-panel--100h.is-active {
-  min-height: 100%;
-}
-
-.toggle-panel--flex.is-active {
-  flex-grow: 1;
-}
-
 .toggle-panel--none {
   display: none;
-  transition-duration: 0;
+  transition: none;
 }
 .toggle-panel--none.is-active, .toggle-panel--none.is-anim {
   display: block;
 }
 
-.toggle-panel--opacity--none {
-  display: none;
-  opacity: 0;
-  height: auto;
+.toggle-panel--dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
 }
-.toggle-panel--opacity--none.is-active {
+
+.toggle-btn, .toggle-panel-content {
+  padding: 0.75rem 1rem;
+  background-color: #eee;
+}
+
+.toggle-btn {
   display: block;
+  width: 100%;
+  color: #135CA4;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  border: none;
+  border-radius: none;
+  transition: all 0.3s;
+}
+.toggle-btn:hover {
+  color: #1976D2;
+  background-color: #ddd;
+}
+.toggle-btn.is-active {
+  background-color: #ddd;
+}
+
+.toggle-btn--icon {
+  display: flex;
+  align-items: center;
+}
+.toggle-btn--icon .toggle-text {
+  margin: -0.3em 0 -0.3em auto;
+  padding: 0 0 0 1em;
+  font-size: 2rem;
+}
+
+.toggle-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  display: none;
+  transition: opacity var(--toggle-speed), visibility var(--toggle-speed);
+  background: rgba(0, 0, 0, 0.75);
+}
+.toggle-overlay.is-active {
   opacity: 1;
+}
+.toggle-overlay.is-active, .toggle-overlay.is-anim {
+  display: block;
+  visibility: visible;
+}
+
+.toggle-overlay-container {
+  position: relative;
+  width: auto;
+  padding: 15px;
+  max-width: 250px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

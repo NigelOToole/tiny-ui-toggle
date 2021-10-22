@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tiny UI Toggle - Toggle the state of a UI element to easily create components like accordions, dropdowns and overlays.</title>
-    <meta name="description" content="?//??//">
+    <title>Tiny UI Toggle - Toggle the state of a UI element to easily create components such as a collapse, accordion or dropdown.</title>
+    <meta name="description" content="Toggle the state of a UI element to easily create components such as a collapse, accordion or dropdown">
 
     <link rel="stylesheet" href="styles/site.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cutive+Mono|Open+Sans:300,400&display=swap">
@@ -29,12 +29,7 @@
 
     <div class="fullwidth intro">
       <div class="container separator">
-        <h2>Toggle the state of a UI element to easily create components like accordions, dropdowns and overlays.</h2>
-
-        <p>
-          ???
-        </p>
-        
+        <h2>Toggle the state of a UI element to easily create components such as a collapse, accordion or dropdown.</h2>  
       </div>
     </div>
 
@@ -43,103 +38,166 @@
     <div class="fullwidth">
       <div class="container separator">
 
-        <h3>Accodion / Collapse</h3>
-        <p>The default setup with the poster as the first frame of the video.</p>
+        <h3>Collapse</h3>
 
+        <button class="toggle toggle-btn" data-toggle-target=".demo-single" aria-expanded="false">Single panel</button>
 
-        <button class="toggle" data-toggle-target=".toggle--demo-single" aria-expanded="false">Toggle a single panel</button>
-
-        <div class="toggle toggle-panel toggle--demo-single" aria-hidden="true">
-          Toggle panel single
-        </div>
-        <br><br><br>
-
-
-        <button class="toggle" data-toggle-target=".toggle--demo-multiple" aria-expanded="false">Toggle multiple panels</button>
-
-        <div class="toggle toggle-panel toggle--demo-multiple" aria-hidden="true">
-          Toggle multiple panel 1
+        <div class="toggle-panel demo-single" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
         </div>
 
-        <div class="toggle toggle-panel toggle--demo-multiple">
-          Toggle panel 2 again to test opening multiple panels <br><br><br><br><br><br><br><br><br><br><br><br>Toggle panel 2 again to test opening multiple panels
-        </div>
-        <br><br><br>
+        <br>
 
 
-        <button class="toggle" data-toggle-target=".toggle--demo-partial" aria-expanded="false">Toggle a partially open panel</button>
+        <button class="toggle toggle-btn" data-toggle-target=".demo-multiple" aria-expanded="false">Multiple panels</button>
 
-        <div class="toggle toggle-panel toggle-panel--partial toggle--demo-partial">
-          Toggle panel which is a partially open panel <br><br><br><br><br><br><br><br><br><br><br><br>
-          Toggle panel which is a partially open panel 
-        </div>
-        <br><br><br>
-
-
-        <button class="toggle" data-toggle-target="next" aria-checked="true">Toggle next panel</button>
-
-        <div class="toggle toggle-panel">Toggle sibling panel, selects the next element as the toggle panel</div>
-        <br><br><br>
-
-
-        <button class="toggle" data-toggle-target=".toggle--demo-opacity" aria-expanded="false">Toggle panel opacity</button>
-
-        <div class="toggle toggle-panel toggle-panel--opacity toggle--demo-opacity" aria-hidden="true">
-          Toggle panel opacity
-        </div>
-        <br><br><br>
-
-
-        <button class="toggle is-active" data-toggle-target=".toggle--demo-open" aria-expanded="true">Toggle open by default</button>
-        <div class="toggle toggle-panel toggle--demo-open is-active" aria-hidden="false">
-          Toggle panel already open
-        </div>
-        <br><br><br>
-
-
-        <button class="toggle" data-toggle-target=".toggle--demo-none" aria-expanded="false">Toggle display none</button>
-        <div class="toggle toggle-panel toggle-panel--none toggle--demo-none" aria-hidden="true">
-          Toggle panel hidden with display none
-        </div>
-        <br><br><br>
-
-
-        <button class="toggle toggle--accordion is-active" data-toggle-target=".toggle--demo-accordion-1" data-toggle-group=".toggle--demo-accordion" aria-expanded="true">Accordion toggle 1</button>
-        <div class="toggle toggle-panel is-active toggle--demo-accordion toggle--demo-accordion-1" aria-hidden="false">
-          Accordion panel 1
+        <div class="toggle-panel demo-multiple" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
         </div>
 
-        <button class="toggle toggle--accordion" data-toggle-target=".toggle--demo-accordion-2" data-toggle-group=".toggle--demo-accordion" aria-expanded="false">Accordion toggle 2</button>
-        <div class="toggle toggle-panel toggle--demo-accordion-2 toggle--demo-accordion" aria-hidden="true">
-          Accordion panel 2
+        <div class="toggle-panel demo-multiple" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
         </div>
 
-        <button class="toggle toggle--accordion" data-toggle-target=".toggle--demo-accordion-3" data-toggle-group=".toggle--demo-accordion" aria-expanded="false">Accordion toggle 3</button>
-        <div class="toggle toggle-panel toggle--demo-accordion-3 toggle--demo-accordion" aria-hidden="true">
-          Accordion panel 3
+        <br>
+
+
+        <button class="toggle toggle-btn" data-toggle-target="next" aria-expanded="false">Next panel</button>
+
+        <div class="toggle-panel" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
         </div>
-        <br><br><br>
+
+        <br>
 
 
-        <button class="toggle" data-toggle-target=".toggle--demo-text-1" data-toggle-text-active="Show less" data-toggle-text-inactive="Show more" aria-expanded="false">Show more</button>
+        <button class="toggle toggle-btn" data-toggle-target=".demo-partial">Partially open panel</button>
 
-        <div class="toggle toggle-panel toggle--demo-text-1" aria-hidden="true">
-          Toggle panel text
+        <div class="toggle-panel toggle-panel--partial demo-partial">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
         </div>
-        <br><br><br>
+
+        <br>
 
 
-        <button class="toggle" data-toggle-target=".toggle--demo-text-2" data-toggle-text-active="-" data-toggle-text-inactive="+" aria-expanded="false">Panel title <span class="toggle-text">+</span></button>
+        <button class="toggle toggle-btn is-active" data-toggle-target=".demo-open" aria-expanded="true">Open panel</button>
 
-        <div class="toggle toggle-panel toggle--demo-text-2" aria-hidden="true">
-          Toggle panel text
+        <div class="toggle-panel demo-open is-active" aria-hidden="false">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
         </div>
-        <br><br><br>
 
-<!-- 
-        <button class="toggle" aria-pressed="false">Toggle the button state only<span class="toggle toggle-panel" aria-hidden="true">Active</span></button>
-        <br><br><br>
- -->
+        <br>
+        <button class="toggle toggle-btn" data-toggle-target=".demo-text-attributes" data-toggle-text-active="Toggle text: Show less" data-toggle-text-inactive="Toggle text: Show more" aria-expanded="false">Toggle text: Show more</button>
+
+        <div class="toggle-panel demo-text-attributes" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+        </div>
+        
+        <br>
+
+
+        <button class="toggle toggle-btn toggle-btn--icon" data-toggle-target=".demo-text-inline" data-toggle-text-active="&minus;" data-toggle-text-inactive="&plus;" aria-expanded="false"><span class="toggle-title">Toggle text element</span><span class="toggle-text">+</span></button>
+
+        <div class="toggle-panel demo-text-inline" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+        </div>
+        
+        <br>
+
+
+        <button class="toggle toggle-btn" data-toggle-target=".demo-none" aria-expanded="false">No animation</button>
+        <div class="toggle-panel toggle-panel--none demo-none" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+        </div>
+        
+        <br>
+
+
+        <button class="toggle toggle-btn" data-toggle-target=".demo-opacity" aria-expanded="false">Opacity</button>
+
+        <div class="toggle-panel toggle-panel--opacity demo-opacity" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+        </div>
+
+        <br>
+
+
+        <h3>Accordion</h3>
+
+        <button class="toggle toggle-btn is-active" data-toggle-target=".toggle--demo-accordion-1" data-toggle-group=".toggle--demo-accordion" aria-expanded="true">Accordion toggle 1</button>
+        <div class="toggle-panel is-active toggle--demo-accordion toggle--demo-accordion-1" aria-hidden="false">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+        </div>
+
+        <button class="toggle toggle-btn" data-toggle-target=".toggle--demo-accordion-2" data-toggle-group=".toggle--demo-accordion" aria-expanded="false">Accordion toggle 2</button>
+        <div class="toggle-panel toggle--demo-accordion-2 toggle--demo-accordion" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+        </div>
+
+        <button class="toggle toggle-btn" data-toggle-target=".toggle--demo-accordion-3" data-toggle-group=".toggle--demo-accordion" aria-expanded="false">Accordion toggle 3</button>
+        <div class="toggle-panel toggle--demo-accordion-3 toggle--demo-accordion" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+        </div>
+        
+        <br>
+
+        <div class="toggle-outer">
+          <button class="toggle-dropdown toggle-btn" data-toggle-target=".demo-dropdown" aria-expanded="false">Dropdown</button>
+
+          <div class="toggle-panel toggle-panel--dropdown demo-dropdown" aria-hidden="true">
+            <div class="toggle-panel-content">
+              Action One<br>
+              Action Two<br>
+              Action Three
+            </div>
+          </div>
+        </div>
+
+        <br>
+        <br>
+
+
+        <h3>Target button or panel independently</h3>
+
+        <button class="toggle toggle-btn" data-toggle-target="self">Toggle button only</button>
+
+        <br>
+
+        <button class="toggle-btn demo-self-button">Toggle panel only</button>
+
+        <div class="toggle-panel demo-self" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+        </div>
+
+        <br>
 
         
       </div>
@@ -167,30 +225,30 @@
 
           <p>The script is an ES6(ES2015) module but the compiled version is included in the build as "src/scripts/tiny-ui-toggle-umd.js". You can also copy "src/scripts/tiny-ui-toggle.js" into your own site if your build process can accommodate ES6 modules.</p>
 
-<pre><code>import ResponsiveVideoPoster from 'tiny-ui-toggle.js';
+<pre><code>import Toggle from 'tiny-ui-toggle.js';
 
 // Init with string - default setup for one instance
-const responsiveVideoPosterDefault = ResponsiveVideoPoster({ selector: '#tiny-ui-toggle--default' });
+const toggleDefault = Toggle({ selector: '.toggle' });
 
 
 // Init by loop - this wont allow access to methods
-const responsiveVideoPosterElements = document.querySelectorAll('.tiny-ui-toggle');   
+const toggleElements = document.querySelectorAll('.toggle');   
 
-for (const item of responsiveVideoPosterElements) {
-  ResponsiveVideoPoster({ selector: item });
+for (const item of toggleElements) {
+  Toggle({ selector: item });
 }
 
 
 // Init with all options at default setting
-const responsiveVideoPosterDefault = ResponsiveVideoPoster({
-  selector: '.tiny-ui-toggle',
-  overlaySelector: '.video-overlay',
-  posterSelector: '.poster',
-  videoSelector: '.video',
-  animClass: 'is-anim',
-  inactiveClass: 'is-inactive',
-  embedPreload: 500,
-  hideControls: false
+const toggleDefault = Toggle({
+  selector = '.toggle',
+  activeClass = 'is-active',
+  animClass = 'is-anim',
+  toggleHeight = true,
+  textActive = '',
+  textInactive = '',
+  closeAuto = false,
+  closeDelay = 500
 });
 </code></pre>
 
@@ -206,27 +264,15 @@ const responsiveVideoPosterDefault = ResponsiveVideoPoster({
           </tr>
           <tr>
             <td><code>selector</code></td>
-            <td>'.tiny-ui-toggle'</td>
+            <td>'.toggle'</td>
             <td>String</td>
-            <td>Container element selector.</td>
+            <td>Element selector.</td>
           </tr>
           <tr>
-            <td><code>overlaySelector</code></td>
-            <td>'.video-overlay'</td>
+            <td><code>activeClass</code></td>
+            <td>'is-active'</td>
             <td>String</td>
-            <td>Overlay element selector.</td>
-          </tr>
-          <tr>
-            <td><code>posterSelector</code></td>
-            <td>'.poster'</td>
-            <td>String</td>
-            <td>Poster element selector.</td>
-          </tr>
-          <tr>
-            <td><code>videoSelector</code></td>
-            <td>'.video'</td>
-            <td>String</td>
-            <td>Video element selector.</td>
+            <td>CSS class when element is active.</td>
           </tr>
           <tr>
             <td><code>animClass</code></td>
@@ -235,22 +281,34 @@ const responsiveVideoPosterDefault = ResponsiveVideoPoster({
             <td>CSS class to transition the video overlay between states.</td>
           </tr>
           <tr>
-            <td><code>inactiveClass</code></td>
-            <td>'is-inactive'</td>
+            <td><code>toggleHeight</code></td>
+            <td>true</td>
+            <td>Boolean</td>
+            <td>Animate the panel height.</td>
+          </tr>
+          <tr>
+            <td><code>textActive</code></td>
+            <td>''</td>
             <td>String</td>
-            <td>CSS class to hide the video overlay.</td>
+            <td>Text in element when it is active.</td>
           </tr>
           <tr>
-            <td><code>embedPreload</code></td>
-            <td>500</td>
-            <td>Integer(ms)</td>
-            <td>Amount of time given to preload an embedded video.</td>
+            <td><code>textInactive</code></td>
+            <td>''</td>
+            <td>String</td>
+            <td>Text in element when it is inactive.</td>
           </tr>
           <tr>
-            <td><code>hideControls</code></td>
+            <td><code>closeAuto</code></td>
             <td>false</td>
             <td>Boolean</td>
-            <td>Hide video controls while transitioning overlay.</td>
+            <td>Automatically close the panel after a timeout.</td>
+          </tr>
+          <tr>
+            <td><code>closeDelay</code></td>
+            <td>500</td>
+            <td>Integer(ms)</td>
+            <td>Amount of time a user leaves an element for it to close.</td>
           </tr>
         </table>
         </div>
@@ -265,9 +323,19 @@ const responsiveVideoPosterDefault = ResponsiveVideoPoster({
             <th>Description</th>
           </tr>
           <tr>
-            <td><code>instance.playVideo()</code></td>
+            <td><code>instance.toggle()</code></td>
             <td>Method</td>
-            <td>Plays the video.</td>
+            <td>Toggles the state of the element and any target elements.</td>
+          </tr>
+          <tr>
+            <td><code>instance.toggleState()</code></td>
+            <td>Method</td>
+            <td>Toggles the state of the element.</td>
+          </tr>
+          <tr>
+            <td><code>instance.setState()</code></td>
+            <td>Method</td>
+            <td>Sets the element state.</td>
           </tr>
           <tr>
             <td><code>instance['elements']</code></td>
@@ -286,69 +354,41 @@ const responsiveVideoPosterDefault = ResponsiveVideoPoster({
 
         <h3>Markup</h3>
 
-        <p>The demos makes use of the padding technique to maintain aspect ratio. Only one aspect ratio of 16:9 is used in the demos. You can add your own or use classes provide by frameworks such as Bootstrap.</p>
+<pre><code>&lt;button class="toggle toggle-btn" data-toggle-target=".demo-single" aria-expanded="false"&gt;Single panel&lt;/button&gt;
 
-<pre><code>&lt;div class="tiny-ui-toggle tiny-ui-toggle--16by9"&gt;
-                
-  &lt;button class="video-overlay" aria-label="Play video"&gt;
-    &lt;div class="poster-btn"&gt;&lt;svg class="poster-btn-icon"&gt; ... &lt;/svg&gt;&lt;/div&gt;
-
-    &lt;img srcset="images/720/image.jpg 720w, images/1080/image.jpg 1080w" src="images/1080/image.jpg" class="poster"&gt;
-  &lt;/button&gt;
-
-  &lt;video src="videos/video.mp4" preload="metadata" class="video" controls&gt;&lt;/video&gt;
-
+&lt;div class="toggle-panel demo-single" aria-hidden="true"&gt;
+  &lt;div class="toggle-panel-content"&gt;
+    ...
+  &lt;/div&gt;
 &lt;/div&gt;
+
 </code></pre>
 
-
-          <h3>Bootstrap Example</h3>
-
-<pre><code>&lt;div class="tiny-ui-toggle embed-responsive embed-responsive-16by9"&gt;
-                
-  &lt;button class="video-overlay embed-responsive-item" aria-label="Play video"&gt;
-    &lt;div class="poster-btn"&gt;&lt;svg class="poster-btn-icon"&gt; ... &lt;/svg&gt;&lt;/div&gt;
-
-    &lt;img srcset="images/720/image.jpg 720w, images/1080/image.jpg 1080w" src="images/1080/image.jpg" class="poster img-fluid"&gt;
-  &lt;/button&gt;
-
-  &lt;video src="videos/video.mp4" preload="metadata" class="video embed-responsive-item" controls&gt;&lt;/video&gt;
-
-&lt;/div&gt;
-</code></pre>
-
-        </div>
-
-
-        <div class="subsection">
-          <h2>Video loading optimizations</h2>
-
-          <p>The <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video" target="_blank" rel="noopener">video element</a> includes preload="metadata" and the embedded video includes an <a href="https://dev.to/haggen/lazy-load-embedded-youtube-videos-520g" target="_blank" rel="noopener">srcdoc=""</a> so the video is not loaded until the user interacts with it. This will slow the loading of embedded videos which is partially addressed by the built in embedPreload in the options. This will reduce the initial page load but may increase lag in playback for some users. Both can be removed if not needed. The plugin should also work normally with lazy load plugins.</p>
         </div>
 
 
         <div class="subsection">
           <h2>Events</h2>
 
-          <p>A 'playVideo' event is started once a user clicks the video overlay. The event is ended once the overlay has become inactive and the video starts playing.</p>
+          <p>A 'toggle' event is started once an element is toggled. The event is ended once the element has changed state.</p>
 
-<pre><code>document.querySelector('#tiny-ui-toggle--default').addEventListener('playVideo', (event) => { 
+<pre><code>document.querySelector('.toggle-btn-default').addEventListener('toggle', (event) => { 
   console.log(`Action: ${event.detail.action}`);
 });
 </code></pre>
 
-<p>You can also attach this to the document.</p>
+<!-- <p>You can also attach this to the document.</p>
 <pre><code>document.addEventListener('playVideo', (event) => { 
   console.log(`Target: ${event.target.matches('#tiny-ui-toggle--default')}`, `Action: ${event.detail.action}`);
 });
-</code></pre>
+</code></pre> -->
         </div>
 
 
         <div class="subsection">
           <h2>Compatibility</h2>
 
-          <p>Supports all modern browsers (Firefox, Chrome, Safari and Edge) released as of April 2020.</p>
+          <p>Supports all modern browsers (Firefox, Chrome, Safari and Edge) released as of October 2021.</p>
         </div>
 
 
@@ -360,13 +400,6 @@ const responsiveVideoPosterDefault = ResponsiveVideoPoster({
 $ gulp serve
 </code></pre>
 
-        </div>
-
-
-        <div class="subsection">
-          <h3>Credits</h3>
-          Covverr videos of <a href="https://coverr.co/videos/lago-di-braies-y1yBShzUTZ" target="_blank" rel="noopener">Lago di braies</a> and <a href="https://coverr.co/videos/lofoten-rocks-GPfWh8WOtG" target="_blank" rel="noopener">Lofoten rocks</a>. Youtube video of <a href="https://www.youtube.com/watch?v=FjPvaGt6Pw4" target="_blank" rel="noopener">Tustan Karpaty mountains</a>.<br>
-          <a href="https://dev.to/haggen/lazy-load-embedded-youtube-videos-520g" target="_blank" rel="noopener">Lazy loading of an embedded video</a> by Arthur Corenzan. 
         </div>
 
       </div>

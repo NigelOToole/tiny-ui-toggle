@@ -1,12 +1,39 @@
-import { Toggle } from './tiny-ui-toggle.js';
+import { Toggle, toggleAutoInit } from './tiny-ui-toggle.js';
 
-// Toggle();
+// Initialize all elements with defaults
+toggleAutoInit();
 
-const toggleElements = document.querySelectorAll('.toggle');
+// const toggleElements = document.querySelectorAll('.toggle-btn');
 
-for (const item of toggleElements) {
-  Toggle({ selector: item });
-};
+// for (const item of toggleElements) {
+//   Toggle({ selector: item });
+// };
+
+
+// Element with different options
+// Toggle({ selector: '.demo-none', toggleHeight: false });
+const toggleDropdown = Toggle({ selector: '.toggle-dropdown', closeAuto: true });  
+
+// setTimeout(() => {
+//   toggleDropdown.toggle();
+// }, 2000);
+
+// Manually set state
+document.querySelector('.demo-self-button').addEventListener('click', function(event) {
+  event.preventDefault();
+  Toggle().toggleState(document.querySelector('.demo-self'));
+});
+
+
+
+// const dropdownToggle = Toggle({ selector: '.toggle-outer .toggle-btn', closeAuto: true });
+// dropdownToggle.setState(document.querySelector('.toggle-outer .toggle-panel'), true);
+// Toggle().setState(document.querySelector('.toggle-outer .toggle-panel'), true);
+// Toggle({ selector: '.toggle-outer .toggle-panel', closeAuto: true });
+
+
+
+
 
 // Pass multiple existing elements - string then nodelist
 // toggle({ selector: '.toggle' });

@@ -1,10 +1,12 @@
-
+.toggle-outer {
+  position: relative;
+}
 
 .toggle {
 }
 
 .toggle-panel {
-  --toggle-speed: 1.5s;
+  --toggle-speed: .5s;
 
   // Closed
   height: 0;
@@ -35,7 +37,7 @@
 
 
 .toggle-panel--partial {
-  height: .5em;
+  height: calc(2.5em + .75rem);
   visibility: visible;
 }
 
@@ -48,94 +50,122 @@
   }
 }
 
-.toggle-panel--100h {
-  min-height: 0;
-
-  &.is-active {
-    min-height: 100%;
-  }
-}
-
-.toggle-panel--flex {
-  &.is-active {
-    flex-grow: 1;
-  }
-}
-
 .toggle-panel--none {
   display: none;
-  transition-duration: 0;
+  transition: none;
 
   &.is-active, &.is-anim {
     display: block;
   }
 }
 
-.toggle-panel--opacity--none {
-  display: none;
-  opacity: 0;
-  height: auto;
+.toggle-panel--dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+}
+
+// .toggle-panel--100h {
+//   min-height: 0;
+
+//   &.is-active {
+//     min-height: 100%;
+//   }
+// }
+
+// .toggle-panel--flex {
+//   &.is-active {
+//     flex-grow: 1;
+//   }
+// }
+
+
+
+// Presentation
+// .toggle-outer {
+//   border: 1px solid #aaa;
+// }
+
+.toggle-btn, .toggle-panel-content {
+  padding: .75rem 1rem;
+  background-color: #eee;
+}
+
+.toggle-btn {
+  display: block;
+  width: 100%;
+  color: #135CA4;
+  cursor: pointer;
+
+  text-align: left;
+  text-decoration: none;
+  border: none;
+  border-radius: none;
+  transition: all 0.3s;
+
+  &:hover {
+    color: #1976D2;
+    background-color: #ddd;
+  }
 
   &.is-active {
-    display: block;
-    opacity: 1;
+    background-color: #ddd;
   }
 }
 
+.toggle-btn--icon {
+  display: flex;
+  align-items: center;
+
+  .toggle-title {
+
+  }
+
+  .toggle-text {
+    margin: -.3em 0 -.3em auto;
+    padding: 0 0 0 1em;
+    font-size: 2rem;
+  }
+}
+
+.toggle-panel-content {
+
+}
 
 
-// // Disable toggle based on screen size e.g. menu that becomes a drop down on small screens
-// @include media-breakpoint-up(xl) {
-//   .toggle-disable--xl {
-//     .toggle {
-//       display: none;
-//     }
+// Overlays
+.toggle-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  display: none;
+  transition: opacity var(--toggle-speed), visibility var(--toggle-speed);
+  background: rgba(0, 0, 0, 0.75);
 
-//     .toggle-panel {
-//       height: auto;
-//       visibility: visible;
-//       overflow: visible;
-//     }
-//   }
-// }
+  &.is-active {
+    opacity: 1;
+  }
 
+  &.is-active, &.is-anim {
+    display: block;
+    visibility: visible;
+  }
 
-// // Overlays
-// .toggle-overlay {
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   z-index: 10000;
-//   width: 100%;
-//   height: 100%;
-//   overflow: hidden;
-//   opacity: 0;
-//   visibility: hidden;
-//   display: none;
-//   transition: opacity var(--toggle-speed), visibility var(--toggle-speed);
-//   background: rgba(0, 0, 0, 0.75);
+}
 
-//   &.is-active {
-//     opacity: 1;
-//   }
-
-//   &.is-active, &.is-anim {
-//     display: block;
-//     visibility: visible;
-//   }
-
-// }
-
-//   .toggle-overlay-container {
-//     position: relative;
-//     width: auto;
-//     padding: 15px;
-//     max-width: 250px;
-//     top: 50%;
-//     left: 50%;
-//     transform: translate(-50%, -50%);
-
-//     @include media-breakpoint-up(md) {
-//       max-width: 500px;
-//     }
-//   }
+  .toggle-overlay-container {
+    position: relative;
+    width: auto;
+    padding: 15px;
+    max-width: 250px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
