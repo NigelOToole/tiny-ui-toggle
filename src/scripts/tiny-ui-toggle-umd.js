@@ -43,13 +43,10 @@
         _ref$closeAuto = _ref.closeAuto,
         closeAuto = _ref$closeAuto === void 0 ? false : _ref$closeAuto,
         _ref$closeDelay = _ref.closeDelay,
-        closeDelay = _ref$closeDelay === void 0 ? 200 : _ref$closeDelay;
+        closeDelay = _ref$closeDelay === void 0 ? 500 : _ref$closeDelay;
 
     var element;
-    var closeTimeout; // let toggleType;
-    // let toggleTarget;
-    // let toggleActive;
-    // Utilities
+    var closeTimeout; // Utilities
 
     var fireEvent = function fireEvent(item, eventName, eventDetail) {
       var event = new CustomEvent(eventName, {
@@ -82,119 +79,231 @@
 
 
     var toggleText = function toggleText(element) {
-      if (!element.textActive || !element.textInactive) return;
+      if (!element.toggle.textActive || !element.toggle.textInactive) return;
       var toggleTextElement = element.querySelector('.toggle-text') !== null ? element.querySelector('.toggle-text') : element;
-      toggleTextElement.innerHTML = element.toggleActive ? element.textActive : element.textInactive;
+      toggleTextElement.innerHTML = element.toggle.toggleActive ? element.toggle.textActive : element.toggle.textInactive;
     };
 
-    var closeAfterTimeout = function closeAfterTimeout() {
+    var closeAfterTimeout = function closeAfterTimeout(trigger, target) {
       closeTimeout = setTimeout(function () {
-        // Refactor addEventListeners function so you can use here
-        setState('.toggle-outer .toggle-btn', false);
-        setState('.toggle-outer .toggle-panel', false);
+        setState(trigger, false);
+        setState(target, false);
       }, closeDelay);
     }; // Methods
-    // Toggle element height to allow for CSS transition animation
 
 
     var toggleElementHeight = function toggleElementHeight(element) {
-      if (!element.toggleActive) element.style.height = 'auto';
+      if (!element.toggle.active) element.style.height = 'auto';
       requestAnimationFrame(function () {
         element.style.height = "".concat(element.scrollHeight, "px");
 
-        if (!element.toggleActive) {
+        if (!element.toggle.active) {
           element.getBoundingClientRect();
           element.style.height = '';
         }
       });
       element.addEventListener('transitionend', function () {
-        if (element.toggleActive) element.style.height = 'auto';
+        if (element.toggle.active) element.style.height = 'auto';
       }, {
         once: true
       });
     }; // Toggle the elements state
 
 
-    var toggleState = function toggleState(element) {
-      setState(element, !element.toggleActive);
+    var toggleState = function toggleState() {
+      var elementCurrent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : element;
+      setState(elementCurrent, !elementCurrent.toggle.active);
     }; // Sets the state of an element
 
 
     var setState = function setState(element, state) {
-      if (element.toggleActive === state) return;
+      if (element.toggle.active === state) return;
       fireEvent(element, 'toggle', {
         action: 'start',
         active: state
       });
-      element.toggleActive = state;
-      element.toggleActive ? element.classList.add(activeClass) : element.classList.remove(activeClass);
-      element.classList.add(animClass);
+      console.log(element.toggle.activeClass);
+      element.toggle.active = state;
+      element.toggle.active ? element.classList.add(element.toggle.activeClass) : element.classList.remove(element.toggle.activeClass);
+      element.classList.add(element.toggle.animClass);
       var transitionDuration;
 
-      if (element.toggleType === 'target') {
-        transitionDuration = getTransitionDuration(element);
-        if (toggleHeight) toggleElementHeight(element);
+      if (element.toggle.type === 'trigger') {
+        transitionDuration = element.toggle.target[0] !== undefined ? getTransitionDuration(element.toggle.target[0]) : 0;
       } else {
-        transitionDuration = element.toggleTarget[0] !== undefined ? getTransitionDuration(element.toggleTarget[0]) : 0;
+        transitionDuration = getTransitionDuration(element);
+        if (element.toggle.toggleHeight) toggleElementHeight(element);
       }
 
-      toggleAria(element, element.toggleActive);
+      toggleAria(element, element.toggle.active);
       toggleText(element);
       setTimeout(function () {
         fireEvent(element, 'toggle', {
           action: 'end',
           active: state
         });
-        element.classList.remove(animClass);
+        element.classList.remove(element.toggle.animClass);
       }, transitionDuration);
     };
 
-    var addEventListeners = function addEventListeners(element) {
-      element.addEventListener('click', function (event) {
-        event.preventDefault();
-        toggleState(element);
-        element.toggleTarget.forEach(function (item) {
-          // console.log(item);
-          toggleState(item);
-        }); // NIGEL TO DO - Only do group stuff if at least one item is active
+    var toggleStateBoth = function toggleStateBoth() {
+      toggleState(element);
 
-        if (element.toggleGroup.length) {
-          element.toggleGroup.forEach(function (item) {
-            if (item !== element && item !== element.toggleTarget[0]) {
-              // console.log(element.toggleTarget[0] !== item, item);
-              setState(item, !element.toggleActive);
-            }
-          });
+      var _iterator = _createForOfIteratorHelper(element.toggle.target),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var _item = _step.value;
+          toggleState(_item);
         }
-      });
-      element.addEventListener('mouseover', function (e) {
-        clearTimeout(closeTimeout);
-      });
-      element.toggleTarget.forEach(function (item) {
-        item.addEventListener('mouseover', function (e) {
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      ;
+
+      if (element.toggle.group) {
+        var _iterator2 = _createForOfIteratorHelper(element.toggle.group),
+            _step2;
+
+        try {
+          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+            var item = _step2.value;
+
+            if (item !== element && item !== element.toggle.target[0]) {
+              setState(item, false);
+            }
+          }
+        } catch (err) {
+          _iterator2.e(err);
+        } finally {
+          _iterator2.f();
+        }
+      }
+    };
+
+    var toggleStateEvent = function toggleStateEvent(event) {
+      event.preventDefault();
+      toggleStateBoth();
+    };
+
+    var addEventListeners = function addEventListeners() {
+      element.addEventListener('click', toggleStateEvent);
+
+      if (element.toggle.closeAuto) {
+        element.addEventListener('mouseover', function () {
           clearTimeout(closeTimeout);
         });
-      });
-      element.addEventListener('mouseleave', function (e) {
-        closeAfterTimeout();
-      });
-      element.toggleTarget.forEach(function (item) {
-        item.addEventListener('mouseleave', function (e) {
-          closeAfterTimeout();
+        element.addEventListener('mouseleave', function () {
+          // closeAfterTimeout(element, element.toggleTarget[0]);
+          closeAfterTimeout(element, element.toggle.target[0]);
         });
-      });
-    }; // Finds all the toggle triggers and targets then sets their state
+        element.toggle.target.forEach(function (item) {
+          item.addEventListener('mouseover', function () {
+            clearTimeout(closeTimeout);
+          });
+          item.addEventListener('mouseleave', function () {
+            closeAfterTimeout(element, item);
+          });
+        });
+      }
+    };
+
+    var getTarget = function getTarget(element, selector) {
+      var targets = {
+        'next': [element.nextElementSibling],
+        'previous': [element.previousElementSibling],
+        'self': [],
+        'default': document.querySelectorAll(selector)
+      };
+      return targets[selector] || targets['default'];
+    };
+
+    var assignProps = function assignProps(element) {
+      element.toggle = {
+        activeClass: element.dataset['toggleActiveClass'] || activeClass,
+        animClass: element.dataset['toggleAnimClass'] || animClass,
+        toggleHeight: element.dataset['toggleHeight'] || toggleHeight,
+        textActive: element.dataset['toggleTextActive'] || textActive,
+        textInactive: element.dataset['toggleTextInactive'] || textInactive,
+        closeAuto: element.dataset['toggleCloseAuto'] || closeAuto,
+        closeDelay: element.dataset['toggleCloseDelay'] || closeDelay,
+        type: 'toggleTarget' in element.dataset ? 'trigger' : 'target'
+      };
+      element.toggle.active = element.classList.contains(element.toggle.activeClass);
+
+      if (element.toggle.type === 'trigger') {
+        element.toggle.target = getTarget(element, element.dataset['toggleTarget']);
+        if ('toggleGroup' in element.dataset) element.toggle.group = document.querySelectorAll("".concat(element.dataset['toggleGroup'], ", [data-toggle-group='").concat(element.dataset['toggleGroup'], "']"));
+      }
+    }; // TO DO - Put props into its own function so targets can get default values
+    // Finds all the toggle triggers and targets then sets their state
 
 
     var setup = function setup() {
-      element.toggleTarget = element.dataset['toggleTarget'] !== 'next' ? document.querySelectorAll(element.dataset['toggleTarget']) : [element.nextElementSibling];
-      element.toggleGroup = document.querySelectorAll("".concat(element.dataset['toggleGroup'], ", [data-toggle-group='").concat(element.dataset['toggleGroup'], "']"));
-      element.toggleType = element.toggleTarget.length ? 'trigger' : 'target';
-      element.toggleActive = element.classList.contains(activeClass) ? true : false;
-      element.textActive = element.dataset['toggleTextActive'] ? element.dataset['toggleTextActive'] : textActive;
-      element.textInactive = element.dataset['toggleTextInactive'] ? element.dataset['toggleTextInactive'] : textInactive;
-      if (element.toggleType === 'trigger') addEventListeners(element);
-      console.log(element.toggleType, element.toggleActive, element.toggleTarget);
+      // Properties of the toggle
+      assignProps(element); // element.toggle = {
+      // 	activeClass: element.dataset['toggleActiveClass'] || activeClass,
+      // 	animClass: element.dataset['toggleAnimClass'] || animClass,
+      // 	toggleHeight: element.dataset['toggleHeight'] || toggleHeight,
+      // 	textActive: element.dataset['toggleTextActive'] || textActive,
+      // 	textInactive: element.dataset['toggleTextInactive'] || textInactive,
+      // 	closeAuto: element.dataset['toggleCloseAuto'] || closeAuto,
+      // 	closeDelay: element.dataset['toggleCloseDelay'] || closeDelay,
+      // 	type: 'toggleTarget' in element.dataset ? 'trigger' : 'target'
+      // };
+      // element.toggle.active = element.classList.contains(element.toggle.activeClass);
+
+      if (element.toggle.type === 'trigger') {
+        // element.toggle.target = getTarget(element, element.dataset['toggleTarget']);
+        // if ('toggleGroup' in element.dataset) element.toggle.group = document.querySelectorAll(`${element.dataset['toggleGroup']}, [data-toggle-group='${element.dataset['toggleGroup']}']`);
+        addEventListeners();
+
+        var _iterator3 = _createForOfIteratorHelper(element.toggle.target),
+            _step3;
+
+        try {
+          for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+            var item = _step3.value;
+
+            if (item.toggle === undefined) {
+              // item.toggle = {...element.toggle};
+              // item.toggle.target = [];
+              // item.toggle.group = [];
+              // item.toggle.type = 'target';
+              // item.toggle.active = item.classList.contains(item.toggle.activeClass);
+              assignProps(item);
+            }
+          }
+        } catch (err) {
+          _iterator3.e(err);
+        } finally {
+          _iterator3.f();
+        }
+
+        ;
+      } // element.toggleType = 'toggleTarget' in element.dataset ? 'trigger' : 'target';
+      // element.toggleActive = element.classList.contains(element.activeClass);
+      // if(element.toggleType === 'trigger') {
+      // 	element.toggleTarget = getTarget(element, element.dataset['toggleTarget']);
+      // 	if ('toggleGroup' in element.dataset) element.toggleGroup = document.querySelectorAll(`${element.dataset['toggleGroup']}, [data-toggle-group='${element.dataset['toggleGroup']}']`);
+      // 	element.textActive = element.dataset['toggleTextActive'] || textActive;
+      // 	element.textInactive = element.dataset['toggleTextInactive'] || textInactive;
+      // 	addEventListeners();
+      // 	for (const item of element.toggleTarget) {
+      // 		if (item.toggleType === undefined) {
+      // 			// item.toggleType = 'target';
+      // 			item.toggleActive = item.classList.contains(element.activeClass);
+      // 		}
+      // 	};
+      // } 
+      // console.log(element.toggleType, element.toggleActive, element.toggleTarget);
+
+
+      console.log(element, element.toggle.activeClass);
     };
 
     var init = function init() {
@@ -206,8 +315,13 @@
     init(); // Reveal API
 
     return {
+      toggle: toggleStateBoth,
+      toggleState: toggleState,
       setState: setState,
-      toggleState: toggleState
+      elements: {
+        element: element,
+        target: element['toggleTarget']
+      }
     };
   };
 
@@ -216,20 +330,20 @@
   var toggleAutoInit = function toggleAutoInit() {
     var toggleElements = document.querySelectorAll('.toggle');
 
-    var _iterator = _createForOfIteratorHelper(toggleElements),
-        _step;
+    var _iterator4 = _createForOfIteratorHelper(toggleElements),
+        _step4;
 
     try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var item = _step.value;
+      for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+        var item = _step4.value;
         Toggle({
           selector: item
         });
       }
     } catch (err) {
-      _iterator.e(err);
+      _iterator4.e(err);
     } finally {
-      _iterator.f();
+      _iterator4.f();
     }
 
     ;
