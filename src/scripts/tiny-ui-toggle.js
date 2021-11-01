@@ -12,10 +12,14 @@ const Toggle = function(options) {
 		closeAuto: false,
 		closeDelay: 500
 	}
-	options = {...defaults, ...(options || {})};
+
+	options = {...defaults, ...options};
+
+
 
 	let element;
 	let closeTimeout;
+			let animation = null;
 
 
 
@@ -33,7 +37,7 @@ const Toggle = function(options) {
 	const getTransitionDuration = function (element) {
 		let transitionDuration = getComputedStyle(element)['transitionDuration'];
 		let transitionDurationNumber = parseFloat(transitionDuration);
-		transitionDuration = transitionDuration.indexOf('ms')>-1 ? transitionDurationNumber : transitionDurationNumber*1000;
+		transitionDuration = transitionDuration.includes('ms') ? transitionDurationNumber : transitionDurationNumber*1000;
 		return transitionDuration;
 	};
 
@@ -41,6 +45,7 @@ const Toggle = function(options) {
 	const toggleAria = function (element, state) {
 		const ariaAttributes = { 'aria-hidden': !state, 'aria-checked': state, 'aria-expanded': state, 'aria-selected': state, 'aria-pressed': state };
 		Object.keys(ariaAttributes).forEach(key => element.hasAttribute(key) && element.setAttribute(key, ariaAttributes[key]));
+		// if (element.tagName === 'DETAILS') state ? element.setAttribute('open', '') : element.removeAttribute('open');
 	};
 
 
@@ -65,22 +70,95 @@ const Toggle = function(options) {
 
 
 	// Methods
+
 	const animateElementHeight = function (element) {
-		if (!element.toggle.active) element.style.height = 'auto';
+		let elementIsDetails = element.tagName === 'DETAILS' && element.querySelector('summary') !== null;
+
+		element.style.height = `${element.scrollHeight}px`;
+
+		// Opening
+		if (element.toggle.active) {
+			if (elementIsDetails) element.setAttribute('open', '');
+		}
 
 		requestAnimationFrame(() => {
-			element.style.height = `${element.scrollHeight}px`;
+			element.style.overflow = 'hidden';
 
-			if (!element.toggle.active) {
+			// Opening
+			if (element.toggle.active) {
+				element.style.height = `${element.scrollHeight}px`;
+			}
+			// Closing
+			else {
 				element.getBoundingClientRect();
-				element.style.height = '';
+				element.style.height = elementIsDetails ? `${element.querySelector('summary').scrollHeight}px` : '';
 			}
 		});
 
 		element.addEventListener('transitionend', () => {
-			if (element.toggle.active) element.style.height = 'auto';
+			element.style.overflow = '';
+
+			// Open
+			if (element.toggle.active) {
+				element.style.height = 'auto';
+			}
+			// Closed
+			else {
+				element.style.height = '';
+				if (elementIsDetails) element.removeAttribute('open');
+			}
 		}, { once: true });
 	};
+
+
+	// const animateElementHeight = function (element) {
+	// 	console.log(getComputedStyle(element)['transitionTimingFunction'].split(',')[0])
+	// 	let elementIsDetails = element.tagName === 'DETAILS' && element.querySelector('summary') !== null;
+
+	// 	// Opening
+	// 	if (element.toggle.active) {
+	// 		if (elementIsDetails) element.setAttribute('open', '');
+	// 	}
+		
+	// 	let inactiveHeight = elementIsDetails ? `${element.querySelector('summary').scrollHeight}px` : `${element.offsetHeight}px`;
+	// 	let activeHeight = `${element.scrollHeight}px`;
+	// 	let animationValues = [inactiveHeight, activeHeight];
+	// 	if (!element.toggle.active) animationValues.reverse();
+	// 	console.log(animationValues)
+
+
+	// 	element.style.overflow = 'hidden';
+
+	// 	animation = element.animate({
+	// 		height: animationValues
+	// 	}, 
+	// 	{ 
+	// 		duration: getTransitionDuration(element), easing: 'ease-out'
+	// 	});
+
+
+	// 	animation.onfinish = () => {
+	// 		element.style.overflow = '';
+
+	// 		// Open
+	// 		if (element.toggle.active) {
+	// 			element.style.height = 'auto';
+	// 		}
+
+	// 		// Closed
+	// 		if (!element.toggle.active) {
+	// 			element.style.height = '';
+	// 			if (elementIsDetails) element.removeAttribute('open');
+	// 		}
+	// 	}
+
+	// };
+
+
+
+
+
+
 
 
 	// Toggle the elements state
@@ -224,6 +302,8 @@ const Toggle = function(options) {
 			//if ('toggleGroup' in element.dataset) element.toggle.group = document.querySelectorAll(`${element.dataset['toggleGroup']}, [data-toggle-group='${element.dataset['toggleGroup']}']`);
 			element.toggle.group = document.querySelectorAll(`${element.dataset['toggleGroup']}, [data-toggle-group='${element.dataset['toggleGroup']}']`);
 		}
+
+		// console.log(element.toggle)
 		
 	};
 

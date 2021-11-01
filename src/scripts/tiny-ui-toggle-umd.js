@@ -24,26 +24,27 @@
 
   function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+  function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+  function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
   // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details
   // https://gomakethings.com/how-to-build-a-progressively-enhanced-accordion-component-with-vanilla-js/
-  var Toggle = function Toggle() {
-    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-        _ref$selector = _ref.selector,
-        selector = _ref$selector === void 0 ? '.toggle' : _ref$selector,
-        _ref$activeClass = _ref.activeClass,
-        activeClass = _ref$activeClass === void 0 ? 'is-active' : _ref$activeClass,
-        _ref$animClass = _ref.animClass,
-        animClass = _ref$animClass === void 0 ? 'is-anim' : _ref$animClass,
-        _ref$toggleHeight = _ref.toggleHeight,
-        toggleHeight = _ref$toggleHeight === void 0 ? true : _ref$toggleHeight,
-        _ref$textActive = _ref.textActive,
-        textActive = _ref$textActive === void 0 ? '' : _ref$textActive,
-        _ref$textInactive = _ref.textInactive,
-        textInactive = _ref$textInactive === void 0 ? '' : _ref$textInactive,
-        _ref$closeAuto = _ref.closeAuto,
-        closeAuto = _ref$closeAuto === void 0 ? false : _ref$closeAuto,
-        _ref$closeDelay = _ref.closeDelay,
-        closeDelay = _ref$closeDelay === void 0 ? 500 : _ref$closeDelay;
+  var Toggle = function Toggle(options) {
+    var defaults = {
+      selector: '.toggle',
+      activeClass: 'is-active',
+      animClass: 'is-anim',
+      animateHeight: true,
+      textActive: '',
+      textInactive: '',
+      closeAuto: false,
+      closeDelay: 500
+    }; // options = {...defaults, ...(options || {})};
+
+    options = _objectSpread(_objectSpread({}, defaults), options); // NIGEL TO DO - DOES THIS WORK?
 
     var element;
     var closeTimeout; // Utilities
@@ -59,7 +60,7 @@
     var getTransitionDuration = function getTransitionDuration(element) {
       var transitionDuration = getComputedStyle(element)['transitionDuration'];
       var transitionDurationNumber = parseFloat(transitionDuration);
-      transitionDuration = transitionDuration.indexOf('ms') > -1 ? transitionDurationNumber : transitionDurationNumber * 1000;
+      transitionDuration = transitionDuration.includes('ms') ? transitionDurationNumber : transitionDurationNumber * 1000;
       return transitionDuration;
     }; // Toggles aria attributes on an element based on its state
 
@@ -75,24 +76,25 @@
       Object.keys(ariaAttributes).forEach(function (key) {
         return element.hasAttribute(key) && element.setAttribute(key, ariaAttributes[key]);
       });
+      if (element.tagName === 'DETAILS') state ? element.setAttribute('open', '') : element.removeAttribute('open');
     }; // Toggles elements text
 
 
     var toggleText = function toggleText(element) {
       if (!element.toggle.textActive || !element.toggle.textInactive) return;
       var toggleTextElement = element.querySelector('.toggle-text') !== null ? element.querySelector('.toggle-text') : element;
-      toggleTextElement.innerHTML = element.toggle.toggleActive ? element.toggle.textActive : element.toggle.textInactive;
+      toggleTextElement.innerHTML = element.toggle.active ? element.toggle.textActive : element.toggle.textInactive;
     };
 
     var closeAfterTimeout = function closeAfterTimeout(trigger, target) {
       closeTimeout = setTimeout(function () {
         setState(trigger, false);
         setState(target, false);
-      }, closeDelay);
+      }, trigger.toggle.closeDelay);
     }; // Methods
 
 
-    var toggleElementHeight = function toggleElementHeight(element) {
+    var animateElementHeight = function animateElementHeight(element) {
       if (!element.toggle.active) element.style.height = 'auto';
       requestAnimationFrame(function () {
         element.style.height = "".concat(element.scrollHeight, "px");
@@ -110,19 +112,19 @@
     }; // Toggle the elements state
 
 
-    var toggleState = function toggleState() {
-      var elementCurrent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : element;
-      setState(elementCurrent, !elementCurrent.toggle.active);
+    var toggleState = function toggleState(element) {
+      if (element.toggle === undefined) assignProps(element);
+      setState(element, !element.toggle.active);
     }; // Sets the state of an element
 
 
     var setState = function setState(element, state) {
+      if (element.toggle === undefined) assignProps(element);
       if (element.toggle.active === state) return;
       fireEvent(element, 'toggle', {
         action: 'start',
         active: state
       });
-      console.log(element.toggle.activeClass);
       element.toggle.active = state;
       element.toggle.active ? element.classList.add(element.toggle.activeClass) : element.classList.remove(element.toggle.activeClass);
       element.classList.add(element.toggle.animClass);
@@ -132,7 +134,7 @@
         transitionDuration = element.toggle.target[0] !== undefined ? getTransitionDuration(element.toggle.target[0]) : 0;
       } else {
         transitionDuration = getTransitionDuration(element);
-        if (element.toggle.toggleHeight) toggleElementHeight(element);
+        if (element.toggle.animateHeight) animateElementHeight(element);
       }
 
       toggleAria(element, element.toggle.active);
@@ -198,7 +200,6 @@
           clearTimeout(closeTimeout);
         });
         element.addEventListener('mouseleave', function () {
-          // closeAfterTimeout(element, element.toggleTarget[0]);
           closeAfterTimeout(element, element.toggle.target[0]);
         });
         element.toggle.target.forEach(function (item) {
@@ -223,43 +224,46 @@
     };
 
     var assignProps = function assignProps(element) {
-      element.toggle = {
-        activeClass: element.dataset['toggleActiveClass'] || activeClass,
-        animClass: element.dataset['toggleAnimClass'] || animClass,
-        toggleHeight: element.dataset['toggleHeight'] || toggleHeight,
-        textActive: element.dataset['toggleTextActive'] || textActive,
-        textInactive: element.dataset['toggleTextInactive'] || textInactive,
-        closeAuto: element.dataset['toggleCloseAuto'] || closeAuto,
-        closeDelay: element.dataset['toggleCloseDelay'] || closeDelay,
-        type: 'toggleTarget' in element.dataset ? 'trigger' : 'target'
-      };
-      element.toggle.active = element.classList.contains(element.toggle.activeClass);
-
-      if (element.toggle.type === 'trigger') {
-        element.toggle.target = getTarget(element, element.dataset['toggleTarget']);
-        if ('toggleGroup' in element.dataset) element.toggle.group = document.querySelectorAll("".concat(element.dataset['toggleGroup'], ", [data-toggle-group='").concat(element.dataset['toggleGroup'], "']"));
-      }
-    }; // TO DO - Put props into its own function so targets can get default values
-    // Finds all the toggle triggers and targets then sets their state
-
-
-    var setup = function setup() {
-      // Properties of the toggle
-      assignProps(element); // element.toggle = {
+      // Override defaults with data attributes manually
+      // element.toggle = {
       // 	activeClass: element.dataset['toggleActiveClass'] || activeClass,
       // 	animClass: element.dataset['toggleAnimClass'] || animClass,
-      // 	toggleHeight: element.dataset['toggleHeight'] || toggleHeight,
-      // 	textActive: element.dataset['toggleTextActive'] || textActive,
-      // 	textInactive: element.dataset['toggleTextInactive'] || textInactive,
+      // 	animateHeight: element.dataset['animateHeight'] || animateHeight,
       // 	closeAuto: element.dataset['toggleCloseAuto'] || closeAuto,
       // 	closeDelay: element.dataset['toggleCloseDelay'] || closeDelay,
       // 	type: 'toggleTarget' in element.dataset ? 'trigger' : 'target'
       // };
       // element.toggle.active = element.classList.contains(element.toggle.activeClass);
+      // console.log(options);
+      element.toggle = _objectSpread({}, options);
+
+      var datasetObject = _objectSpread({}, element.dataset); // let datasetObject = Object.fromEntries(Object.entries(element.dataset).filter(([key, value]) => key.startsWith('toggle')));
+
+
+      for (var item in datasetObject) {
+        if (item.startsWith('toggle')) {
+          var datasetProp = item.substr(6);
+          datasetProp = datasetProp.charAt(0).toLowerCase() + datasetProp.slice(1);
+          element.toggle["".concat(datasetProp)] = datasetObject[item];
+        }
+      }
+
+      ;
+      element.toggle.type = 'toggleTarget' in element.dataset ? 'trigger' : 'target';
+      element.toggle.active = element.classList.contains(element.toggle.activeClass);
 
       if (element.toggle.type === 'trigger') {
-        // element.toggle.target = getTarget(element, element.dataset['toggleTarget']);
-        // if ('toggleGroup' in element.dataset) element.toggle.group = document.querySelectorAll(`${element.dataset['toggleGroup']}, [data-toggle-group='${element.dataset['toggleGroup']}']`);
+        element.toggle.target = getTarget(element, element.dataset['toggleTarget']); //if ('toggleGroup' in element.dataset) element.toggle.group = document.querySelectorAll(`${element.dataset['toggleGroup']}, [data-toggle-group='${element.dataset['toggleGroup']}']`);
+
+        element.toggle.group = document.querySelectorAll("".concat(element.dataset['toggleGroup'], ", [data-toggle-group='").concat(element.dataset['toggleGroup'], "']"));
+      }
+    }; // Finds all the toggle triggers and targets and sets up their properties
+
+
+    var setup = function setup() {
+      assignProps(element);
+
+      if (element.toggle.type === 'trigger') {
         addEventListeners();
 
         var _iterator3 = _createForOfIteratorHelper(element.toggle.target),
@@ -268,15 +272,7 @@
         try {
           for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
             var item = _step3.value;
-
-            if (item.toggle === undefined) {
-              // item.toggle = {...element.toggle};
-              // item.toggle.target = [];
-              // item.toggle.group = [];
-              // item.toggle.type = 'target';
-              // item.toggle.active = item.classList.contains(item.toggle.activeClass);
-              assignProps(item);
-            }
+            if (item.toggle === undefined) assignProps(item);
           }
         } catch (err) {
           _iterator3.e(err);
@@ -285,29 +281,11 @@
         }
 
         ;
-      } // element.toggleType = 'toggleTarget' in element.dataset ? 'trigger' : 'target';
-      // element.toggleActive = element.classList.contains(element.activeClass);
-      // if(element.toggleType === 'trigger') {
-      // 	element.toggleTarget = getTarget(element, element.dataset['toggleTarget']);
-      // 	if ('toggleGroup' in element.dataset) element.toggleGroup = document.querySelectorAll(`${element.dataset['toggleGroup']}, [data-toggle-group='${element.dataset['toggleGroup']}']`);
-      // 	element.textActive = element.dataset['toggleTextActive'] || textActive;
-      // 	element.textInactive = element.dataset['toggleTextInactive'] || textInactive;
-      // 	addEventListeners();
-      // 	for (const item of element.toggleTarget) {
-      // 		if (item.toggleType === undefined) {
-      // 			// item.toggleType = 'target';
-      // 			item.toggleActive = item.classList.contains(element.activeClass);
-      // 		}
-      // 	};
-      // } 
-      // console.log(element.toggleType, element.toggleActive, element.toggleTarget);
-
-
-      console.log(element, element.toggle.activeClass);
+      }
     };
 
     var init = function init() {
-      element = typeof selector === 'string' ? document.querySelector(selector) : selector;
+      element = typeof options.selector === 'string' ? document.querySelector(options.selector) : options.selector;
       if (element === null) return;
       setup();
     };
@@ -320,7 +298,7 @@
       setState: setState,
       elements: {
         element: element,
-        target: element['toggleTarget']
+        target: element.toggle.target
       }
     };
   };

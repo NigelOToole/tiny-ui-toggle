@@ -5,17 +5,17 @@
 .toggle-panel {
   --toggle-speed: .5s;
   height: 0;
-  visibility: hidden;
   overflow: hidden;
-  transition: height var(--toggle-speed) ease-out, min-height var(--toggle-speed) ease-out, visibility var(--toggle-speed), flex var(--toggle-speed), opacity var(--toggle-speed);
-}
-.toggle-panel.is-active, .toggle-panel.is-anim {
-  visibility: visible;
+  transition: all var(--toggle-speed) ease-out, min-height var(--toggle-speed) ease-out, visibility var(--toggle-speed), flex var(--toggle-speed), opacity var(--toggle-speed);
 }
 .toggle-panel.is-active:not(.is-anim) {
   height: auto;
   overflow: visible;
 }
+details.toggle-panel {
+  height: auto;
+}
+
 .toggle-panel--partial {
   height: calc(2.5em + 0.75rem);
   visibility: visible;

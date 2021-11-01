@@ -10,13 +10,12 @@
 
   // Closed
   height: 0;
-  visibility: hidden;
   overflow: hidden;
-  transition: height var(--toggle-speed) ease-out, min-height var(--toggle-speed) ease-out, visibility var(--toggle-speed), flex var(--toggle-speed), opacity var(--toggle-speed);
+  transition: all var(--toggle-speed) ease-out, min-height var(--toggle-speed) ease-out, visibility var(--toggle-speed), flex var(--toggle-speed), opacity var(--toggle-speed);
 
   // Opening, Open, Closing
   &.is-active, &.is-anim {
-    visibility: visible;
+
   }
 
   // Opening
@@ -32,6 +31,10 @@
   // Closing
   &.is-anim:not(.is-active) {
   }
+}
+
+details.toggle-panel {
+  height: auto;
 }
 
 
