@@ -1,6 +1,3 @@
-		// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details
-		// https://gomakethings.com/how-to-build-a-progressively-enhanced-accordion-component-with-vanilla-js/
-
 const Toggle = function(options) {
 	const defaults = {
 		selector: '.toggle',
@@ -15,11 +12,9 @@ const Toggle = function(options) {
 
 	options = {...defaults, ...options};
 
-
-
-	let element;
+	// let element;
+	let elementNode;
 	let closeTimeout;
-			let animation = null;
 
 
 
@@ -33,7 +28,6 @@ const Toggle = function(options) {
     item.dispatchEvent(event);
   };
 
-
 	const getTransitionDuration = function (element) {
 		let transitionDuration = getComputedStyle(element)['transitionDuration'];
 		let transitionDurationNumber = parseFloat(transitionDuration);
@@ -41,15 +35,15 @@ const Toggle = function(options) {
 		return transitionDuration;
 	};
 
-	// Toggles aria attributes on an element based on its state
 	const toggleAria = function (element, state) {
 		const ariaAttributes = { 'aria-hidden': !state, 'aria-checked': state, 'aria-expanded': state, 'aria-selected': state, 'aria-pressed': state };
 		Object.keys(ariaAttributes).forEach(key => element.hasAttribute(key) && element.setAttribute(key, ariaAttributes[key]));
-		// if (element.tagName === 'DETAILS') state ? element.setAttribute('open', '') : element.removeAttribute('open');
 	};
 
 
-	// Toggles elements text
+
+	// Methods
+
 	const toggleText = function (element) {
 		if (!element.toggle.textActive || !element.toggle.textInactive) return;
 
@@ -61,41 +55,39 @@ const Toggle = function(options) {
 
   const closeAfterTimeout = function (trigger, target) {
     closeTimeout = setTimeout(() => {
-			setState(trigger, false);		
-			setState(target, false);
+			setState(false, trigger);
+			setState(false, target);
     }, trigger.toggle.closeDelay);
   };
 
 
-
-
-	// Methods
-
-	const animateElementHeight = function (element) {
-		let elementIsDetails = element.tagName === 'DETAILS' && element.querySelector('summary') !== null;
-
-		element.style.height = `${element.scrollHeight}px`;
+	const animateElementHeight = function (element, transitionDuration) {
 
 		// Opening
 		if (element.toggle.active) {
-			if (elementIsDetails) element.setAttribute('open', '');
+			element.style.height = `${element.scrollHeight}px`;
+			if (element.toggle.isDetails) element.setAttribute('open', '');
+		}
+		// Closing
+		else {
+			element.style.height = 'auto';
 		}
 
 		requestAnimationFrame(() => {
 			element.style.overflow = 'hidden';
+			element.style.height = `${element.scrollHeight}px`;
 
 			// Opening
 			if (element.toggle.active) {
-				element.style.height = `${element.scrollHeight}px`;
 			}
 			// Closing
 			else {
 				element.getBoundingClientRect();
-				element.style.height = elementIsDetails ? `${element.querySelector('summary').scrollHeight}px` : '';
+				element.style.height = element.toggle.isDetails ? `${element.querySelector('summary').scrollHeight}px` : '';
 			}
 		});
 
-		element.addEventListener('transitionend', () => {
+		setTimeout(() => {
 			element.style.overflow = '';
 
 			// Open
@@ -105,71 +97,23 @@ const Toggle = function(options) {
 			// Closed
 			else {
 				element.style.height = '';
-				if (elementIsDetails) element.removeAttribute('open');
+				if (element.toggle.isDetails) element.removeAttribute('open');
 			}
-		}, { once: true });
+		}, transitionDuration);
 	};
-
-
-	// const animateElementHeight = function (element) {
-	// 	console.log(getComputedStyle(element)['transitionTimingFunction'].split(',')[0])
-	// 	let elementIsDetails = element.tagName === 'DETAILS' && element.querySelector('summary') !== null;
-
-	// 	// Opening
-	// 	if (element.toggle.active) {
-	// 		if (elementIsDetails) element.setAttribute('open', '');
-	// 	}
-		
-	// 	let inactiveHeight = elementIsDetails ? `${element.querySelector('summary').scrollHeight}px` : `${element.offsetHeight}px`;
-	// 	let activeHeight = `${element.scrollHeight}px`;
-	// 	let animationValues = [inactiveHeight, activeHeight];
-	// 	if (!element.toggle.active) animationValues.reverse();
-	// 	console.log(animationValues)
-
-
-	// 	element.style.overflow = 'hidden';
-
-	// 	animation = element.animate({
-	// 		height: animationValues
-	// 	}, 
-	// 	{ 
-	// 		duration: getTransitionDuration(element), easing: 'ease-out'
-	// 	});
-
-
-	// 	animation.onfinish = () => {
-	// 		element.style.overflow = '';
-
-	// 		// Open
-	// 		if (element.toggle.active) {
-	// 			element.style.height = 'auto';
-	// 		}
-
-	// 		// Closed
-	// 		if (!element.toggle.active) {
-	// 			element.style.height = '';
-	// 			if (elementIsDetails) element.removeAttribute('open');
-	// 		}
-	// 	}
-
-	// };
-
-
-
-
-
 
 
 
 	// Toggle the elements state
-	const toggleState = function (element) {
+	// const toggleState = function (element) {
+	const toggleState = function (element = elementNode) {
 		if (element.toggle === undefined)  assignProps(element);
-		setState(element, !element.toggle.active);
+		setState(!element.toggle.active, element);
 	};
 
 
 	// Sets the state of an element
-	const setState = function (element, state) {
+	const setState = function (state, element = elementNode) {
 		if (element.toggle === undefined) assignProps(element);
 		if (element.toggle.active === state) return;
 
@@ -188,8 +132,10 @@ const Toggle = function(options) {
 		}
 		else {
 			transitionDuration = getTransitionDuration(element);
-			if (element.toggle.animateHeight) animateElementHeight(element);
+			if (element.toggle.animateHeight) animateElementHeight(element, transitionDuration);
 		}
+
+		console.log(transitionDuration)
 	
 
 		toggleAria(element, element.toggle.active);
@@ -204,7 +150,10 @@ const Toggle = function(options) {
 	};	
 
 
-	const toggleStateBoth = function () {
+	const toggleStateBoth = function (element = elementNode) {
+		
+		if (element.toggle === undefined) assignProps(element);	
+		console.log(element)	
 		toggleState(element);
 
 		for (const item of element.toggle.target) {
@@ -213,43 +162,69 @@ const Toggle = function(options) {
 
 		if (element.toggle.group) {
 			for (const item of element.toggle.group) {
+				if (item.toggle === undefined) assignProps(item);	
 				if(item !== element && item !== element.toggle.target[0]) {
-					setState(item, false);
+					setState(false, item);
 				}
 			}
 		}	
 	};
 
-	const toggleStateEvent = function (event) {
+	const clickTrigger = function (event) {
 		event.preventDefault();
-		toggleStateBoth()	
+		toggleStateBoth(event.target);
+	};
+
+	const mouseoverCloseAuto = function (event) {
+		clearTimeout(closeTimeout);
 	};
 
 
   const addEventListeners = function() {
-		element.addEventListener('click', toggleStateEvent);
+		elementNode.toggle.events = { clickTrigger };
 
-		if(element.toggle.closeAuto) {
-			element.addEventListener('mouseover', () => {
-				clearTimeout(closeTimeout);
-			});
+		elementNode.addEventListener('click', elementNode.toggle.events.clickTrigger);
 
-			element.addEventListener('mouseleave', () => {
-				closeAfterTimeout(element, element.toggle.target[0]);
-			});
+		if(elementNode.toggle.closeAuto) {
+			elementNode.toggle.events = {
+				...elementNode.toggle.events,
+				...{
+					mouseoverCloseAuto,
+					mouseleaveCloseAuto: () => closeAfterTimeout(elementNode, elementNode.toggle.target[0])
+				}
+			};
+			
+			elementNode.addEventListener('mouseover', elementNode.toggle.events.mouseoverCloseAuto);
+			elementNode.addEventListener('mouseleave', elementNode.toggle.events.mouseleaveCloseAuto);
 
-			element.toggle.target.forEach((item) => {
-				item.addEventListener('mouseover', () => {
-					clearTimeout(closeTimeout);
-				});
+			elementNode.toggle.target.forEach((item) => {
+				item.toggle.events = { 
+					mouseoverCloseAuto,
+					mouseleaveCloseAuto: () => closeAfterTimeout(elementNode, item)
+				};
 
-				item.addEventListener('mouseleave', () => {
-					closeAfterTimeout(element, item);
-				});
+				item.addEventListener('mouseover', item.toggle.events.mouseoverCloseAuto);
+				item.addEventListener('mouseleave', item.toggle.events.mouseleaveCloseAuto);
 			});
 		}
 
   };
+
+  const removeEventListeners = function() {
+		elementNode.removeEventListener('click', elementNode.toggle.events.clickTrigger);
+
+		if(elementNode.toggle.closeAuto) {
+			elementNode.removeEventListener('mouseover', elementNode.toggle.events.mouseoverCloseAuto);
+			elementNode.removeEventListener('mouseleave', elementNode.toggle.events.mouseleaveCloseAuto);
+
+			elementNode.toggle.target.forEach((item) => {
+				item.removeEventListener('mouseover', item.toggle.events.mouseoverCloseAuto);
+				item.removeEventListener('mouseleave', item.toggle.events.mouseleaveCloseAuto);
+			});
+		}
+
+  };
+
 
 
 	const getTarget = function (element, selector) {
@@ -264,23 +239,6 @@ const Toggle = function(options) {
 
 
 	const assignProps = function (element) {
-		// Override defaults with data attributes manually
-
-		// element.toggle = {
-		// 	activeClass: element.dataset['toggleActiveClass'] || activeClass,
-		// 	animClass: element.dataset['toggleAnimClass'] || animClass,
-		// 	animateHeight: element.dataset['animateHeight'] || animateHeight,
-		// 	closeAuto: element.dataset['toggleCloseAuto'] || closeAuto,
-		// 	closeDelay: element.dataset['toggleCloseDelay'] || closeDelay,
-		// 	type: 'toggleTarget' in element.dataset ? 'trigger' : 'target'
-		// };
-
-		// element.toggle.active = element.classList.contains(element.toggle.activeClass);
-
-
-
-
-		// console.log(options);
 		element.toggle = {...options};
 
 		let datasetObject = {...element.dataset};
@@ -303,29 +261,35 @@ const Toggle = function(options) {
 			element.toggle.group = document.querySelectorAll(`${element.dataset['toggleGroup']}, [data-toggle-group='${element.dataset['toggleGroup']}']`);
 		}
 
+		if(element.toggle.type === 'target') {
+			element.toggle.isDetails = element.tagName === 'DETAILS' && element.querySelector('summary') !== null;
+		}
+
+		element.toggle.events = {};
+
 		// console.log(element.toggle)
 		
 	};
 
 
-	// Finds all the toggle triggers and targets and sets up their properties
   const setup = function() {
-		assignProps(element);
+		assignProps(elementNode);
 
-		if (element.toggle.type === 'trigger') {
-			addEventListeners();
-
-			for (const item of element.toggle.target) {
-				if (item.toggle === undefined) assignProps(item);
+		if (elementNode.toggle.type === 'trigger') {
+			for (const item of elementNode.toggle.target) {
+				assignProps(item);
 			};
+
+			addEventListeners();
 		}
   };
 
 
   const init = function() {   
-    element = (typeof options.selector === 'string') ? document.querySelector(options.selector) : options.selector;
-    if (element === null) return;
+    elementNode = (typeof options.selector === 'string') ? document.querySelector(options.selector) : options.selector;
+    if (elementNode === null) return;
 
+		if (elementNode.toggle !== undefined) removeEventListeners();
     setup();
   };
 
@@ -338,8 +302,8 @@ const Toggle = function(options) {
 		toggleState,
 		setState,
     elements: {
-      element,
-      target: element.toggle.target
+      elementNode,
+      target: elementNode.toggle.target
     }
   };
 

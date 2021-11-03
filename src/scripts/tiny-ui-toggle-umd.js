@@ -30,8 +30,6 @@
 
   function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-  // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details
-  // https://gomakethings.com/how-to-build-a-progressively-enhanced-accordion-component-with-vanilla-js/
   var Toggle = function Toggle(options) {
     var defaults = {
       selector: '.toggle',
@@ -42,10 +40,8 @@
       textInactive: '',
       closeAuto: false,
       closeDelay: 500
-    }; // options = {...defaults, ...(options || {})};
-
-    options = _objectSpread(_objectSpread({}, defaults), options); // NIGEL TO DO - DOES THIS WORK?
-
+    };
+    options = _objectSpread(_objectSpread({}, defaults), options);
     var element;
     var closeTimeout; // Utilities
 
@@ -62,8 +58,7 @@
       var transitionDurationNumber = parseFloat(transitionDuration);
       transitionDuration = transitionDuration.includes('ms') ? transitionDurationNumber : transitionDurationNumber * 1000;
       return transitionDuration;
-    }; // Toggles aria attributes on an element based on its state
-
+    };
 
     var toggleAria = function toggleAria(element, state) {
       var ariaAttributes = {
@@ -76,8 +71,7 @@
       Object.keys(ariaAttributes).forEach(function (key) {
         return element.hasAttribute(key) && element.setAttribute(key, ariaAttributes[key]);
       });
-      if (element.tagName === 'DETAILS') state ? element.setAttribute('open', '') : element.removeAttribute('open');
-    }; // Toggles elements text
+    }; // Methods
 
 
     var toggleText = function toggleText(element) {
@@ -91,24 +85,39 @@
         setState(trigger, false);
         setState(target, false);
       }, trigger.toggle.closeDelay);
-    }; // Methods
+    };
 
-
-    var animateElementHeight = function animateElementHeight(element) {
-      if (!element.toggle.active) element.style.height = 'auto';
-      requestAnimationFrame(function () {
+    var animateElementHeight = function animateElementHeight(element, transitionDuration) {
+      // Opening
+      if (element.toggle.active) {
         element.style.height = "".concat(element.scrollHeight, "px");
-
-        if (!element.toggle.active) {
-          element.getBoundingClientRect();
-          element.style.height = '';
+        if (element.toggle.isDetails) element.setAttribute('open', '');
+      } // Closing
+      else {
+          element.style.height = 'auto';
         }
+
+      requestAnimationFrame(function () {
+        element.style.overflow = 'hidden';
+        element.style.height = "".concat(element.scrollHeight, "px"); // Opening
+
+        if (element.toggle.active) {} // Closing
+        else {
+            element.getBoundingClientRect();
+            element.style.height = element.toggle.isDetails ? "".concat(element.querySelector('summary').scrollHeight, "px") : '';
+          }
       });
-      element.addEventListener('transitionend', function () {
-        if (element.toggle.active) element.style.height = 'auto';
-      }, {
-        once: true
-      });
+      setTimeout(function () {
+        element.style.overflow = ''; // Open
+
+        if (element.toggle.active) {
+          element.style.height = 'auto';
+        } // Closed
+        else {
+            element.style.height = '';
+            if (element.toggle.isDetails) element.removeAttribute('open');
+          }
+      }, transitionDuration);
     }; // Toggle the elements state
 
 
@@ -134,9 +143,10 @@
         transitionDuration = element.toggle.target[0] !== undefined ? getTransitionDuration(element.toggle.target[0]) : 0;
       } else {
         transitionDuration = getTransitionDuration(element);
-        if (element.toggle.animateHeight) animateElementHeight(element);
+        if (element.toggle.animateHeight) animateElementHeight(element, transitionDuration);
       }
 
+      console.log(transitionDuration);
       toggleAria(element, element.toggle.active);
       toggleText(element);
       setTimeout(function () {
@@ -187,28 +197,52 @@
       }
     };
 
-    var toggleStateEvent = function toggleStateEvent(event) {
+    var clickTrigger = function clickTrigger(event) {
       event.preventDefault();
       toggleStateBoth();
     };
 
+    var mouseoverCloseAuto = function mouseoverCloseAuto(event) {
+      clearTimeout(closeTimeout);
+    };
+
     var addEventListeners = function addEventListeners() {
-      element.addEventListener('click', toggleStateEvent);
+      element.toggle.events = {
+        clickTrigger: clickTrigger
+      };
+      element.addEventListener('click', element.toggle.events.clickTrigger);
 
       if (element.toggle.closeAuto) {
-        element.addEventListener('mouseover', function () {
-          clearTimeout(closeTimeout);
+        element.toggle.events = _objectSpread(_objectSpread({}, element.toggle.events), {
+          mouseoverCloseAuto: mouseoverCloseAuto,
+          mouseleaveCloseAuto: function mouseleaveCloseAuto() {
+            return closeAfterTimeout(element, element.toggle.target[0]);
+          }
         });
-        element.addEventListener('mouseleave', function () {
-          closeAfterTimeout(element, element.toggle.target[0]);
-        });
+        element.addEventListener('mouseover', element.toggle.events.mouseoverCloseAuto);
+        element.addEventListener('mouseleave', element.toggle.events.mouseleaveCloseAuto);
         element.toggle.target.forEach(function (item) {
-          item.addEventListener('mouseover', function () {
-            clearTimeout(closeTimeout);
-          });
-          item.addEventListener('mouseleave', function () {
-            closeAfterTimeout(element, item);
-          });
+          item.toggle.events = {
+            mouseoverCloseAuto: mouseoverCloseAuto,
+            mouseleaveCloseAuto: function mouseleaveCloseAuto() {
+              return closeAfterTimeout(element, item);
+            }
+          };
+          item.addEventListener('mouseover', item.toggle.events.mouseoverCloseAuto);
+          item.addEventListener('mouseleave', item.toggle.events.mouseleaveCloseAuto);
+        });
+      }
+    };
+
+    var removeEventListeners = function removeEventListeners() {
+      element.removeEventListener('click', element.toggle.events.clickTrigger);
+
+      if (element.toggle.closeAuto) {
+        element.removeEventListener('mouseover', element.toggle.events.mouseoverCloseAuto);
+        element.removeEventListener('mouseleave', element.toggle.events.mouseleaveCloseAuto);
+        element.toggle.target.forEach(function (item) {
+          item.removeEventListener('mouseover', item.toggle.events.mouseoverCloseAuto);
+          item.removeEventListener('mouseleave', item.toggle.events.mouseleaveCloseAuto);
         });
       }
     };
@@ -224,17 +258,6 @@
     };
 
     var assignProps = function assignProps(element) {
-      // Override defaults with data attributes manually
-      // element.toggle = {
-      // 	activeClass: element.dataset['toggleActiveClass'] || activeClass,
-      // 	animClass: element.dataset['toggleAnimClass'] || animClass,
-      // 	animateHeight: element.dataset['animateHeight'] || animateHeight,
-      // 	closeAuto: element.dataset['toggleCloseAuto'] || closeAuto,
-      // 	closeDelay: element.dataset['toggleCloseDelay'] || closeDelay,
-      // 	type: 'toggleTarget' in element.dataset ? 'trigger' : 'target'
-      // };
-      // element.toggle.active = element.classList.contains(element.toggle.activeClass);
-      // console.log(options);
       element.toggle = _objectSpread({}, options);
 
       var datasetObject = _objectSpread({}, element.dataset); // let datasetObject = Object.fromEntries(Object.entries(element.dataset).filter(([key, value]) => key.startsWith('toggle')));
@@ -257,22 +280,25 @@
 
         element.toggle.group = document.querySelectorAll("".concat(element.dataset['toggleGroup'], ", [data-toggle-group='").concat(element.dataset['toggleGroup'], "']"));
       }
-    }; // Finds all the toggle triggers and targets and sets up their properties
 
+      if (element.toggle.type === 'target') {
+        element.toggle.isDetails = element.tagName === 'DETAILS' && element.querySelector('summary') !== null;
+      }
+
+      element.toggle.events = {}; // console.log(element.toggle)
+    };
 
     var setup = function setup() {
       assignProps(element);
 
       if (element.toggle.type === 'trigger') {
-        addEventListeners();
-
         var _iterator3 = _createForOfIteratorHelper(element.toggle.target),
             _step3;
 
         try {
           for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
             var item = _step3.value;
-            if (item.toggle === undefined) assignProps(item);
+            assignProps(item);
           }
         } catch (err) {
           _iterator3.e(err);
@@ -281,12 +307,14 @@
         }
 
         ;
+        addEventListeners();
       }
     };
 
     var init = function init() {
       element = typeof options.selector === 'string' ? document.querySelector(options.selector) : options.selector;
       if (element === null) return;
+      if (element.toggle !== undefined) removeEventListeners();
       setup();
     };
 

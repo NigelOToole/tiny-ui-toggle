@@ -3,17 +3,70 @@ import { Toggle, toggleAutoInit } from './tiny-ui-toggle.js';
 // Initialize all elements with defaults
 toggleAutoInit();
 
-const dropdownToggle = Toggle({ selector: '.toggle-outer .toggle-btn', closeAuto: true });
-// dropdownToggle.setState(document.querySelector('.toggle-outer .toggle-panel'), true);
-// Toggle().setState(document.querySelector('.toggle-outer .toggle-panel'), true);
-// Toggle({ selector: '.toggle-outer .toggle-panel', closeAuto: true });
+// Initialize all elements manually which allows you to pass in custom options
+// const toggleElements = document.querySelectorAll('.toggle');
+// for (const item of toggleElements) {
+//   Toggle({ selector: item });
+// };
 
 
-// Manually set state
+
+// Initialize an element with different options
+const dropdownToggle = Toggle({ selector: '.toggle-dropdown', closeAuto: true });
+
+
+// Manually set state - used by the toggle panel only demo
 document.querySelector('.demo-self-button').addEventListener('click', function(event) {
   event.preventDefault();
   Toggle().toggleState(document.querySelector('.demo-self'));
 });
+
+
+// Methods
+setTimeout(() => {
+  // Toggle used for the below examples
+  const defaultToggle = Toggle({ selector: '.demo-btn-single' });
+
+  // Toggles the state of an element, the trigger element is the default
+  // defaultToggle.toggleState(); 
+  // defaultToggle.toggleState(document.querySelector('.demo-single')); 
+
+  // Equivalent to the above without initializing
+  // Toggle().toggleState(document.querySelector('.demo-btn-single'));
+  // Toggle().toggleState(document.querySelector('.demo-single'));
+
+
+  // Sets the state of an element, the trigger element is the default
+  // defaultToggle.setState(true); 
+  // defaultToggle.setState(true, document.querySelector('.demo-single')); 
+
+
+  // Toggles the state of the trigger and the target
+  // defaultToggle.toggle();
+  Toggle().toggle(document.querySelector('.demo-btn-single'));
+
+
+
+
+  // responsiveVideoPosterDefault.playVideo();
+  // console.log(responsiveVideoPosterDefault['elements']);
+  // console.log(responsiveVideoPosterDefault['elements']['video']);
+}, 500);
+
+
+
+// Event listener
+document.querySelector('.demo-single').addEventListener('toggle', (event) => { 
+  console.log(`Action: ${event.detail.action}, Active: ${event.detail.active}`);
+});
+
+
+
+
+
+
+
+
 
 
 
