@@ -40,9 +40,19 @@
 
         <h3>Collapse</h3>
 
-        <button class="toggle toggle-btn demo-btn-single" data-toggle-target=".demo-single" aria-expanded="false">Single panel</button>
+        <button id="demo-btn-single" class="toggle toggle-btn demo-btn-single" data-toggle-target="#demo-panel-single" aria-expanded="false">Single panel</button>
 
-        <div class="toggle-panel demo-single" aria-hidden="true">
+        <div id="demo-panel-single" class="toggle-panel" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+        </div>
+
+        <br>
+
+        <button id="demo-btn-aria" class="toggle toggle-btn" data-toggle-target="#demo-panel-aria"  aria-expanded="false" aria-controls="demo-panel-aria">Full ARIA</button>
+
+        <div id="demo-panel-aria" class="toggle-panel" aria-hidden="true" aria-labelledby="demo-btn-aria">
           <div class="toggle-panel-content">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
           </div>
@@ -78,8 +88,8 @@
 
         <br>
 
-        <details class="toggle-panel demo-details">
-          <summary class="toggle toggle-btn" data-toggle-target=".demo-details">Details element</summary>
+        <details id="demo-details" class="toggle-panel">
+          <summary class="toggle toggle-btn" data-toggle-target="#demo-details">Details element</summary>
           <div class="toggle-panel-content">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
           </div>
@@ -87,9 +97,9 @@
 
         <br>
 
-        <button class="toggle toggle-btn" data-toggle-target=".demo-partial">Partially open panel</button>
+        <button class="toggle toggle-btn" data-toggle-target="#demo-panel-partial">Partially open panel</button>
 
-        <div class="toggle-panel toggle-panel--partial demo-partial">
+        <div id="demo-panel-partial" class="toggle-panel toggle-panel--partial">
           <div class="toggle-panel-content">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
           </div>
@@ -98,30 +108,20 @@
         <br>
 
 
-        <button class="toggle toggle-btn is-active" data-toggle-target=".demo-open" aria-expanded="true">Open panel</button>
+        <button class="toggle toggle-btn is-active" data-toggle-target="#demo-panel-open" aria-expanded="true">Open panel</button>
 
-        <div class="toggle-panel demo-open is-active" aria-hidden="false">
+        <div id="demo-panel-open" class="toggle-panel demo-open is-active" aria-hidden="false">
           <div class="toggle-panel-content">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
           </div>
         </div>
 
         <br>
-        <!-- <button class="toggle toggle-btn" data-toggle-target=".demo-text-attributes" data-toggle-text-active="Toggle text: Show less" data-toggle-text-inactive="Toggle text: Show more" aria-expanded="false">Toggle text: Show more</button> -->
-        <button class="toggle toggle-btn inline-active" data-toggle-target=".demo-text-attributes" data-toggle-text-active="Toggle text: Show less" data-toggle-text-inactive="Toggle text: Show more" aria-expanded="false" data-test-something="testervalue">Toggle text: Show more</button>
-
-        <div class="toggle-panel demo-text-attributes" aria-hidden="true">
-          <div class="toggle-panel-content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
-          </div>
-        </div>
-        
-        <br>
 
 
-        <button class="toggle toggle-btn toggle-btn--icon" data-toggle-target=".demo-text-inline" data-toggle-text-active="&minus;" data-toggle-text-inactive="&plus;" aria-expanded="false"><span class="toggle-title">Toggle text element</span><span class="toggle-text">+</span></button>
+        <button class="toggle toggle-btn" data-toggle-target="#demo-panel-text-attributes" data-toggle-text-active="Toggle text: Show less" data-toggle-text-inactive="Toggle text: Show more" aria-expanded="false">Toggle text: Show more</button>
 
-        <div class="toggle-panel demo-text-inline" aria-hidden="true">
+        <div id="demo-panel-text-attributes" class="toggle-panel" aria-hidden="true">
           <div class="toggle-panel-content">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
           </div>
@@ -130,8 +130,9 @@
         <br>
 
 
-        <button class="toggle toggle-btn" data-toggle-target=".demo-none" aria-expanded="false">No animation</button>
-        <div class="toggle-panel toggle-panel--none demo-none" aria-hidden="true">
+        <button class="toggle toggle-btn toggle-btn--icon" data-toggle-target="#demo-panel-text-inline" data-toggle-text-active="&minus;" data-toggle-text-inactive="&plus;" aria-expanded="false"><span class="toggle-title">Toggle text element</span><span class="toggle-text">&plus;</span></button>
+
+        <div id="demo-panel-text-inline" class="toggle-panel" aria-hidden="true">
           <div class="toggle-panel-content">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
           </div>
@@ -140,9 +141,20 @@
         <br>
 
 
-        <button class="toggle toggle-btn" data-toggle-target=".demo-opacity" aria-expanded="false">Opacity</button>
+        <button class="toggle toggle-btn" data-toggle-target="#demo-panel-none" aria-expanded="false">No animation</button>
 
-        <div class="toggle-panel toggle-panel--opacity demo-opacity" aria-hidden="true">
+        <div id="demo-panel-none" class="toggle-panel toggle-panel--none" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+        </div>
+        
+        <br>
+
+
+        <button class="toggle toggle-btn" data-toggle-target="#demo-panel-opacity" aria-expanded="false">Opacity</button>
+
+        <div id="demo-panel-opacity" class="toggle-panel toggle-panel--opacity" aria-hidden="true">
           <div class="toggle-panel-content">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
           </div>
@@ -153,33 +165,79 @@
 
         <h3>Accordion</h3>
 
-        <button class="toggle toggle-btn is-active" data-toggle-target=".toggle--demo-accordion-1" data-toggle-group=".toggle--demo-accordion" aria-expanded="true">Accordion toggle 1</button>
-        <div class="toggle-panel is-active toggle--demo-accordion toggle--demo-accordion-1" aria-hidden="false">
-          <div class="toggle-panel-content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+        <div class="toggle-accordion">
+          <button class="toggle toggle-btn is-active" data-toggle-target="#demo-panel-accordion-1" data-toggle-group=".demo-panel-accordion" aria-expanded="true">Accordion toggle 1</button>
+
+          <div id="demo-panel-accordion-1" class="toggle-panel is-active demo-panel-accordion" aria-hidden="false">
+            <div class="toggle-panel-content">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+            </div>
           </div>
         </div>
 
-        <button class="toggle toggle-btn" data-toggle-target=".toggle--demo-accordion-2" data-toggle-group=".toggle--demo-accordion" aria-expanded="false">Accordion toggle 2</button>
-        <div class="toggle-panel toggle--demo-accordion-2 toggle--demo-accordion" aria-hidden="true">
-          <div class="toggle-panel-content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+        <div class="toggle-accordion">
+          <button class="toggle toggle-btn" data-toggle-target="#demo-panel-accordion-2" data-toggle-group=".demo-panel-accordion" aria-expanded="false">Accordion toggle 2</button>
+
+          <div id="demo-panel-accordion-2" class="toggle-panel demo-panel-accordion" aria-hidden="true">
+            <div class="toggle-panel-content">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+            </div>
           </div>
         </div>
 
-        <button class="toggle toggle-btn" data-toggle-target=".toggle--demo-accordion-3" data-toggle-group=".toggle--demo-accordion" aria-expanded="false">Accordion toggle 3</button>
-        <div class="toggle-panel toggle--demo-accordion-3 toggle--demo-accordion" aria-hidden="true">
-          <div class="toggle-panel-content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+        <div class="toggle-accordion">
+          <button class="toggle toggle-btn" data-toggle-target="#demo-panel-accordion-3" data-toggle-group=".demo-panel-accordion" aria-expanded="false">Accordion toggle 3</button>
+
+          <div id="demo-panel-accordion-3" class="toggle-panel demo-panel-accordion" aria-hidden="true">
+            <div class="toggle-panel-content">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+            </div>
           </div>
         </div>
         
         <br>
+        <br>
+
+
+        <h3>Tabs</h3>
+
+        <div class="toggle-btn-tabs">
+          <button class="toggle toggle-btn is-active" data-toggle-target="#demo-panel-tabs-1" data-toggle-group=".demo-panel-tabs" aria-expanded="true">Tab toggle 1</button>
+
+          <button class="toggle toggle-btn" data-toggle-target="#demo-panel-tabs-2" data-toggle-group=".demo-panel-tabs" aria-expanded="false">Tab toggle 2</button>
+
+          <button class="toggle toggle-btn" data-toggle-target="#demo-panel-tabs-3" data-toggle-group=".demo-panel-tabs" aria-expanded="false">Tab toggle 3</button>
+        </div>
+
+        <div id="demo-panel-tabs-1" class="toggle-panel toggle-panel--none is-active demo-panel-tabs" data-toggle-animate-height="false" aria-hidden="false">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+        </div>
+
+
+        <div id="demo-panel-tabs-2" class="toggle-panel toggle-panel--none demo-panel-tabs" data-toggle-animate-height="false" aria-hidden="true">
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+        </div>
+
+        <div id="demo-panel-tabs-3" class="toggle-panel toggle-panel--none demo-panel-tabs" data-toggle-animate-height="false" aria-hidden="true"> 
+          <div class="toggle-panel-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </div>
+        </div>
+        
+        <br>
+        <br>
+
+
+        <h3>Dropdown</h3>
 
         <div class="toggle-outer">
-          <button class="toggle toggle-btn toggle-dropdown" data-toggle-target=".demo-dropdown" aria-expanded="false">Dropdown</button>
+          <button id="demo-btn-dropdown" class="toggle toggle-btn" data-toggle-target="#demo-panel-dropdown" aria-expanded="false">Dropdown with auto close</button>
 
-          <div class="toggle-panel toggle-panel--dropdown demo-dropdown" aria-hidden="true">
+          <div id="demo-panel-dropdown" class="toggle-panel toggle-panel--dropdown" aria-hidden="true">
             <div class="toggle-panel-content">
               Action One<br>
               Action Two<br>
@@ -192,15 +250,48 @@
         <br>
 
 
+        <h3>Dialog/Modal/Overlay</h3>
+
+        <button class="toggle toggle-btn" data-toggle-target="#demo-panel-dialog">Show dialog</button>
+
+        <div id="demo-panel-dialog" class="toggle-dialog" data-toggle-animate-height="false" data-toggle-body-class="has-dialog" aria-hidden="true" role="dialog">
+          <div class="toggle-dialog-content">
+            <button class="toggle toggle-btn is-active" data-toggle-target="#demo-panel-dialog">Close</button>
+
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+
+          <div class="toggle toggle-dialog-background" data-toggle-target="#demo-panel-dialog"></div>
+        </div>
+
+        <br>
+
+        <button class="toggle toggle-btn" data-toggle-target="#demo-panel-dialog-native">Show native dialog</button>
+
+        <dialog id="demo-panel-dialog-native" class="toggle-dialog" data-toggle-animate-height="false" data-toggle-body-class="has-dialog">
+          <div class="toggle-dialog-content">
+            <button class="toggle toggle-btn is-active" data-toggle-target="#demo-panel-dialog-native">Close</button>
+
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
+          </div>
+
+          <div class="toggle toggle-dialog-background" data-toggle-target="#demo-panel-dialog-native"></div>
+        </dialog>
+
+
+        <br>
+        <br>
+
+
         <h3>Target button or panel independently</h3>
 
         <button class="toggle toggle-btn" data-toggle-target="self">Toggle button only</button>
 
         <br>
 
-        <button class="toggle-btn demo-self-button">Toggle panel only</button>
+        <button id="demo-btn-self" class="toggle-btn">Toggle panel only</button>
 
-        <div class="toggle-panel demo-self" aria-hidden="true">
+        <div id="demo-panel-self" class="toggle-panel" aria-hidden="true">
           <div class="toggle-panel-content">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
           </div>
@@ -232,9 +323,13 @@
 
           <h3>Import JS</h3>
 
-          <p>The script is an ES6(ES2015) module but the compiled version is included in the build as "src/scripts/tiny-ui-toggle-umd.js". You can also copy "src/scripts/tiny-ui-toggle.js" into your own site if your build process can accommodate ES6 modules.</p>
+          <p>The script is an ES module but the compiled version is included in the build as "src/scripts/tiny-ui-toggle-umd.js". You can also copy "src/scripts/tiny-ui-toggle.js" into your own site if your build process can accommodate ES modules.</p>
 
-<pre><code>import Toggle from 'tiny-ui-toggle.js';
+<pre><code>import { Toggle, toggleAutoInit } from 'tiny-ui-toggle.js';
+
+// Initialize all elements with default options that can be set as data attributes on the element
+toggleAutoInit();
+
 
 // Init with string - default setup for one instance
 const toggleDefault = Toggle({ selector: '.toggle' });
@@ -253,7 +348,7 @@ const toggleDefault = Toggle({
   selector = '.toggle',
   activeClass = 'is-active',
   animClass = 'is-anim',
-  toggleHeight = true,
+  animateHeight = true,
   textActive = '',
   textInactive = '',
   closeAuto = false,
@@ -290,22 +385,22 @@ const toggleDefault = Toggle({
             <td>CSS class to transition the video overlay between states.</td>
           </tr>
           <tr>
-            <td><code>toggleHeight</code></td>
+            <td><code>animateHeight</code></td>
             <td>true</td>
             <td>Boolean</td>
-            <td>Animate the panel height.</td>
+            <td>Animate the panel's height.</td>
           </tr>
           <tr>
             <td><code>textActive</code></td>
             <td>''</td>
             <td>String</td>
-            <td>Text in element when it is active.</td>
+            <td>Text of element when it is active.</td>
           </tr>
           <tr>
             <td><code>textInactive</code></td>
             <td>''</td>
             <td>String</td>
-            <td>Text in element when it is inactive.</td>
+            <td>Text of element when it is inactive.</td>
           </tr>
           <tr>
             <td><code>closeAuto</code></td>
@@ -317,7 +412,7 @@ const toggleDefault = Toggle({
             <td><code>closeDelay</code></td>
             <td>500</td>
             <td>Integer(ms)</td>
-            <td>Amount of time a user leaves an element for it to close.</td>
+            <td>Delay in auto closing an element when it is not focused.</td>
           </tr>
         </table>
         </div>

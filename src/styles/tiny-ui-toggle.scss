@@ -1,3 +1,4 @@
+// Essential styles
 .toggle-outer {
   position: relative;
 }
@@ -6,16 +7,14 @@
 }
 
 .toggle-panel {
-  --toggle-speed: .5s;
+  transition: all .5s ease-out;
 
   // Closed
   height: 0;
   overflow: hidden;
-  transition: all var(--toggle-speed) ease-out, min-height var(--toggle-speed) ease-out, visibility var(--toggle-speed), flex var(--toggle-speed), opacity var(--toggle-speed);
 
   // Opening, Open, Closing
   &.is-active, &.is-anim {
-
   }
 
   // Opening
@@ -37,11 +36,8 @@ details.toggle-panel {
   height: auto;
 }
 
-
-
 .toggle-panel--partial {
   height: calc(2.5em + .75rem);
-  visibility: visible;
 }
 
 .toggle-panel--opacity {
@@ -54,10 +50,11 @@ details.toggle-panel {
 }
 
 .toggle-panel--none {
+  height: auto;
   display: none;
   transition: none;
 
-  &.is-active, &.is-anim {
+  &.is-active {
     display: block;
   }
 }
@@ -69,30 +66,13 @@ details.toggle-panel {
   z-index: 1000;
 }
 
-// .toggle-panel--100h {
-//   min-height: 0;
-
-//   &.is-active {
-//     min-height: 100%;
-//   }
-// }
-
-// .toggle-panel--flex {
-//   &.is-active {
-//     flex-grow: 1;
-//   }
-// }
 
 
+// Presentational styles
 
-// Presentation
-// .toggle-outer {
-//   border: 1px solid #aaa;
-// }
-
-.toggle-btn, .toggle-panel-content {
+.toggle-btn, .toggle-panel-content, .toggle-dialog-content {
   padding: .75rem 1rem;
-  background-color: #eee;
+  background-color: #F5F7FA;
 }
 
 .toggle-btn {
@@ -106,15 +86,13 @@ details.toggle-panel {
   border: none;
   border-radius: none;
   transition: all 0.3s;
-  // transition: all 2.5s;
 
   &:hover {
     color: #1976D2;
-    background-color: #ddd;
   }
 
-  &.is-active {
-    background-color: #ddd;
+  &:hover, &.is-active {
+    background-color: #E6ECF2;
   }
 }
 
@@ -127,49 +105,96 @@ details.toggle-panel {
   }
 
   .toggle-text {
-    margin: -.3em 0 -.3em auto;
-    padding: 0 0 0 1em;
+    margin: -.5em 0 -.5em auto;
+    padding: 0 0 0 .5em;
     font-size: 2rem;
   }
 }
 
-.toggle-panel-content {
 
+.toggle-accordion {
+  border-top: 2px solid #E6ECF2;
+  border-bottom: 2px solid #E6ECF2;
+
+  & + .toggle-accordion {
+    border-top: 0;
+  }
 }
 
 
-// Overlays
-.toggle-overlay {
+.toggle-btn-tabs {
+  display: flex;
+
+  .toggle-btn {
+    border-bottom: 2px solid #E6ECF2;
+
+    &:not(:last-child) {
+      border-right: 2px solid #E6ECF2;
+    }
+  }
+}
+
+
+
+// Dialog
+.toggle-dialog, .toggle-dialog-background {
   position: fixed;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
+}
+
+.toggle-dialog {
   z-index: 10000;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  opacity: 0;
-  visibility: hidden;
+  overflow: scroll;
   display: none;
-  transition: opacity var(--toggle-speed), visibility var(--toggle-speed);
-  background: rgba(0, 0, 0, 0.75);
+  opacity: 0;
+  transition: all .5s ease-out;
+
+  background: none;
+  border: none;
+  padding: 0;
+
+  &.is-anim, &.is-active {
+    display: flex;
+  }
 
   &.is-active {
     opacity: 1;
   }
 
-  &.is-active, &.is-anim {
-    display: block;
-    visibility: visible;
+  // Opening, Open, Closing
+  &.is-anim {
   }
 
+  // Opening
+  &.is-active.is-anim {
+  }
+
+  // Open
+  &.is-active:not(.is-anim) {
+  }
+
+  // Closing
+  &.is-anim:not(.is-active) {
+  }
 }
 
-  .toggle-overlay-container {
+  .toggle-dialog-content {
     position: relative;
-    width: auto;
-    padding: 15px;
-    max-width: 250px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    z-index: 10;
+    max-width: 500px;
+    margin: auto;
   }
+
+  .toggle-dialog-background {
+    z-index: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+body.has-dialog {
+  overflow: hidden;
+}

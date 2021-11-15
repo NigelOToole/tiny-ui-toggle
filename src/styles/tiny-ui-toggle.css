@@ -3,10 +3,9 @@
 }
 
 .toggle-panel {
-  --toggle-speed: .5s;
+  transition: all 0.5s ease-out;
   height: 0;
   overflow: hidden;
-  transition: all var(--toggle-speed) ease-out, min-height var(--toggle-speed) ease-out, visibility var(--toggle-speed), flex var(--toggle-speed), opacity var(--toggle-speed);
 }
 .toggle-panel.is-active:not(.is-anim) {
   height: auto;
@@ -18,7 +17,6 @@ details.toggle-panel {
 
 .toggle-panel--partial {
   height: calc(2.5em + 0.75rem);
-  visibility: visible;
 }
 
 .toggle-panel--opacity {
@@ -30,10 +28,11 @@ details.toggle-panel {
 }
 
 .toggle-panel--none {
+  height: auto;
   display: none;
   transition: none;
 }
-.toggle-panel--none.is-active, .toggle-panel--none.is-anim {
+.toggle-panel--none.is-active {
   display: block;
 }
 
@@ -44,9 +43,9 @@ details.toggle-panel {
   z-index: 1000;
 }
 
-.toggle-btn, .toggle-panel-content {
+.toggle-btn, .toggle-panel-content, .toggle-dialog-content {
   padding: 0.75rem 1rem;
-  background-color: #eee;
+  background-color: #F5F7FA;
 }
 
 .toggle-btn {
@@ -62,10 +61,9 @@ details.toggle-panel {
 }
 .toggle-btn:hover {
   color: #1976D2;
-  background-color: #ddd;
 }
-.toggle-btn.is-active {
-  background-color: #ddd;
+.toggle-btn:hover, .toggle-btn.is-active {
+  background-color: #E6ECF2;
 }
 
 .toggle-btn--icon {
@@ -73,39 +71,67 @@ details.toggle-panel {
   align-items: center;
 }
 .toggle-btn--icon .toggle-text {
-  margin: -0.3em 0 -0.3em auto;
-  padding: 0 0 0 1em;
+  margin: -0.5em 0 -0.5em auto;
+  padding: 0 0 0 0.5em;
   font-size: 2rem;
 }
 
-.toggle-overlay {
+.toggle-accordion {
+  border-top: 2px solid #E6ECF2;
+  border-bottom: 2px solid #E6ECF2;
+}
+.toggle-accordion + .toggle-accordion {
+  border-top: 0;
+}
+
+.toggle-btn-tabs {
+  display: flex;
+}
+.toggle-btn-tabs .toggle-btn {
+  border-bottom: 2px solid #E6ECF2;
+}
+.toggle-btn-tabs .toggle-btn:not(:last-child) {
+  border-right: 2px solid #E6ECF2;
+}
+
+.toggle-dialog, .toggle-dialog-background {
   position: fixed;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
+}
+
+.toggle-dialog {
   z-index: 10000;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  opacity: 0;
-  visibility: hidden;
+  overflow: scroll;
   display: none;
-  transition: opacity var(--toggle-speed), visibility var(--toggle-speed);
-  background: rgba(0, 0, 0, 0.75);
+  opacity: 0;
+  transition: all 0.5s ease-out;
+  background: none;
+  border: none;
+  padding: 0;
 }
-.toggle-overlay.is-active {
+.toggle-dialog.is-anim, .toggle-dialog.is-active {
+  display: flex;
+}
+.toggle-dialog.is-active {
   opacity: 1;
 }
-.toggle-overlay.is-active, .toggle-overlay.is-anim {
-  display: block;
-  visibility: visible;
+.toggle-dialog-content {
+  position: relative;
+  z-index: 10;
+  max-width: 500px;
+  margin: auto;
 }
 
-.toggle-overlay-container {
-  position: relative;
-  width: auto;
-  padding: 15px;
-  max-width: 250px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.toggle-dialog-background {
+  z-index: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+body.has-dialog {
+  overflow: hidden;
 }
