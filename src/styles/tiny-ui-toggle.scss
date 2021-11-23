@@ -100,6 +100,10 @@ details.toggle-panel {
   display: flex;
   align-items: center;
 
+  // > * {
+  //   pointer-events: none;
+  // }
+
   .toggle-title {
 
   }

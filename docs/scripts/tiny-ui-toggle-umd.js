@@ -187,6 +187,7 @@
     var toggleStateBoth = function toggleStateBoth() {
       var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : elementNode;
       toggleState(element);
+      console.log(element, element.toggle);
 
       var _iterator = _createForOfIteratorHelper(element.toggle.target),
           _step;
@@ -266,7 +267,7 @@
 
     var clickTrigger = function clickTrigger(event) {
       event.preventDefault();
-      toggleStateBoth(event.target);
+      toggleStateBoth(elementNode);
     };
 
     var addEventListeners = function addEventListeners() {

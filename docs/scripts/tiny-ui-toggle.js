@@ -168,6 +168,7 @@ const Toggle = function(options) {
 
 	const toggleStateBoth = function (element = elementNode) {
 		toggleState(element);
+		console.log(element, element.toggle)
 
 		for (const target of element.toggle.target) {
 			toggleState(target);
@@ -212,7 +213,7 @@ const Toggle = function(options) {
 
 	const clickTrigger = function (event) {
 		event.preventDefault();
-		toggleStateBoth(event.target);
+		toggleStateBoth(elementNode);
 	};
 
   const addEventListeners = function() {
