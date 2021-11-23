@@ -19,12 +19,12 @@
     "es6",
     "module",
     "toggle",
-    "accordion",
     "collapse",
+    "accordion",
+    "tabs",
     "dropdown",
     "dialog",
-    "modal",
-    "tab"
+    "modal"
   ],
   "engines": {
     "node": ">=4"
