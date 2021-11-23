@@ -1,3 +1,18 @@
+/**
+  Toggle the state of a UI element
+
+  @param {string || element} selector - Element selector.
+  @param {string} activeClass - CSS class when element is active.
+  @param {string} animClass - CSS class when element is animating.
+  @param {string} bodyClass - CSS class added to the body when the element is active.
+  @param {boolean} animateHeight - Animate the height of the target element.
+  @param {string} textActive - Text of element when it is active.
+  @param {string} textInactive - Text of element when it is inactive.
+  @param {boolean} closeAuto - Automatically close the target element after a timeout or a click outside the element.
+  @param {integer(ms)} closeDelay - Delay in auto closing an element when it is not focused.
+  @param {boolean} openAuto - Automatically open the target element on hover.
+*/
+
 const Toggle = function(options) {
 	const defaults = {
 		selector: '.toggle',
@@ -8,7 +23,8 @@ const Toggle = function(options) {
 		textActive: '',
 		textInactive: '',
 		closeAuto: false,
-		closeDelay: 500
+		closeDelay: 500,
+		openAuto: false
 	}
 
 	options = {...defaults, ...options};
@@ -39,7 +55,7 @@ const Toggle = function(options) {
 	  if (string.toLowerCase() === 'true') return true;
 	  else if (string.toLowerCase() === 'false') return false;
 		else return string;
-  }
+  };
 
 
 
@@ -70,7 +86,6 @@ const Toggle = function(options) {
 		}
 
 		requestAnimationFrame(() => {
-			element.style.overflow = 'hidden';
 			element.style.height = `${element.scrollHeight}px`;
 
 			// Closing
@@ -81,8 +96,6 @@ const Toggle = function(options) {
 		});
 
 		setTimeout(() => {
-			element.style.overflow = '';
-
 			// Open
 			if (element.toggle.active) {
 				element.style.height = 'auto';
@@ -94,18 +107,6 @@ const Toggle = function(options) {
 			}
 		}, transitionDuration);
 	};
-
-
-	const checkProps = function (element) {
-		if (element.toggle === undefined) assignProps(element);
-	};
-
-
-  const closeAfterTimeout = function (trigger, target) {
-    closeTimeout = setTimeout(() => {
-			setStateBoth(false, trigger, target);
-    }, trigger.toggle.closeDelay);
-  };
 
 
 	// Sets the state of an element
@@ -167,100 +168,110 @@ const Toggle = function(options) {
 
 	const toggleStateBoth = function (element = elementNode) {
 		toggleState(element);
-		console.log(element, element.toggle.target);
 
-		for (const item of element.toggle.target) {
-			toggleState(item);
+		for (const target of element.toggle.target) {
+			toggleState(target);
+
+			for (const trigger of target.toggle.trigger) {
+				if(trigger.toggle.active !== target.toggle.active) {
+					setState(target.toggle.active, trigger);
+				}
+			};
 		};
 		
 		for (const item of element.toggle.group) {
-			if (item.toggle === undefined) assignProps(item);	
 			if(item !== element && item !== element.toggle.target[0]) {
 				setState(false, item);
 			}
-		}
+		};
 	};
 
+
+	const mouseoverCloseAuto = function () {
+		clearTimeout(closeTimeout);
+	};
+
+  const closeAfterTimeout = function (trigger, target) {
+    closeTimeout = setTimeout(() => {
+			setStateBoth(false, trigger, target);
+    }, trigger.toggle.closeDelay);
+  };
+
+  const addMouseEventListeners = function(element, trigger, target) {
+		element.toggle.events = {
+			...element.toggle.events,
+			...{
+				mouseoverCloseAuto,
+				mouseleaveCloseAuto: () => closeAfterTimeout(trigger, target)
+			}
+		};
+		
+		element.addEventListener('mouseover', element.toggle.events.mouseoverCloseAuto);
+		element.addEventListener('mouseleave', element.toggle.events.mouseleaveCloseAuto);
+	};
 
 	const clickTrigger = function (event) {
 		event.preventDefault();
 		toggleStateBoth(event.target);
 	};
 
-
-	const mouseoverCloseAuto = function (event) {
-		clearTimeout(closeTimeout);
-	};
-
-
   const addEventListeners = function() {
 		elementNode.toggle.events = { clickTrigger };
-
 		elementNode.addEventListener('click', elementNode.toggle.events.clickTrigger);
 
-		if(elementNode.toggle.closeAuto) {
-			elementNode.toggle.events = {
-				...elementNode.toggle.events,
-				...{
-					mouseoverCloseAuto,
-					mouseleaveCloseAuto: () => closeAfterTimeout(elementNode, elementNode.toggle.target[0])
-				}
+		if (elementNode.toggle.openAuto) {
+			elementNode.toggle.events['mouseenterOpenAuto'] = () => setStateBoth(true, elementNode, elementNode.toggle.target[0]);
+			elementNode.addEventListener('mouseenter', elementNode.toggle.events.mouseenterOpenAuto);
+		}
+
+		if (elementNode.toggle.closeAuto || elementNode.toggle.openAuto) {
+			addMouseEventListeners(elementNode, elementNode, elementNode.toggle.target[0]);
+
+			for (const item of elementNode.toggle.target) {
+				addMouseEventListeners(item, elementNode, item);
 			};
-			
-			elementNode.addEventListener('mouseover', elementNode.toggle.events.mouseoverCloseAuto);
-			elementNode.addEventListener('mouseleave', elementNode.toggle.events.mouseleaveCloseAuto);
 
 			document.addEventListener('click', function(event) {
 				let clickInsideTrigger = elementNode.contains(event.target);
 				let clickInsideTarget = elementNode.toggle.target[0].contains(event.target);
 
-				if(!clickInsideTrigger && !clickInsideTarget) setStateBoth(false, elementNode, elementNode.toggle.target[0]);
+				if (!clickInsideTrigger && !clickInsideTarget) setStateBoth(false, elementNode, elementNode.toggle.target[0]);
 			});
-
-			elementNode.toggle.target.forEach((item) => {
-				item.toggle.events = { 
-					mouseoverCloseAuto,
-					mouseleaveCloseAuto: () => closeAfterTimeout(elementNode, item)
-				};
-
-				item.addEventListener('mouseover', item.toggle.events.mouseoverCloseAuto);
-				item.addEventListener('mouseleave', item.toggle.events.mouseleaveCloseAuto);
-			});
-
 		}
-
   };
-
 
   const removeEventListeners = function() {
 		elementNode.removeEventListener('click', elementNode.toggle.events.clickTrigger);
 
-		if(elementNode.toggle.closeAuto) {
+		if (elementNode.toggle.openAuto) elementNode.removeEventListener('mouseenter', elementNode.toggle.events.mouseenterOpenAuto);
+
+		if (elementNode.toggle.closeAuto || elementNode.toggle.openAuto) {
 			elementNode.removeEventListener('mouseover', elementNode.toggle.events.mouseoverCloseAuto);
 			elementNode.removeEventListener('mouseleave', elementNode.toggle.events.mouseleaveCloseAuto);
 
-			elementNode.toggle.target.forEach((item) => {
+			for (const item of elementNode.toggle.target) {
 				item.removeEventListener('mouseover', item.toggle.events.mouseoverCloseAuto);
 				item.removeEventListener('mouseleave', item.toggle.events.mouseleaveCloseAuto);
-			});
+			};
 		}
-
   };
 
 
 	const getTarget = function (element, selector) {
 		const targets = {
 			'next': [element.nextElementSibling],
-			'previous': [element.previousElementSibling],
 			'self': [],
 			'default': document.querySelectorAll(selector)
 		};
 		return targets[selector] || targets['default'];
 	};
 
+	const checkProps = function (element) {
+		if (element.toggle === undefined) assignProps(element);
+	};
 
-	const assignProps = function (element) {
-		element.toggle = {...options};
+	const assignProps = function (element, elementTrigger = null) {
+		element.toggle = (element.toggle === undefined) ? {...options} : Object.assign(element.toggle, options);
 
 		let datasetOptions = {...element.dataset};
 
@@ -272,16 +283,17 @@ const Toggle = function(options) {
 			} 
 		};
 
-		element.toggle.type = 'toggleTarget' in element.dataset ? 'trigger' : 'target'
+		element.toggle.type = ('toggleTarget' in element.dataset) ? 'trigger' : 'target'
 		element.toggle.active = element.classList.contains(element.toggle.activeClass);
 
-		if(element.toggle.type === 'trigger') {
+		if (element.toggle.type === 'trigger') {
 			element.toggle.target = getTarget(element, element.dataset['toggleTarget']);
 			element.toggle.group = document.querySelectorAll(`${element.dataset['toggleGroup']}, [data-toggle-group='${element.dataset['toggleGroup']}']`);
 			element.toggle.events = {};
 		}
 
-		if(element.toggle.type === 'target') {
+		if (element.toggle.type === 'target') {
+			element.toggle.trigger === undefined ? element.toggle.trigger = [elementTrigger] : element.toggle.trigger.push(elementTrigger);
 			element.toggle.isDetails = (element.tagName === 'DETAILS' && element.querySelector('summary') !== null);
 			element.toggle.isDialog = element.tagName === 'DIALOG';
 		}
@@ -291,15 +303,12 @@ const Toggle = function(options) {
   const setup = function() {
 		assignProps(elementNode);
 
-		if (elementNode.toggle.type === 'trigger') {
-			for (const item of elementNode.toggle.target) {
-				assignProps(item);
-			};
+		for (const item of elementNode.toggle.target) {
+			assignProps(item, elementNode);
+		};
 
-			addEventListeners();
-		}
+		addEventListeners();
   };
-
 
   const init = function() {   
     elementNode = (typeof options.selector === 'string') ? document.querySelector(options.selector) : options.selector;
@@ -317,8 +326,7 @@ const Toggle = function(options) {
 		toggle: toggleStateBoth,
 		toggleState,
 		setState,
-    element: elementNode,
-    props: elementNode.toggle
+    element: { element: elementNode, ...elementNode.toggle }
   };
 
 };

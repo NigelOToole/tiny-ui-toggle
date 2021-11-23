@@ -3,8 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tiny UI Toggle - Toggle the state of a UI element to easily create components such as a collapse, accordion or dropdown.</title>
-    <meta name="description" content="Toggle the state of a UI element to easily create components such as a collapse, accordion or dropdown">
+    <title>Tiny UI Toggle - Toggle the state of a UI element to easily create components e.g. collapse, accordion, tabs, dropdown, dialog/modal.</title>
 
     <link rel="stylesheet" href="styles/site.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cutive+Mono|Open+Sans:300,400&display=swap">
@@ -29,7 +28,8 @@
 
     <div class="fullwidth intro">
       <div class="container separator">
-        <h2>Toggle the state of a UI element to easily create components such as a collapse, accordion or dropdown.</h2>  
+        <h2>Toggle the state of a UI element to easily create components e.g. collapse, accordion, tabs, dropdown, dialog/modal.</h2>
+        <p>Features animation of target height, toggling of trigger text, auto open (on hover), auto close (on timeout and click outside element), sync multiple triggers when target state changes and support of native elements (details and dialog).</p>
       </div>
     </div>
 
@@ -40,19 +40,9 @@
 
         <h3>Collapse</h3>
 
-        <button id="demo-btn-single" class="toggle toggle-btn demo-btn-single" data-toggle-target="#demo-panel-single" aria-expanded="false">Single panel</button>
+        <button id="demo-btn-single" class="toggle toggle-btn" data-toggle-target="#demo-panel-single" aria-expanded="false" aria-controls="demo-panel-aria">Open panel</button>
 
-        <div id="demo-panel-single" class="toggle-panel" aria-hidden="true">
-          <div class="toggle-panel-content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
-          </div>
-        </div>
-
-        <br>
-
-        <button id="demo-btn-aria" class="toggle toggle-btn" data-toggle-target="#demo-panel-aria"  aria-expanded="false" aria-controls="demo-panel-aria">Full ARIA</button>
-
-        <div id="demo-panel-aria" class="toggle-panel" aria-hidden="true" aria-labelledby="demo-btn-aria">
+        <div id="demo-panel-single" class="toggle-panel" aria-hidden="true" aria-labelledby="demo-btn-aria">
           <div class="toggle-panel-content">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
           </div>
@@ -235,7 +225,7 @@
         <h3>Dropdown</h3>
 
         <div class="toggle-outer">
-          <button id="demo-btn-dropdown" class="toggle toggle-btn" data-toggle-target="#demo-panel-dropdown" aria-expanded="false">Dropdown with auto close</button>
+          <button id="demo-btn-dropdown" class="toggle toggle-btn" data-toggle-target="#demo-panel-dropdown" aria-expanded="false">Dropdown with auto open and auto close</button>
 
           <div id="demo-panel-dropdown" class="toggle-panel toggle-panel--dropdown" aria-hidden="true">
             <div class="toggle-panel-content">
@@ -250,7 +240,7 @@
         <br>
 
 
-        <h3>Dialog/Modal/Overlay</h3>
+        <h3>Dialog/Modal</h3>
 
         <button class="toggle toggle-btn" data-toggle-target="#demo-panel-dialog">Show dialog</button>
 
@@ -327,36 +317,21 @@
 
 <pre><code>import { Toggle, toggleAutoInit } from 'tiny-ui-toggle.js';
 
-// Initialize all elements with default options that can be set as data attributes on the element
+// Initialize all elements with default options, these can be overridden by reinitializing or by data attributes on the element
 toggleAutoInit();
 
+// Initialize all elements manually which allows you to pass in custom options
+const toggleElements = document.querySelectorAll('.toggle');
+for (const item of toggleElements) {
+  Toggle({ selector: item });
+};
 
 // Init with string - default setup for one instance
 const toggleDefault = Toggle({ selector: '.toggle' });
-
-
-// Init by loop - this wont allow access to methods
-const toggleElements = document.querySelectorAll('.toggle');   
-
-for (const item of toggleElements) {
-  Toggle({ selector: item });
-}
-
-
-// Init with all options at default setting
-const toggleDefault = Toggle({
-  selector = '.toggle',
-  activeClass = 'is-active',
-  animClass = 'is-anim',
-  animateHeight = true,
-  textActive = '',
-  textInactive = '',
-  closeAuto = false,
-  closeDelay = 500
-});
 </code></pre>
 
         <h3>Options</h3>
+        <p>The options can be set via initialization in the JS or by data attributes on the elements with the prefix 'toggle'. E.g. data-toggle-active-class="is-open"</p>
 
         <div class="table-wrapper">
         <table class="table">
@@ -369,7 +344,7 @@ const toggleDefault = Toggle({
           <tr>
             <td><code>selector</code></td>
             <td>'.toggle'</td>
-            <td>String</td>
+            <td>String || element</td>
             <td>Element selector.</td>
           </tr>
           <tr>
@@ -382,13 +357,19 @@ const toggleDefault = Toggle({
             <td><code>animClass</code></td>
             <td>'is-anim'</td>
             <td>String</td>
-            <td>CSS class to transition the video overlay between states.</td>
+            <td>CSS class when element is animating.</td>
+          </tr>
+          <tr>
+            <td><code>bodyClass</code></td>
+            <td>''</td>
+            <td>String</td>
+            <td>CSS class added to the body when the element is active.</td>
           </tr>
           <tr>
             <td><code>animateHeight</code></td>
             <td>true</td>
             <td>Boolean</td>
-            <td>Animate the panel's height.</td>
+            <td>Animate the height of the target element.</td>
           </tr>
           <tr>
             <td><code>textActive</code></td>
@@ -406,13 +387,19 @@ const toggleDefault = Toggle({
             <td><code>closeAuto</code></td>
             <td>false</td>
             <td>Boolean</td>
-            <td>Automatically close the panel after a timeout.</td>
+            <td>Automatically close the target element after a timeout or a click outside the element.</td>
           </tr>
           <tr>
             <td><code>closeDelay</code></td>
             <td>500</td>
             <td>Integer(ms)</td>
             <td>Delay in auto closing an element when it is not focused.</td>
+          </tr>
+          <tr>
+            <td><code>openAuto</code></td>
+            <td>false</td>
+            <td>Boolean</td>
+            <td>Automatically open the target element on hover.</td>
           </tr>
         </table>
         </div>
@@ -442,9 +429,9 @@ const toggleDefault = Toggle({
             <td>Sets the element state.</td>
           </tr>
           <tr>
-            <td><code>instance['elements']</code></td>
+            <td><code>instance['element']</code></td>
             <td>Object</td>
-            <td>Returns the elements used by this instance.</td>
+            <td>Returns the element and its properties.</td>
           </tr>
         </table>
         </div>
@@ -458,14 +445,11 @@ const toggleDefault = Toggle({
 
         <h3>Markup</h3>
 
-<pre><code>&lt;button class="toggle toggle-btn" data-toggle-target=".demo-single" aria-expanded="false"&gt;Single panel&lt;/button&gt;
+<pre><code>&lt;button class="toggle" data-toggle-target="#demo-panel-single" aria-expanded="false"&gt;Open panel&lt;/button&gt;
 
-&lt;div class="toggle-panel demo-single" aria-hidden="true"&gt;
-  &lt;div class="toggle-panel-content"&gt;
-    ...
-  &lt;/div&gt;
+&lt;div id="demo-panel-single" class="toggle-panel" aria-hidden="true"&gt;
+  ...
 &lt;/div&gt;
-
 </code></pre>
 
         </div>
@@ -476,16 +460,11 @@ const toggleDefault = Toggle({
 
           <p>A 'toggle' event is started once an element is toggled. The event is ended once the element has changed state.</p>
 
-<pre><code>document.querySelector('.toggle-btn-default').addEventListener('toggle', (event) => { 
-  console.log(`Action: ${event.detail.action}`);
+<pre><code>document.querySelector('#demo-panel-single').addEventListener('toggle', (event) => { 
+  console.log(`Action: ${event.detail.action}, Active: ${event.detail.active}`);
 });
 </code></pre>
 
-<!-- <p>You can also attach this to the document.</p>
-<pre><code>document.addEventListener('playVideo', (event) => { 
-  console.log(`Target: ${event.target.matches('#tiny-ui-toggle--default')}`, `Action: ${event.detail.action}`);
-});
-</code></pre> -->
         </div>
 
 

@@ -146,7 +146,7 @@ pre {
 }
 
 .intro {
-  p:last-child {
+  h2:last-child, p:last-child {
     margin-bottom: 0;
   }
 }

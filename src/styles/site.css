@@ -484,7 +484,7 @@ pre {
   border-bottom: 1px solid #ddd;
 }
 
-.intro p:last-child {
+.intro h2:last-child, .intro p:last-child {
   margin-bottom: 0;
 }
 
