@@ -80,9 +80,6 @@ exports.serve = serve;
 function moveFiles() {
   return src([`${paths.tmp}/**/*.{html,css,js}`, `${paths.src}/**/*.{html,css,js,jpg,gif,png,webp,mp4,webm}`])
     .pipe(dest(`${paths.dest}`));
-
-  // return src([`${paths.tmp}/**/*.css`])
-  //   .pipe(dest(`${paths.src}`));
 };
 exports.moveFiles = moveFiles;
 

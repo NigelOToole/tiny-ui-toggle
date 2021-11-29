@@ -461,7 +461,7 @@ const toggleDefault = Toggle({ selector: '.toggle' });
           <p>A 'toggle' event is started once an element is toggled. The event is ended once the element has changed state.</p>
 
 <pre><code>document.querySelector('#demo-panel-single').addEventListener('toggle', (event) => { 
-  console.log(`Action: ${event.detail.action}, Active: ${event.detail.active}`);
+  if (event.detail) console.log(`Action: ${event.detail.action}, Active: ${event.detail.active}`);
 });
 </code></pre>
 

@@ -37,7 +37,7 @@ const Toggle = function(options) {
 	// Utilities
   const fireEvent = (item, eventName, eventDetail) => {
     const event = new CustomEvent(eventName, {
-      bubbles: true,
+      bubbles: !item.toggle.isInsideTarget,
       detail: eventDetail,
     });
 
@@ -168,7 +168,6 @@ const Toggle = function(options) {
 
 	const toggleStateBoth = function (element = elementNode) {
 		toggleState(element);
-		console.log(element, element.toggle)
 
 		for (const target of element.toggle.target) {
 			toggleState(target);
@@ -291,6 +290,7 @@ const Toggle = function(options) {
 			element.toggle.target = getTarget(element, element.dataset['toggleTarget']);
 			element.toggle.group = document.querySelectorAll(`${element.dataset['toggleGroup']}, [data-toggle-group='${element.dataset['toggleGroup']}']`);
 			element.toggle.events = {};
+			element.toggle.isInsideTarget = (element.toggle.target.length === 1) ? element.toggle.target[0].contains(element) : false;
 		}
 
 		if (element.toggle.type === 'target') {

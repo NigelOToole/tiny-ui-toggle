@@ -67,9 +67,9 @@ document.querySelector('#demo-btn-self').addEventListener('click', function(even
 // Event listener
 
 // document.querySelector('#demo-panel-single').addEventListener('toggle', (event) => { 
-//   console.log(`Action: ${event.detail.action}, Active: ${event.detail.active}`);
+//   if (event.detail) console.log(`Action: ${event.detail.action}, Active: ${event.detail.active}`);
 // });
 
 // document.addEventListener('toggle', (event) => { 
-//   console.log(`Action: ${event.detail.action}, Active: ${event.detail.active}`);
+//   if (event.detail) console.log(`Action: ${event.detail.action}, Active: ${event.detail.active}`);
 // });
