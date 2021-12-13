@@ -7,6 +7,8 @@ const server = browserSync.create();
 const del = require('del');
 const sass = require('gulp-sass')(require('sass'));
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const paths = {
   src: 'src',
   dest: 'docs',
@@ -16,7 +18,9 @@ const paths = {
 
 // ----- Tasks ------
 function styles() {
-  return src(`${paths.src}/styles/*.scss`)
+  return src(`${paths.src}/styles/*.scss`, {
+      sourcemaps: !isProd,
+    })
     .pipe($.plumber())
     .pipe(sass.sync({
       outputStyle: 'expanded',
@@ -24,7 +28,9 @@ function styles() {
       includePaths: ['.']
     })
     .on('error',sass.logError))
-    .pipe(dest(`${paths.src}/styles`))
+    .pipe(dest(`${paths.src}/styles`, {
+      sourcemaps: !isProd,
+    }))
     .pipe(server.reload({stream: true}));
 };
 

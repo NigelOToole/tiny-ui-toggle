@@ -107,6 +107,7 @@ details.toggle-panel {
   width: 100%;
   height: 100%;
   overflow: scroll;
+  overscroll-behavior: contain;
   display: none;
   opacity: 0;
   transition: all 0.5s ease-out;
