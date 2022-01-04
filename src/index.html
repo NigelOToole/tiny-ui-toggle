@@ -225,7 +225,7 @@
         <h3>Dropdown</h3>
 
         <div class="toggle-outer">
-          <button id="demo-btn-dropdown" class="toggle toggle-btn" data-toggle-target="#demo-panel-dropdown" aria-expanded="false">Dropdown with auto open and auto close</button>
+          <button id="demo-btn-dropdown" class="toggle toggle-btn" data-toggle-target="#demo-panel-dropdown" data-toggle-open-auto="true" data-toggle-close-auto="true" aria-expanded="false">Dropdown with auto open and auto close</button>
 
           <div id="demo-panel-dropdown" class="toggle-panel toggle-panel--dropdown" aria-hidden="true">
             <div class="toggle-panel-content">
@@ -244,7 +244,7 @@
 
         <button class="toggle toggle-btn" data-toggle-target="#demo-panel-dialog">Show dialog</button>
 
-        <div id="demo-panel-dialog" class="toggle-dialog" data-toggle-animate-height="false" data-toggle-body-class="has-dialog" aria-hidden="true" role="dialog">
+        <div id="demo-panel-dialog" class="toggle-dialog" data-toggle-animate-height="false" data-toggle-body-class="has-dialog" data-toggle-close-on-escape="true" tabindex="-1" aria-hidden="true" role="dialog">
           <div class="toggle-dialog-content">
             <button class="toggle toggle-btn is-active" data-toggle-target="#demo-panel-dialog">Close</button>
 
@@ -258,7 +258,7 @@
 
         <button class="toggle toggle-btn" data-toggle-target="#demo-panel-dialog-native">Show native dialog</button>
 
-        <dialog id="demo-panel-dialog-native" class="toggle-dialog" data-toggle-animate-height="false" data-toggle-body-class="has-dialog">
+        <dialog id="demo-panel-dialog-native" class="toggle-dialog" data-toggle-animate-height="false" data-toggle-body-class="has-dialog" tabindex="-1">
           <div class="toggle-dialog-content">
             <button class="toggle toggle-btn is-active" data-toggle-target="#demo-panel-dialog-native">Close</button>
 
@@ -331,7 +331,7 @@ const toggleDefault = Toggle({ selector: '.toggle' });
 </code></pre>
 
         <h3>Options</h3>
-        <p>The options can be set via initialization in the JS or by data attributes on the elements with the prefix 'toggle'. E.g. data-toggle-active-class="is-open"</p>
+        <p>The options can be set via initialization in the JS or by data attributes on the elements with the prefix 'toggle'. E.g. data-toggle-active-class="is-open". Data attributes will be given the higher priority.</p>
 
         <div class="table-wrapper">
         <table class="table">
@@ -396,6 +396,12 @@ const toggleDefault = Toggle({ selector: '.toggle' });
             <td>Delay in auto closing an element when it is not focused.</td>
           </tr>
           <tr>
+            <td><code>closeOnEscape</code></td>
+            <td>false</td>
+            <td>Boolean</td>
+            <td>Close the target element when the escape key is pressed.</td>
+          </tr>
+          <tr>
             <td><code>openAuto</code></td>
             <td>false</td>
             <td>Boolean</td>
@@ -419,14 +425,19 @@ const toggleDefault = Toggle({ selector: '.toggle' });
             <td>Toggles the state of the element and any target elements.</td>
           </tr>
           <tr>
-            <td><code>instance.toggleState()</code></td>
+            <td><code>instance.set(state)</code></td>
+            <td>Method</td>
+            <td>Sets the state of the element and any target elements.</td>
+          </tr>
+          <tr>
+            <td><code>instance.toggleElement()</code></td>
             <td>Method</td>
             <td>Toggles the state of the element.</td>
           </tr>
           <tr>
-            <td><code>instance.setState()</code></td>
+            <td><code>instance.setElement(state)</code></td>
             <td>Method</td>
-            <td>Sets the element state.</td>
+            <td>Sets the state of the element.</td>
           </tr>
           <tr>
             <td><code>instance['element']</code></td>
@@ -480,7 +491,7 @@ const toggleDefault = Toggle({ selector: '.toggle' });
           <p>Clone or download from Github.</p>
 
 <pre><code>$ npm install
-$ gulp serve
+$ npm run dev
 </code></pre>
 
         </div>

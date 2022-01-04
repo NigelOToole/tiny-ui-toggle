@@ -1,7 +1,7 @@
 {
   "name": "tiny-ui-toggle",
   "description": "Toggle the state of a UI element to easily create components e.g. collapse, accordion, tabs, dropdown, dialog/modal.",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "main": "src/scripts/tiny-ui-toggle-umd.js",
   "esnext": "src/scripts/tiny-ui-toggle.js",
   "repository": {

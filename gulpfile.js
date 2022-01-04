@@ -11,8 +11,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const paths = {
   src: 'src',
-  dest: 'docs',
-  tmp: '.tmp'
+  dest: 'docs'
 };
 
 
@@ -51,13 +50,12 @@ exports.scripts = scripts;
 
 
 // ----- Serve tasks ------
-function startAppServer() {
+function startServer() {
   server.init({
     port: 9000,
     notify: false,
     ghostMode: false,
     server: {
-      // baseDir: [`${paths.tmp}`, `${paths.src}`],
       baseDir: [`${paths.src}`],
       routes: {
         '/node_modules': 'node_modules'
@@ -77,21 +75,21 @@ function startAppServer() {
 const compile = series(clean, parallel(styles, scripts));
 exports.compile = compile;
 
-const serve = series(compile, startAppServer);
+const serve = series(compile, startServer);
 exports.serve = serve;
 
 
 
 // ----- Build tasks ------
 function moveFiles() {
-  return src([`${paths.tmp}/**/*.{html,css,js}`, `${paths.src}/**/*.{html,css,js,jpg,gif,png,webp,mp4,webm}`])
+  return src([`${paths.src}/**/*.{html,css,js,jpg,gif,png,webp,mp4,webm}`])
     .pipe(dest(`${paths.dest}`));
 };
 exports.moveFiles = moveFiles;
 
 
 function clean() {
-  return del([`${paths.tmp}`, `${paths.dest}`])
+  return del([`${paths.dest}`])
 };
 exports.clean = clean;
 

@@ -10,6 +10,7 @@
   @param {string} textInactive - Text of element when it is inactive.
   @param {boolean} closeAuto - Automatically close the target element after a timeout or a click outside the element.
   @param {integer(ms)} closeDelay - Delay in auto closing an element when it is not focused.
+  @param {boolean} closeOnEscape - Close the target element when the escape key is pressed.
   @param {boolean} openAuto - Automatically open the target element on hover.
 */
 
@@ -24,6 +25,7 @@ const Toggle = function(options) {
 		textInactive: '',
 		closeAuto: false,
 		closeDelay: 500,
+		closeOnEscape: false,
 		openAuto: false
 	}
 
@@ -51,7 +53,7 @@ const Toggle = function(options) {
 		return transitionDuration;
 	};
 
-	const convertBooleanString = function (string) {
+	const convertBooleanToString = function (string) {
 	  if (string.toLowerCase() === 'true') return true;
 	  else if (string.toLowerCase() === 'false') return false;
 		else return string;
@@ -69,7 +71,6 @@ const Toggle = function(options) {
 		if (!element.toggle.textActive || !element.toggle.textInactive) return;
 
 		let toggleTextElement = (element.querySelector('.toggle-text') !== null) ? element.querySelector('.toggle-text') : element;
-
 		toggleTextElement.innerHTML = element.toggle.active ? element.toggle.textActive : element.toggle.textInactive;
 	};
 
@@ -140,6 +141,7 @@ const Toggle = function(options) {
 		else {
 			transitionDuration = getTransitionDuration(element);
 			if (element.toggle.animateHeight) animateElementHeight(element, transitionDuration);
+			if (element.toggle.active) element.focus();
 		}
 	
 
@@ -154,7 +156,8 @@ const Toggle = function(options) {
 		}, transitionDuration);
 	};
 
-  const setStateBoth = function (state, trigger, target) {
+  const setStateBoth = function (state, trigger = elementNode, target = undefined) {
+		if (target === undefined) target = trigger.toggle.target[0];
 		setState(state, trigger);
 		setState(state, target);
   };
@@ -215,17 +218,20 @@ const Toggle = function(options) {
 		toggleStateBoth(elementNode);
 	};
 
+
   const addEventListeners = function() {
 		elementNode.toggle.events = { clickTrigger };
 		elementNode.addEventListener('click', elementNode.toggle.events.clickTrigger);
 
+		let targetFirst = elementNode.toggle.target.length ? elementNode.toggle.target[0] : undefined;
+
 		if (elementNode.toggle.openAuto) {
-			elementNode.toggle.events['mouseenterOpenAuto'] = () => setStateBoth(true, elementNode, elementNode.toggle.target[0]);
-			elementNode.addEventListener('mouseenter', elementNode.toggle.events.mouseenterOpenAuto);
+			elementNode.toggle.events['mouseenterOpenAuto'] = () => setStateBoth(true, elementNode, targetFirst);
+			elementNode.addEventListener('mouseenter', elementNode.toggle.events['mouseenterOpenAuto']);
 		}
 
 		if (elementNode.toggle.closeAuto || elementNode.toggle.openAuto) {
-			addMouseEventListeners(elementNode, elementNode, elementNode.toggle.target[0]);
+			addMouseEventListeners(elementNode, elementNode, targetFirst);
 
 			for (const item of elementNode.toggle.target) {
 				addMouseEventListeners(item, elementNode, item);
@@ -233,27 +239,29 @@ const Toggle = function(options) {
 
 			document.addEventListener('click', function(event) {
 				let clickInsideTrigger = elementNode.contains(event.target);
-				let clickInsideTarget = elementNode.toggle.target[0].contains(event.target);
+				let clickInsideTarget = targetFirst.contains(event.target);
 
-				if (!clickInsideTrigger && !clickInsideTarget) setStateBoth(false, elementNode, elementNode.toggle.target[0]);
+				if (!clickInsideTrigger && !clickInsideTarget) setStateBoth(false, elementNode, targetFirst);
 			});
 		}
+
+		if (targetFirst && targetFirst.toggle.closeOnEscape || targetFirst && targetFirst.toggle.isDialog) {
+			targetFirst.toggle.events['escape'] = (event) => {
+				if (event.keyCode === 27) setStateBoth(false, elementNode, targetFirst);
+			};
+			targetFirst.addEventListener('keydown', targetFirst.toggle.events['escape']);
+		}		
   };
 
-  const removeEventListeners = function() {
-		elementNode.removeEventListener('click', elementNode.toggle.events.clickTrigger);
+  const removeEventListeners = function(element = elementNode) {
+		element.removeEventListener('click', element.toggle.events.clickTrigger);
 
-		if (elementNode.toggle.openAuto) elementNode.removeEventListener('mouseenter', elementNode.toggle.events.mouseenterOpenAuto);
+		element.removeEventListener('mouseenter', element.toggle.events.mouseenterOpenAuto);
 
-		if (elementNode.toggle.closeAuto || elementNode.toggle.openAuto) {
-			elementNode.removeEventListener('mouseover', elementNode.toggle.events.mouseoverCloseAuto);
-			elementNode.removeEventListener('mouseleave', elementNode.toggle.events.mouseleaveCloseAuto);
+		element.removeEventListener('mouseover', element.toggle.events.mouseoverCloseAuto);
+		element.removeEventListener('mouseleave', element.toggle.events.mouseleaveCloseAuto);
 
-			for (const item of elementNode.toggle.target) {
-				item.removeEventListener('mouseover', item.toggle.events.mouseoverCloseAuto);
-				item.removeEventListener('mouseleave', item.toggle.events.mouseleaveCloseAuto);
-			};
-		}
+		element.removeEventListener('keydown', element.toggle.events.escape);
   };
 
 
@@ -277,19 +285,19 @@ const Toggle = function(options) {
 
 		for (const item in datasetOptions) {
 			if (item.startsWith('toggle')) {
-				let datasetProp = item.substr(6);
-				datasetProp = datasetProp.charAt(0).toLowerCase() + datasetProp.slice(1);
-				element.toggle[`${datasetProp}`] = convertBooleanString(datasetOptions[item]);
+				let datasetProp = item.substring(6);
+				datasetProp = datasetProp.charAt(0).toLowerCase() + datasetProp.substring(1);
+				element.toggle[`${datasetProp}`] = convertBooleanToString(datasetOptions[item]);
 			} 
 		};
 
 		element.toggle.type = ('toggleTarget' in element.dataset) ? 'trigger' : 'target'
 		element.toggle.active = element.classList.contains(element.toggle.activeClass);
+		element.toggle.events = {};
 
 		if (element.toggle.type === 'trigger') {
 			element.toggle.target = getTarget(element, element.dataset['toggleTarget']);
 			element.toggle.group = document.querySelectorAll(`${element.dataset['toggleGroup']}, [data-toggle-group='${element.dataset['toggleGroup']}']`);
-			element.toggle.events = {};
 			element.toggle.isInsideTarget = (element.toggle.target.length === 1) ? element.toggle.target[0].contains(element) : false;
 		}
 
@@ -302,9 +310,11 @@ const Toggle = function(options) {
 
 
   const setup = function() {
+		if (elementNode.toggle !== undefined) removeEventListeners();
 		assignProps(elementNode);
 
 		for (const item of elementNode.toggle.target) {
+			if (item.toggle !== undefined) removeEventListeners(item);
 			assignProps(item, elementNode);
 		};
 
@@ -315,7 +325,6 @@ const Toggle = function(options) {
     elementNode = (typeof options.selector === 'string') ? document.querySelector(options.selector) : options.selector;
     if (elementNode === null) return;
 
-		if (elementNode.toggle !== undefined) removeEventListeners();
     setup();
   };
 
@@ -325,8 +334,9 @@ const Toggle = function(options) {
   // API
   return {
 		toggle: toggleStateBoth,
-		toggleState,
-		setState,
+		set: setStateBoth,
+		toggleElement: toggleState,
+		setElement: setState,
     element: { element: elementNode, ...elementNode.toggle }
   };
 

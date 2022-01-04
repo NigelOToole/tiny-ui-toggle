@@ -42,6 +42,7 @@
     @param {string} textInactive - Text of element when it is inactive.
     @param {boolean} closeAuto - Automatically close the target element after a timeout or a click outside the element.
     @param {integer(ms)} closeDelay - Delay in auto closing an element when it is not focused.
+    @param {boolean} closeOnEscape - Close the target element when the escape key is pressed.
     @param {boolean} openAuto - Automatically open the target element on hover.
   */
   var Toggle = function Toggle(options) {
@@ -55,6 +56,7 @@
       textInactive: '',
       closeAuto: false,
       closeDelay: 500,
+      closeOnEscape: false,
       openAuto: false
     };
     options = _objectSpread(_objectSpread({}, defaults), options);
@@ -76,7 +78,7 @@
       return transitionDuration;
     };
 
-    var convertBooleanString = function convertBooleanString(string) {
+    var convertBooleanToString = function convertBooleanToString(string) {
       if (string.toLowerCase() === 'true') return true;else if (string.toLowerCase() === 'false') return false;else return string;
     }; // Methods
 
@@ -159,6 +161,7 @@
       } else {
         transitionDuration = getTransitionDuration(element);
         if (element.toggle.animateHeight) animateElementHeight(element, transitionDuration);
+        if (element.toggle.active) element.focus();
       }
 
       toggleAria(element, element.toggle.active);
@@ -172,7 +175,10 @@
       }, transitionDuration);
     };
 
-    var setStateBoth = function setStateBoth(state, trigger, target) {
+    var setStateBoth = function setStateBoth(state) {
+      var trigger = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : elementNode;
+      var target = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
+      if (target === undefined) target = trigger.toggle.target[0];
       setState(state, trigger);
       setState(state, target);
     }; // Toggles the elements state
@@ -274,17 +280,18 @@
         clickTrigger: clickTrigger
       };
       elementNode.addEventListener('click', elementNode.toggle.events.clickTrigger);
+      var targetFirst = elementNode.toggle.target.length ? elementNode.toggle.target[0] : undefined;
 
       if (elementNode.toggle.openAuto) {
         elementNode.toggle.events['mouseenterOpenAuto'] = function () {
-          return setStateBoth(true, elementNode, elementNode.toggle.target[0]);
+          return setStateBoth(true, elementNode, targetFirst);
         };
 
-        elementNode.addEventListener('mouseenter', elementNode.toggle.events.mouseenterOpenAuto);
+        elementNode.addEventListener('mouseenter', elementNode.toggle.events['mouseenterOpenAuto']);
       }
 
       if (elementNode.toggle.closeAuto || elementNode.toggle.openAuto) {
-        addMouseEventListeners(elementNode, elementNode, elementNode.toggle.target[0]);
+        addMouseEventListeners(elementNode, elementNode, targetFirst);
 
         var _iterator4 = _createForOfIteratorHelper(elementNode.toggle.target),
             _step4;
@@ -303,37 +310,27 @@
         ;
         document.addEventListener('click', function (event) {
           var clickInsideTrigger = elementNode.contains(event.target);
-          var clickInsideTarget = elementNode.toggle.target[0].contains(event.target);
-          if (!clickInsideTrigger && !clickInsideTarget) setStateBoth(false, elementNode, elementNode.toggle.target[0]);
+          var clickInsideTarget = targetFirst.contains(event.target);
+          if (!clickInsideTrigger && !clickInsideTarget) setStateBoth(false, elementNode, targetFirst);
         });
+      }
+
+      if (targetFirst && targetFirst.toggle.closeOnEscape || targetFirst && targetFirst.toggle.isDialog) {
+        targetFirst.toggle.events['escape'] = function (event) {
+          if (event.keyCode === 27) setStateBoth(false, elementNode, targetFirst);
+        };
+
+        targetFirst.addEventListener('keydown', targetFirst.toggle.events['escape']);
       }
     };
 
     var removeEventListeners = function removeEventListeners() {
-      elementNode.removeEventListener('click', elementNode.toggle.events.clickTrigger);
-      if (elementNode.toggle.openAuto) elementNode.removeEventListener('mouseenter', elementNode.toggle.events.mouseenterOpenAuto);
-
-      if (elementNode.toggle.closeAuto || elementNode.toggle.openAuto) {
-        elementNode.removeEventListener('mouseover', elementNode.toggle.events.mouseoverCloseAuto);
-        elementNode.removeEventListener('mouseleave', elementNode.toggle.events.mouseleaveCloseAuto);
-
-        var _iterator5 = _createForOfIteratorHelper(elementNode.toggle.target),
-            _step5;
-
-        try {
-          for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-            var item = _step5.value;
-            item.removeEventListener('mouseover', item.toggle.events.mouseoverCloseAuto);
-            item.removeEventListener('mouseleave', item.toggle.events.mouseleaveCloseAuto);
-          }
-        } catch (err) {
-          _iterator5.e(err);
-        } finally {
-          _iterator5.f();
-        }
-
-        ;
-      }
+      var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : elementNode;
+      element.removeEventListener('click', element.toggle.events.clickTrigger);
+      element.removeEventListener('mouseenter', element.toggle.events.mouseenterOpenAuto);
+      element.removeEventListener('mouseover', element.toggle.events.mouseoverCloseAuto);
+      element.removeEventListener('mouseleave', element.toggle.events.mouseleaveCloseAuto);
+      element.removeEventListener('keydown', element.toggle.events.escape);
     };
 
     var getTarget = function getTarget(element, selector) {
@@ -357,20 +354,20 @@
 
       for (var item in datasetOptions) {
         if (item.startsWith('toggle')) {
-          var datasetProp = item.substr(6);
-          datasetProp = datasetProp.charAt(0).toLowerCase() + datasetProp.slice(1);
-          element.toggle["".concat(datasetProp)] = convertBooleanString(datasetOptions[item]);
+          var datasetProp = item.substring(6);
+          datasetProp = datasetProp.charAt(0).toLowerCase() + datasetProp.substring(1);
+          element.toggle["".concat(datasetProp)] = convertBooleanToString(datasetOptions[item]);
         }
       }
 
       ;
       element.toggle.type = 'toggleTarget' in element.dataset ? 'trigger' : 'target';
       element.toggle.active = element.classList.contains(element.toggle.activeClass);
+      element.toggle.events = {};
 
       if (element.toggle.type === 'trigger') {
         element.toggle.target = getTarget(element, element.dataset['toggleTarget']);
         element.toggle.group = document.querySelectorAll("".concat(element.dataset['toggleGroup'], ", [data-toggle-group='").concat(element.dataset['toggleGroup'], "']"));
-        element.toggle.events = {};
         element.toggle.isInsideTarget = element.toggle.target.length === 1 ? element.toggle.target[0].contains(element) : false;
       }
 
@@ -382,20 +379,22 @@
     };
 
     var setup = function setup() {
+      if (elementNode.toggle !== undefined) removeEventListeners();
       assignProps(elementNode);
 
-      var _iterator6 = _createForOfIteratorHelper(elementNode.toggle.target),
-          _step6;
+      var _iterator5 = _createForOfIteratorHelper(elementNode.toggle.target),
+          _step5;
 
       try {
-        for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
-          var item = _step6.value;
+        for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+          var item = _step5.value;
+          if (item.toggle !== undefined) removeEventListeners(item);
           assignProps(item, elementNode);
         }
       } catch (err) {
-        _iterator6.e(err);
+        _iterator5.e(err);
       } finally {
-        _iterator6.f();
+        _iterator5.f();
       }
 
       ;
@@ -405,7 +404,6 @@
     var init = function init() {
       elementNode = typeof options.selector === 'string' ? document.querySelector(options.selector) : options.selector;
       if (elementNode === null) return;
-      if (elementNode.toggle !== undefined) removeEventListeners();
       setup();
     };
 
@@ -413,8 +411,9 @@
 
     return {
       toggle: toggleStateBoth,
-      toggleState: toggleState,
-      setState: setState,
+      set: setStateBoth,
+      toggleElement: toggleState,
+      setElement: setState,
       element: _objectSpread({
         element: elementNode
       }, elementNode.toggle)
@@ -426,20 +425,20 @@
   var toggleAutoInit = function toggleAutoInit() {
     var toggleElements = document.querySelectorAll('.toggle');
 
-    var _iterator7 = _createForOfIteratorHelper(toggleElements),
-        _step7;
+    var _iterator6 = _createForOfIteratorHelper(toggleElements),
+        _step6;
 
     try {
-      for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
-        var item = _step7.value;
+      for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+        var item = _step6.value;
         Toggle({
           selector: item
         });
       }
     } catch (err) {
-      _iterator7.e(err);
+      _iterator6.e(err);
     } finally {
-      _iterator7.f();
+      _iterator6.f();
     }
 
     ;
