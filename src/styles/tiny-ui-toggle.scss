@@ -8,39 +8,44 @@
 
 .toggle-panel {
   transition: all .5s ease-out;
-
-  // Closed
-  height: 0;
   overflow: hidden;
 
+  &:where(:not(details)) {
+    height: 0;
+  }
+
+  // Closed
+  &:where(:not(.is-active):not(.is-anim):not(details)) {
+    display: none;
+  }
+
   // Opening, Open, Closing
-  &.is-active, &.is-anim {
+  &:where(.is-active, .is-anim) {
   }
 
   // Opening
-  &.is-active.is-anim {
+  &:where(.is-active.is-anim) {
   }
 
   // Open
-  &.is-active:not(.is-anim) {
+  &:where(.is-active:not(.is-anim)) {
     height: auto;
     overflow: visible;
   }
 
   // Closing
-  &.is-anim:not(.is-active) {
+  &:where(.is-anim:not(.is-active)) {
   }
 }
 
-details.toggle-panel {
-  height: auto;
-}
 
 .toggle-panel--partial {
+  display: block;
   height: calc(2.5em + .75rem);
 }
 
 .toggle-panel--opacity {
+  display: block;
   opacity: 0;
   height: auto;
 

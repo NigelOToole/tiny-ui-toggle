@@ -89,7 +89,8 @@
         'aria-checked': state,
         'aria-expanded': state,
         'aria-selected': state,
-        'aria-pressed': state
+        'aria-pressed': state,
+        'tabindex': state ? 0 : -1
       };
       Object.keys(ariaAttributes).forEach(function (key) {
         return element.hasAttribute(key) && element.setAttribute(key, ariaAttributes[key]);
@@ -192,14 +193,33 @@
 
     var toggleStateBoth = function toggleStateBoth() {
       var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : elementNode;
-      toggleState(element);
 
-      var _iterator = _createForOfIteratorHelper(element.toggle.target),
+      var _iterator = _createForOfIteratorHelper(element.toggle.group),
           _step;
 
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var target = _step.value;
+          var item = _step.value;
+
+          if (item !== element && item !== element.toggle.target[0]) {
+            setState(false, item);
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      ;
+      toggleState(element);
+
+      var _iterator2 = _createForOfIteratorHelper(element.toggle.target),
+          _step2;
+
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var target = _step2.value;
           toggleState(target);
 
           var _iterator3 = _createForOfIteratorHelper(target.toggle.trigger),
@@ -220,25 +240,6 @@
           }
 
           ;
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-
-      ;
-
-      var _iterator2 = _createForOfIteratorHelper(element.toggle.group),
-          _step2;
-
-      try {
-        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-          var item = _step2.value;
-
-          if (item !== element && item !== element.toggle.target[0]) {
-            setState(false, item);
-          }
         }
       } catch (err) {
         _iterator2.e(err);

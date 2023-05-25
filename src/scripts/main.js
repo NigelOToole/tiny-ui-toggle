@@ -24,7 +24,7 @@ const toggleDropdown = Toggle({ selector: '#demo-btn-dropdown', closeAuto: true,
 // Manually set state - used by the toggle panel only demo
 document.querySelector('#demo-btn-self').addEventListener('click', function(event) {
   event.preventDefault();
-  Toggle().toggleState(document.querySelector('#demo-panel-self'));
+  Toggle().toggleElement(document.querySelector('#demo-panel-self'));
 });
 
 

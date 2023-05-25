@@ -4,22 +4,25 @@
 
 .toggle-panel {
   transition: all 0.5s ease-out;
-  height: 0;
   overflow: hidden;
 }
-.toggle-panel.is-active:not(.is-anim) {
+.toggle-panel:where(:not(details)) {
+  height: 0;
+}
+.toggle-panel:where(:not(.is-active):not(.is-anim):not(details)) {
+  display: none;
+}
+.toggle-panel:where(.is-active:not(.is-anim)) {
   height: auto;
   overflow: visible;
 }
-details.toggle-panel {
-  height: auto;
-}
-
 .toggle-panel--partial {
+  display: block;
   height: calc(2.5em + 0.75rem);
 }
 
 .toggle-panel--opacity {
+  display: block;
   opacity: 0;
   height: auto;
 }

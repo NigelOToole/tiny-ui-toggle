@@ -63,7 +63,7 @@ const Toggle = function(options) {
 
 	// Methods
 	const toggleAria = function (element, state) {
-		const ariaAttributes = { 'aria-hidden': !state, 'aria-checked': state, 'aria-expanded': state, 'aria-selected': state, 'aria-pressed': state };
+		const ariaAttributes = { 'aria-hidden': !state, 'aria-checked': state, 'aria-expanded': state, 'aria-selected': state, 'aria-pressed': state, 'tabindex': state ? 0 : -1 };
 		Object.keys(ariaAttributes).forEach(key => element.hasAttribute(key) && element.setAttribute(key, ariaAttributes[key]));
 	};
 
@@ -169,7 +169,16 @@ const Toggle = function(options) {
 		setState(!element.toggle.active, element);
 	};
 
+
+
 	const toggleStateBoth = function (element = elementNode) {
+
+		for (const item of element.toggle.group) {
+			if(item !== element && item !== element.toggle.target[0]) {
+				setState(false, item);
+			}
+		};
+		
 		toggleState(element);
 
 		for (const target of element.toggle.target) {
@@ -181,12 +190,7 @@ const Toggle = function(options) {
 				}
 			};
 		};
-		
-		for (const item of element.toggle.group) {
-			if(item !== element && item !== element.toggle.target[0]) {
-				setState(false, item);
-			}
-		};
+
 	};
 
 
