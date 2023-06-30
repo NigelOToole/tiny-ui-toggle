@@ -141,7 +141,6 @@ const Toggle = function(options) {
 		else {
 			transitionDuration = getTransitionDuration(element);
 			if (element.toggle.animateHeight) animateElementHeight(element, transitionDuration);
-			if (element.toggle.active) element.focus();
 		}
 	
 
@@ -153,6 +152,12 @@ const Toggle = function(options) {
 		setTimeout(() => {
       fireEvent(element, 'toggle', { action: 'end', active: state });
 			element.classList.remove(element.toggle.animClass);
+
+			if(element.toggle.type === 'target') {
+				let firstFocusableElement = element.toggle.focusableElements[0];
+				if (element.toggle.active && firstFocusableElement !== null) firstFocusableElement.focus();
+			}
+
 		}, transitionDuration);
 	};
 
@@ -309,6 +314,7 @@ const Toggle = function(options) {
 			element.toggle.trigger === undefined ? element.toggle.trigger = [elementTrigger] : element.toggle.trigger.push(elementTrigger);
 			element.toggle.isDetails = (element.tagName === 'DETAILS' && element.querySelector('summary') !== null);
 			element.toggle.isDialog = element.tagName === 'DIALOG';
+			element.toggle.focusableElements = element.querySelectorAll(':is(input, button, input, select, textarea, details, [href], [tabindex]):not([disabled]):not([tabindex="-1"])');  
 		}
 	};
 
