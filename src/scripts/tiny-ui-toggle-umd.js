@@ -41,9 +41,10 @@
     @param {string} textActive - Text of element when it is active.
     @param {string} textInactive - Text of element when it is inactive.
     @param {boolean} closeAuto - Automatically close the target element after a timeout or a click outside the element.
-    @param {integer(ms)} closeDelay - Delay in auto closing an element when it is not focused.
+    @param {integer(ms)} closeAutoDelay - Delay in auto closing an element when it is not focused.
     @param {boolean} closeOnEscape - Close the target element when the escape key is pressed.
     @param {boolean} openAuto - Automatically open the target element on hover.
+    @param {boolean} focus - Trap the focus in the target element when it is active e.g. modal.
   */
   var Toggle = function Toggle(options) {
     var defaults = {
@@ -55,9 +56,10 @@
       textActive: '',
       textInactive: '',
       closeAuto: false,
-      closeDelay: 500,
+      closeAutoDelay: 500,
       closeOnEscape: false,
-      openAuto: false
+      openAuto: false,
+      focus: false
     };
     options = _objectSpread(_objectSpread({}, defaults), options);
     var elementNode;
@@ -131,6 +133,38 @@
             if (element.toggle.isDetails) element.removeAttribute('open');
           }
       }, transitionDuration);
+    }; // Trap focus for dialog type elements - https://codepen.io/vaskort/pen/LYpwjoj
+
+
+    var setupFocus = function setupFocus(element) {
+      var trap = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+      var focusableElements = element.toggle.focusableElements;
+      if (focusableElements.length === 0) return;
+      var firstFocusableElement = focusableElements[0];
+      var lastFocusableElement = focusableElements[focusableElements.length - 1];
+      var initFocus = document.activeElement;
+      var currentFocus = firstFocusableElement;
+      firstFocusableElement.focus();
+      if (!trap) return;
+
+      var handleFocus = function handleFocus(event) {
+        event.preventDefault();
+
+        if (focusableElements.includes(event.target)) {
+          currentFocus = event.target;
+        } else {
+          currentFocus === firstFocusableElement ? lastFocusableElement.focus() : firstFocusableElement.focus();
+          currentFocus = document.activeElement;
+        }
+      };
+
+      document.addEventListener('focus', handleFocus, true);
+      return {
+        releaseFocus: function releaseFocus() {
+          document.removeEventListener('focus', handleFocus, true);
+          initFocus.focus();
+        }
+      };
     }; // Sets the state of an element
 
 
@@ -171,11 +205,14 @@
           action: 'end',
           active: state
         });
-        element.classList.remove(element.toggle.animClass);
+        element.classList.remove(element.toggle.animClass); // Focus management
 
         if (element.toggle.type === 'target') {
-          var firstFocusableElement = element.toggle.focusableElements[0];
-          if (element.toggle.active && firstFocusableElement !== null) firstFocusableElement.focus();
+          if (element.toggle.focus) {
+            element.toggle.active ? element.toggle.events['focus'] = setupFocus(element) : element.toggle.events['focus'].releaseFocus();
+          } else {
+            if (element.toggle.active) setupFocus(element, false);
+          }
         }
       }, transitionDuration);
     };
@@ -261,7 +298,7 @@
     var closeAfterTimeout = function closeAfterTimeout(trigger, target) {
       closeTimeout = setTimeout(function () {
         setStateBoth(false, trigger, target);
-      }, trigger.toggle.closeDelay);
+      }, trigger.toggle.closeAutoDelay);
     };
 
     var addMouseEventListeners = function addMouseEventListeners(element, trigger, target) {
@@ -320,13 +357,32 @@
         });
       }
 
-      if (targetFirst && targetFirst.toggle.closeOnEscape || targetFirst && targetFirst.toggle.isDialog) {
-        targetFirst.toggle.events['escape'] = function (event) {
-          if (event.keyCode === 27) setStateBoth(false, elementNode, targetFirst);
+      var _iterator5 = _createForOfIteratorHelper(elementNode.toggle.target),
+          _step5;
+
+      try {
+        var _loop = function _loop() {
+          var item = _step5.value;
+
+          if (item.toggle.closeOnEscape || item.toggle.isDialog) {
+            item.toggle.events['escape'] = function (event) {
+              if (event.keyCode === 27) setStateBoth(false, elementNode, item);
+            };
+
+            item.addEventListener('keydown', item.toggle.events['escape']);
+          }
         };
 
-        targetFirst.addEventListener('keydown', targetFirst.toggle.events['escape']);
+        for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+          _loop();
+        }
+      } catch (err) {
+        _iterator5.e(err);
+      } finally {
+        _iterator5.f();
       }
+
+      ;
     };
 
     var removeEventListeners = function removeEventListeners() {
@@ -380,7 +436,7 @@
         element.toggle.trigger === undefined ? element.toggle.trigger = [elementTrigger] : element.toggle.trigger.push(elementTrigger);
         element.toggle.isDetails = element.tagName === 'DETAILS' && element.querySelector('summary') !== null;
         element.toggle.isDialog = element.tagName === 'DIALOG';
-        element.toggle.focusableElements = element.querySelectorAll(':is(input, button, input, select, textarea, details, [href], [tabindex]):not([disabled]):not([tabindex="-1"])');
+        element.toggle.focusableElements = Array.from(element.querySelectorAll(':is(input, button, select, textarea, details, [href], [tabindex]):not([disabled]):not([tabindex="-1"])'));
       }
     };
 
@@ -388,19 +444,19 @@
       if (elementNode.toggle !== undefined) removeEventListeners();
       assignProps(elementNode);
 
-      var _iterator5 = _createForOfIteratorHelper(elementNode.toggle.target),
-          _step5;
+      var _iterator6 = _createForOfIteratorHelper(elementNode.toggle.target),
+          _step6;
 
       try {
-        for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-          var item = _step5.value;
+        for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+          var item = _step6.value;
           if (item.toggle !== undefined) removeEventListeners(item);
           assignProps(item, elementNode);
         }
       } catch (err) {
-        _iterator5.e(err);
+        _iterator6.e(err);
       } finally {
-        _iterator5.f();
+        _iterator6.f();
       }
 
       ;
@@ -431,20 +487,20 @@
   var toggleAutoInit = function toggleAutoInit() {
     var toggleElements = document.querySelectorAll('.toggle');
 
-    var _iterator6 = _createForOfIteratorHelper(toggleElements),
-        _step6;
+    var _iterator7 = _createForOfIteratorHelper(toggleElements),
+        _step7;
 
     try {
-      for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
-        var item = _step6.value;
+      for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+        var item = _step7.value;
         Toggle({
           selector: item
         });
       }
     } catch (err) {
-      _iterator6.e(err);
+      _iterator7.e(err);
     } finally {
-      _iterator6.f();
+      _iterator7.f();
     }
 
     ;

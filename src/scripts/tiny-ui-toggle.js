@@ -9,9 +9,10 @@
   @param {string} textActive - Text of element when it is active.
   @param {string} textInactive - Text of element when it is inactive.
   @param {boolean} closeAuto - Automatically close the target element after a timeout or a click outside the element.
-  @param {integer(ms)} closeDelay - Delay in auto closing an element when it is not focused.
+  @param {integer(ms)} closeAutoDelay - Delay in auto closing an element when it is not focused.
   @param {boolean} closeOnEscape - Close the target element when the escape key is pressed.
   @param {boolean} openAuto - Automatically open the target element on hover.
+  @param {boolean} focus - Trap the focus in the target element when it is active e.g. modal.
 */
 
 const Toggle = function(options) {
@@ -24,9 +25,10 @@ const Toggle = function(options) {
 		textActive: '',
 		textInactive: '',
 		closeAuto: false,
-		closeDelay: 500,
+		closeAutoDelay: 500,
 		closeOnEscape: false,
-		openAuto: false
+		openAuto: false,
+		focus: false
 	}
 
 	options = {...defaults, ...options};
@@ -110,6 +112,43 @@ const Toggle = function(options) {
 	};
 
 
+	// Trap focus for dialog type elements - https://codepen.io/vaskort/pen/LYpwjoj
+	const setupFocus = (element, trap = true) => {
+		const focusableElements = element.toggle.focusableElements;
+		if (focusableElements.length === 0) return;
+		
+		const firstFocusableElement = focusableElements[0];
+		const lastFocusableElement = focusableElements[focusableElements.length - 1];
+		const initFocus = document.activeElement;	
+		let currentFocus = firstFocusableElement;
+
+		firstFocusableElement.focus();
+
+		if (!trap) return;
+
+		const handleFocus = event => {	
+			event.preventDefault();
+
+			if (focusableElements.includes(event.target)) {
+				currentFocus = event.target;
+			} 
+			else {
+				(currentFocus === firstFocusableElement) ? lastFocusableElement.focus() : firstFocusableElement.focus();
+				currentFocus = document.activeElement;
+			}
+		};
+
+		document.addEventListener('focus', handleFocus, true);
+
+		return {
+			releaseFocus: () => {
+				document.removeEventListener('focus', handleFocus, true);
+				initFocus.focus();
+			}
+		};
+	};
+	
+
 	// Sets the state of an element
 	const setState = function (state, element = elementNode) {
 		checkProps(element);
@@ -153,11 +192,15 @@ const Toggle = function(options) {
       fireEvent(element, 'toggle', { action: 'end', active: state });
 			element.classList.remove(element.toggle.animClass);
 
+			// Focus management
 			if(element.toggle.type === 'target') {
-				let firstFocusableElement = element.toggle.focusableElements[0];
-				if (element.toggle.active && firstFocusableElement !== null) firstFocusableElement.focus();
+				if (element.toggle.focus) {
+					element.toggle.active ? element.toggle.events['focus'] = setupFocus(element) : element.toggle.events['focus'].releaseFocus();
+				}
+				else {
+					if (element.toggle.active) setupFocus(element, false);
+				}
 			}
-
 		}, transitionDuration);
 	};
 
@@ -206,7 +249,7 @@ const Toggle = function(options) {
   const closeAfterTimeout = function (trigger, target) {
     closeTimeout = setTimeout(() => {
 			setStateBoth(false, trigger, target);
-    }, trigger.toggle.closeDelay);
+    }, trigger.toggle.closeAutoDelay);
   };
 
   const addMouseEventListeners = function(element, trigger, target) {
@@ -254,12 +297,16 @@ const Toggle = function(options) {
 			});
 		}
 
-		if (targetFirst && targetFirst.toggle.closeOnEscape || targetFirst && targetFirst.toggle.isDialog) {
-			targetFirst.toggle.events['escape'] = (event) => {
-				if (event.keyCode === 27) setStateBoth(false, elementNode, targetFirst);
-			};
-			targetFirst.addEventListener('keydown', targetFirst.toggle.events['escape']);
-		}		
+		for (const item of elementNode.toggle.target) {
+			if (item.toggle.closeOnEscape || item.toggle.isDialog) {
+				item.toggle.events['escape'] = (event) => {
+					if (event.keyCode === 27) setStateBoth(false, elementNode, item);
+				};
+
+				item.addEventListener('keydown', item.toggle.events['escape']);
+			}
+		};
+
   };
 
   const removeEventListeners = function(element = elementNode) {
@@ -314,7 +361,7 @@ const Toggle = function(options) {
 			element.toggle.trigger === undefined ? element.toggle.trigger = [elementTrigger] : element.toggle.trigger.push(elementTrigger);
 			element.toggle.isDetails = (element.tagName === 'DETAILS' && element.querySelector('summary') !== null);
 			element.toggle.isDialog = element.tagName === 'DIALOG';
-			element.toggle.focusableElements = element.querySelectorAll(':is(input, button, input, select, textarea, details, [href], [tabindex]):not([disabled]):not([tabindex="-1"])');  
+			element.toggle.focusableElements = Array.from(element.querySelectorAll(':is(input, button, select, textarea, details, [href], [tabindex]):not([disabled]):not([tabindex="-1"])'));  
 		}
 	};
 

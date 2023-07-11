@@ -231,9 +231,9 @@
 
           <div id="demo-panel-dropdown" class="toggle-panel toggle-panel--dropdown" aria-hidden="true">
             <div class="toggle-panel-content">
-              Action One<br>
-              Action Two<br>
-              Action Three
+              <a href="#">Action One</a><br>
+              <a href="#">Action Two</a><br>
+              <a href="#">Action Three</a>
             </div>
           </div>
         </div>
@@ -244,12 +244,13 @@
 
         <h3>Dialog/Modal</h3>
 
-        <button class="toggle toggle-btn" data-toggle-target="#demo-panel-dialog">Show dialog</button>
+        <p>This is a popup that appears over the page, the difference is that a modal takes complete priority over the page and prevents the user from interacting with the page until the modal is closed. A dialog should allow the user to interact with the page while the dialog is open. The native dialog element can be used as a dialog or modal with the appropriate configuration.</p>
 
-        <div id="demo-panel-dialog" class="toggle-dialog" data-toggle-animate-height="false" data-toggle-body-class="has-dialog" data-toggle-close-on-escape="true" tabindex="-1" aria-hidden="true" role="dialog">
+        <button class="toggle toggle-btn" data-toggle-target="#demo-panel-dialog">Show modal</button>
+
+        <div id="demo-panel-dialog" class="toggle-dialog" data-toggle-animate-height="false" data-toggle-body-class="has-dialog" data-toggle-close-on-escape="true" data-toggle-focus="true" aria-hidden="true" role="dialog" aria-modal="true">
           <div class="toggle-dialog-content">
             <button class="toggle toggle-btn is-active" data-toggle-target="#demo-panel-dialog">Close</button>
-
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
           </div>
 
@@ -260,14 +261,14 @@
 
         <button class="toggle toggle-btn" data-toggle-target="#demo-panel-dialog-native">Show native dialog</button>
 
-        <dialog id="demo-panel-dialog-native" class="toggle-dialog" data-toggle-animate-height="false" data-toggle-body-class="has-dialog" tabindex="-1">
+        <dialog id="demo-panel-dialog-native" class="toggle-dialog" data-toggle-animate-height="false">
           <div class="toggle-dialog-content">
             <button class="toggle toggle-btn is-active" data-toggle-target="#demo-panel-dialog-native">Close</button>
 
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
           </div>
 
-          <div class="toggle toggle-dialog-background" data-toggle-target="#demo-panel-dialog-native"></div>
+          <!-- <div class="toggle toggle-dialog-background" data-toggle-target="#demo-panel-dialog-native"></div> -->
         </dialog>
 
 
@@ -392,7 +393,7 @@ const toggleDefault = Toggle({ selector: '.toggle' });
             <td>Automatically close the target element after a timeout or a click outside the element.</td>
           </tr>
           <tr>
-            <td><code>closeDelay</code></td>
+            <td><code>closeAutoDelay</code></td>
             <td>500</td>
             <td>Integer(ms)</td>
             <td>Delay in auto closing an element when it is not focused.</td>
