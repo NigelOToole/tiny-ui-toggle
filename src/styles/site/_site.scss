@@ -115,15 +115,17 @@ a {
     margin-block-start: var(--flow-space, 1.5rem);
   }
 
-  // .flow :is(pre, pre + *, figure, figure + *, h2, h3, h4) {
+  // Large gap before headings
   .flow :is(h2, h3, h4) {
     --flow-space: var(--layout-space-lg);
   }
 
+  // Medium gap is a heading follows a heading
   .flow :is(h2 + h3, h3 + h4) {
     --flow-space: var(--layout-space-md);
   }
 
+  // Small gap directly after heading
   .flow :is(h2 + *, h3 + *, h4 + *) {
     --flow-space: var(--layout-space-sm);
   }
@@ -131,6 +133,13 @@ a {
   .group {
     display: flex;
     gap: var(--layout-space-md);
+
+    > * > *:first-child {
+      &, & > *:first-child {
+        min-width: 144px;
+        text-align: center;
+      }
+    }
   }
 
 
@@ -169,6 +178,13 @@ a {
     display: flex;
     gap: var(--layout-space-sm);
 
+    .btn {
+      @media (max-width: 575px) {
+        width: 50%;
+        --padding-block: var(--layout-space-xxs);
+      } 
+    } 
+
     @media (min-width: 768px) {
       margin-left: auto;
     }
@@ -195,6 +211,7 @@ a {
   --border-color-hover: var(--color-700);
 
   display: inline-flex;
+  justify-content: center;
   align-items: center;
   padding: var(--padding-block) var(--padding-inline);
   border: var(--border-size) solid var(--border-color);
@@ -204,6 +221,7 @@ a {
   color: var(--text-color);
   font-size: 1rem;
   text-decoration: none;
+  text-align: center;
   cursor: pointer;
 
   &:is(:hover, :focus, .is-active), a:hover & {
@@ -264,9 +282,6 @@ code {
 .table-outer {
   display: block;
   width: 100%;
-  // overflow-x: auto;
-  // overflow-inline: auto;
-  // border-block: 1px solid var(--color-500);
   border-inline: 2px solid var(--color-500);
 
   code {

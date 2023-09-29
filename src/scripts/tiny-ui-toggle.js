@@ -191,12 +191,14 @@ const Toggle = function(options) {
 		element.toggle.active = state;
 
 		element.classList.add(element.toggle.animClass);
+		element.getBoundingClientRect();
 
-		if (element.toggle.active && element.toggle.isDialog) {
-			element.style.display = getComputedStyle(element)['display']; 
-			element.getBoundingClientRect();
-			element.style.display = '';
-		}
+		// if (element.toggle.active && element.toggle.isDialog) {
+		// if (element.toggle.active && !element.toggle.animateHeight) {
+		// 	// element.style.display = getComputedStyle(element)['display']; 
+		// 	element.getBoundingClientRect(); 
+		// 	// element.style.display = '';
+		// }
 
 		element.classList.toggle(element.toggle.activeClass, element.toggle.active);
 

@@ -7,7 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <title>Tiny UI Toggle - Toggle the state of a UI element to easily create components e.g. collapse, accordion, tabs, dropdown, dialog / modal.</title>
+    <title>Tiny UI Toggle</title>
+    <meta name="description" content="Toggle the state of a UI element to easily create components e.g. collapse, accordion, tabs, dropdown, dialog / modal.">
 
     <link rel="stylesheet" href="styles/site.css">
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&family=Work+Sans&display=swap" rel="stylesheet">
@@ -262,9 +263,9 @@
             <button class="toggle" data-toggle-target="#demo-panel-dialog" data-toggle-animate-height="false">Show dialog</button>
             
             <dialog id="demo-panel-dialog" class="toggle-dialog">
-              <div class="toggle-dialog-content">
-                <button class="toggle is-reset" data-toggle-target="#demo-panel-dialog">&times;</button>
+              <button class="toggle is-reset" data-toggle-target="#demo-panel-dialog">&times;</button>
 
+              <div class="toggle-dialog-content">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.
               </div>
             </dialog>
@@ -294,7 +295,7 @@
 
           <section class="demo demo--popover">
 
-            <button class="toggle" data-toggle-target="#demo-panel-popover">Show popover</button>
+            <button class="toggle" data-toggle-target="#demo-panel-popover" data-toggle-animate-height="false">Show popover</button>
   
             <div id="demo-panel-popover" class="toggle-dialog" aria-hidden="true" popover>
               <div class="toggle-dialog-content">
@@ -310,7 +311,7 @@
           <section class="demo demo--tooltip">
   
             <div class="toggle-outer">
-              <button class="toggle" data-toggle-target="#demo-panel-tooltip" data-toggle-open-auto="true" data-toggle-close-auto="true">Show tooltip</button>
+              <button class="toggle" data-toggle-target="#demo-panel-tooltip" data-toggle-open-auto="true" data-toggle-close-auto="true" data-toggle-animate-height="false">Show tooltip</button>
   
               <div id="demo-panel-tooltip" class="toggle-tooltip" aria-hidden="true">
                 <div class="toggle-tooltip-content">

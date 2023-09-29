@@ -1,11 +1,12 @@
 :root {
   --toggle-transition-duration: .35s;
+  --toggle-transition-duration-sm: .15s;
   --toggle-transition-duration-close: var(--toggle-transition-duration);
 
   --toggle-padding-xs: .25rem;
   --toggle-padding-sm: .75rem;
   --toggle-padding-md: 1rem;
-  --toggle-padding-lg: 1.5rem;
+  --toggle-padding-lg: 2rem;
 
   --toggle-color: #0157ff;
   --toggle-background-color: #f5f8ff;
@@ -133,46 +134,45 @@ summary.toggle {
   z-index: 1000;
   transform-origin: 100% 0;
   will-change: scale;
+  transition-timing-function: cubic-bezier(.19,1,.22,1);
 
   &:where(:not(.is-active)) {
-    opacity: .5;
-    scale: (.5);
+    opacity: .25;
+    scale: (.25);
   }
 }
 
 
 
 // Dialog / Modal
+
+// Reset UA styles for dialog
+.toggle-dialog {
+  &:where(dialog, [popover]) {
+    margin: 0;
+    padding: 0; 
+    color: inherit; 
+    background: none;
+    border: none;
+  }
+}
+
 .toggle-dialog {
   --max-width: 480px;
   --max-height: 480px;
-  --toggle-transition-duration: .35s;
-  --toggle-transition-duration-close: .15s;
 
   position: fixed;
   z-index: 10000;
   inset: 0;
-  inset-inline-start: calc(50% - (var(--max-width)/2));
-  inset-block-start: calc(50% - (var(--max-height)/2));
-  width: auto;
-  height: auto;
-  max-width: var(--max-width);
-  max-height: var(--max-height);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  overflow: scroll;
-  overscroll-behavior: contain;
-
+  margin: auto;
+  width: fit-content;
+  height: fit-content;
   transition: all var(--toggle-transition-duration) ease-out;
 
   // Closed, Closing
   &:where(:not(.is-active)) {
     opacity: 0;
-    transition-duration: var(--toggle-transition-duration-close);
+    transition-duration: var(--toggle-transition-duration-sm);
   }
 
   // Closed
@@ -191,21 +191,17 @@ summary.toggle {
   &:where(:not(.is-active)) {
     > * {  
       animation-name: slideOutUp; 
-      animation-duration: var(--toggle-transition-duration-close);
+      animation-duration: var(--toggle-transition-duration-sm);
     }
   }
-
-  // Reset UA styles for dialog
-  &:where(dialog, [popover]) {
-    margin: 0;
-    padding: 0;  
-    background: none;
-    border: none;
-  }  
 }
 
   .toggle-dialog-content {
     position: relative;
+    overflow: scroll;
+    overscroll-behavior: contain;
+    max-width: var(--max-width);
+    max-height: var(--max-height);
   }
 
   .toggle-dialog[aria-modal='true']::after, .toggle-modal::after {
@@ -227,18 +223,14 @@ summary.toggle {
 
 
   .toggle-tooltip {
-    --toggle-transition-duration: 2.35s;
-    --toggle-transition-duration-close: .15s;
-  
     position: absolute;
-    top: -100%;
+    bottom: 100%;
     left: 0;
-    display: block;
     width: max-content;
+    transition: all var(--toggle-transition-duration-sm) ease-out;
   
     &:where(:not(.is-active)) {
       opacity: 0;
-      transition-duration: var(--toggle-transition-duration-close);
     }
   
     &:is(:not(.is-active):not(.is-anim)) {
