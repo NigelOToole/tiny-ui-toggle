@@ -61,7 +61,11 @@
       openAuto: false,
       focus: false
     };
-    options = _objectSpread(_objectSpread({}, defaults), options);
+    options = _objectSpread(_objectSpread({}, defaults), options); // Instead of having to use options.??? you can just use ???
+
+    var _options = options,
+        selector = _options.selector,
+        activeClass = _options.activeClass;
     var elementNode;
     var closeTimeout; // Utilities
 
@@ -464,6 +468,7 @@
     };
 
     var init = function init() {
+      console.log(selector, options.selector);
       elementNode = typeof options.selector === 'string' ? document.querySelector(options.selector) : options.selector;
       if (elementNode === null) return;
       setup();
