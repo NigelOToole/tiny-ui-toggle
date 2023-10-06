@@ -10,7 +10,7 @@
     <title>Tiny UI Toggle</title>
     <meta name="description" content="Toggle the state of a UI element to easily create components e.g. collapse, accordion, tabs, dropdown, dialog / modal.">
 
-    <link rel="stylesheet" href="styles/site.css">
+    <link rel="stylesheet" href="styles/main.css">
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&family=Work+Sans&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="styles/tiny-ui-toggle.css">
@@ -20,7 +20,6 @@
 
     <header class="header fullwidth fullwidth--sm">
       <div class="container">
-
         <h1 class="logo-text">Tiny UI Toggle</h1> 
 
         <nav class="header-links">
@@ -33,15 +32,19 @@
 
     <section class="fullwidth intro">
       <div class="container flow">
-        <h2>Toggle the state of a UI element to easily create components like collapse, accordion, tabs, dropdown and dialog/modal.</h2>
+        
+        <div class="page-heading-outer heading">
+          <h2 class="page-heading">Toggle the state of a UI element to easily create components like collapse, accordion, tabs, dropdown and dialog / modal.</h2>
+          <img src="images/logo.svg" class="logo" width="80" height="80" alt="Tiny UI Toggle logo">
+        </div>
 
         <h3>Features</h3>
-        <ul>
+        <ul class="list-columns">
           <li>Height animation</li>
           <li>Syncs the state of triggers and targets</li>
           <li>Open on hover, on click or through API</li>
           <li>Close on exit, click outside or through API</li>
-          <li>Supports native elements (details, dialog)</li>
+          <li>Supports native elements (details, dialog, popover)</li>
           <li>Toggles ARIA attributes</li>
           <li>Toggles text on the trigger element</li>
         </ul>
@@ -117,7 +120,6 @@
           </div>
   
         </section>
-
 
 
         <h3>Accordion</h3>
@@ -212,7 +214,7 @@
 
         <h3>Menu</h3>
 
-        <p>This has been initialisied with in the script and had styles added to transform the dropdown menus on large screens to a dropdown containing accordions on small screen. Resize the page to see the behaviour.</p>
+        <p>This example is setup so the dropdowns only close when you go outside of the whole menu box and styles have been added to transform the dropdowns to an  accordion on small screens.</p>
 
         <section class="demo demo--menu">
 
@@ -339,27 +341,25 @@
 
           <h2>Usage</h2>
 
-          <h3>Import JS</h3>
-
-          <p>The script is an ES module but the compiled version is included in the build as "src/scripts/tiny-ui-toggle-umd.js". You can also copy "src/scripts/tiny-ui-toggle.js" into your own site if your build process can accommodate ES modules.</p>
+          <h3>Import script</h3>
 
 <pre><code>import { Toggle, toggleAutoInit } from 'tiny-ui-toggle.js';
 
-// Initialize all elements with default options, these can be overridden by reinitializing or by data attributes on the element
+// Initialize all elements with default options, these can be overridden by reinitializing or by data attributes on the element.
 toggleAutoInit();
 
-// Initialize all elements manually which allows you to pass in custom options
+// Initialize all elements manually which allows you to pass in custom options.
 const toggleElements = document.querySelectorAll('.toggle');
 for (const item of toggleElements) {
   Toggle({ selector: item });
 };
 
-// Init with string - default setup for one instance
-const toggleDefault = Toggle({ selector: '.toggle' });
+// Initialize a single instance.
+const defaultToggle = Toggle({ selector: '.toggle' });
 </code></pre>
 
         <h3>Options</h3>
-        <p>The options can be set via initialization in the JS or by data attributes on the elements with the prefix 'toggle'. E.g. data-toggle-active-class="is-open". Data attributes will be given the higher priority.</p>
+        <p>The options can be set via initialization in the JS or by data attributes on the elements with the prefix 'toggle'. e.g. data-toggle-active-class="is-open". Data attributes will be given the higher priority.</p>
 
         <div class="table-outer">
         <table class="table">
@@ -494,17 +494,18 @@ const toggleDefault = Toggle({ selector: '.toggle' });
         </div>
 
 
-        <h3>Import Sass</h3>
+        <h3>Import styles</h3>
 
-<pre><code>@import "node_modules/tiny-ui-toggle/src/styles/tiny-ui-toggle.scss";</code></pre>
+        <p>The essential styles are in src/styles/tiny-ui-toggle.css with additional styles specific to the demos e.g. the menu demo in src/styles/site/demo.css.</p>
 
+<pre><code>@import "node_modules/tiny-ui-toggle/src/styles/tiny-ui-toggle.css";</code></pre>
 
 
         <h3>Markup</h3>
 
-<pre><code>&lt;button class="toggle" data-toggle-target="#demo-panel-single" aria-expanded="false"&gt;Open panel&lt;/button&gt;
+<pre><code>&lt;button class="toggle" data-toggle-target="#demo-panel-collapse" aria-expanded="false"&gt;Toggle panel&lt;/button&gt;
 
-&lt;div id="demo-panel-single" class="toggle-panel" aria-hidden="true"&gt;
+&lt;div id="demo-panel-collapse" class="toggle-panel" aria-hidden="true"&gt;
   ...
 &lt;/div&gt;
 </code></pre>
@@ -512,21 +513,21 @@ const toggleDefault = Toggle({ selector: '.toggle' });
 
           <h2>Events</h2>
 
-          <p>A 'toggle' event is started once an element is toggled. The event is ended once the element has changed state.</p>
+          <p>A toggle fires an event on each toggle state i.e. toggleOpening, toggleOpened, toggleClosing and toggleClosed. This can be observed on the element itself or the document.</p>
 
-<pre><code>document.querySelector('#demo-panel-single').addEventListener('toggle', (event) => { 
-  if (event.detail) console.log(`Action: ${event.detail.action}, Active: ${event.detail.active}`);
+<pre><code>document.querySelector('.toggle').addEventListener('toggleOpening', (event) => { 
+  console.log('Toggle Opening', event.target);
 });
 </code></pre>
 
 
           <h2>Compatibility</h2>
 
-          <p>Supports all modern browsers (Firefox, Chrome, Safari and Edge) released as of October 2021.</p>
+          <p>Supports all modern browsers at the time of release.</p>
 
 
           <h2>Demo site</h2>
-          <p>Clone or download from Github.</p>
+          <p>Clone the repo from Github and run the commands below.</p>
 
 <pre><code>$ npm install
 $ npm run dev

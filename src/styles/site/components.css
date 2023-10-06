@@ -1,0 +1,180 @@
+/* ----- Buttons ----- */
+.btn {
+  --padding-inline: var(--layout-space-sm);
+  --padding-block: var(--layout-space-xs);
+
+  --text-color: #fff;
+  --bg-color: var(--color-500);
+  --border-color: var(--color-500);
+  --border-size: 1px;
+
+  --text-color-hover: #fff;
+  --bg-color-hover: var(--color-700);
+  --border-color-hover: var(--color-700);
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--padding-block) var(--padding-inline);
+  border: var(--border-size) solid var(--border-color);
+  background-color: var(--bg-color);
+  transition: all .25s;
+
+  color: var(--text-color);
+  font-size: 1rem;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+
+  &:is(:hover, :focus, .is-active), a:hover & {
+    color: var(--text-color-hover);
+    background-color: var(--bg-color-hover);
+    border-color: var(--border-color-hover);
+  }
+}
+
+.btn--white-outline {
+  --text-color: #fff;
+  --bg-color: transparent;
+  --border-color: #fff;
+
+  --text-color-hover: var(--color-700);
+  --bg-color-hover: #fff;
+  --border-color-hover: #fff;
+}
+
+
+/* ----- Header and footer ----- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  color: #fff;
+  background-color: var(--color-500);
+  border-bottom: 1px solid #fff;
+
+  .container {
+    display: flex;
+    gap: var(--layout-space-sm);
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+}
+
+  .logo-text {
+    margin: 0;
+    color: #fff;
+  }
+
+  .header-links {
+    display: flex;
+    gap: var(--layout-space-sm);
+    margin-inline-start: auto;
+
+    @media (max-width: 575px) {
+      width: 100%;
+    }
+
+    .btn {
+      @media (max-width: 575px) {
+        width: 50%;
+        --padding-block: var(--layout-space-xxs);
+      } 
+    }
+  }
+
+
+.footer {
+  text-align: center;
+}
+
+
+/* Page heading */
+.page-heading-outer {
+  display: flex;
+  gap: var(--layout-space-md);
+  align-items: center;
+}
+
+  .page-heading {
+    text-wrap: pretty;
+  }
+
+  .list-columns {
+    @media (min-width: 576px) {
+      column-count: 2;
+      column-gap: var(--layout-space-md);
+    }
+
+    > * {
+      break-inside: avoid;
+      text-wrap: pretty;
+    }
+  }
+
+
+/* ----- Tables and code ----- */
+/* https://daverupert.com/2023/08/animation-timeline-scroll-shadows/, https://www.bram.us/2023/09/16/solved-by-css-scroll-driven-animations-detect-if-an-element-can-scroll-or-not/  */
+.table-outer, pre code {
+  animation: scroll-shadow-inset linear;
+  scroll-timeline: --scroll-timeline inline;
+  animation-timeline: --scroll-timeline;
+  overflow-x: auto;
+  overflow-inline: auto;
+  border: 1px solid var(--color-500);
+}
+
+@keyframes scroll-shadow-inset {
+  from {
+    box-shadow: inset -16px 0px 8px -8px rgb(0 0 0 / .15);
+  }  
+  40%, 60% {
+    box-shadow: inset 0 0px 8px -8px rgb(0 0 0 / .15), inset 8px 0px 8px -8px rgba(0, 0, 0, .15), inset -8px 0px 8px -8px rgba(0, 0, 0, .15);
+  }
+  to {
+    box-shadow: inset 16px 0px 8px -8px rgb(0 0 0 / .15);
+  }
+}
+
+code {
+  padding: .125rem;
+  background-color: var(--color-50);
+
+  pre & {
+    display: block;
+    padding: 1rem;
+    white-space: pre;
+  }
+}
+
+.table-outer {
+  display: block;
+  width: 100%;
+  border-inline: 2px solid var(--color-500);
+}
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: .5rem;
+      text-align: left;
+      vertical-align: top;
+      border: 1px solid var(--color-500);
+
+      &:first-child {
+        border-left: none;
+      }
+
+      &:last-child {
+        border-right: none;
+      }    
+    }
+
+    th {
+      background-color: var(--color-100);
+    }
+  }

@@ -18,7 +18,7 @@
   @param {boolean} focusTrap - Trap the focus in the target element when it is active e.g. modal.
 */
 
-const Toggle = function(options) {
+const Toggle = function (options) {
 
 	const defaults = {
 		selector: '.toggle',
@@ -42,6 +42,7 @@ const Toggle = function(options) {
 	let defaultOptions = {...defaults, ...options};
 
 	let element;
+	let elementDefault;
 	let closeTimeout;
 
 
@@ -106,7 +107,6 @@ const Toggle = function(options) {
 
 
 	// Methods
-	
 	const toggleAria = function (element) {
 		const ariaAttributes = { 'aria-hidden': !element.toggle.active, 'aria-checked': element.toggle.active, 'aria-expanded': element.toggle.active, 'aria-selected': element.toggle.active, 'aria-pressed': element.toggle.active, 'tabindex': element.toggle.active ? 0 : -1 };
 		Object.keys(ariaAttributes).forEach(key => element.hasAttribute(key) && element.setAttribute(key, ariaAttributes[key]));
@@ -184,7 +184,7 @@ const Toggle = function(options) {
 
 
 	// Sets the state of an element
-	const setState = async function (state, element) {
+	const setState = function (state, element = elementDefault) {
 		if (element.toggle.active === state) return;
 		clearTimeout(element.toggle.transitionTimeout); 
     fireEvent(element, getEventName(state, 'start'));
@@ -192,13 +192,6 @@ const Toggle = function(options) {
 
 		element.classList.add(element.toggle.animClass);
 		element.getBoundingClientRect();
-
-		// if (element.toggle.active && element.toggle.isDialog) {
-		// if (element.toggle.active && !element.toggle.animateHeight) {
-		// 	// element.style.display = getComputedStyle(element)['display']; 
-		// 	element.getBoundingClientRect(); 
-		// 	// element.style.display = '';
-		// }
 
 		element.classList.toggle(element.toggle.activeClass, element.toggle.active);
 
@@ -247,8 +240,13 @@ const Toggle = function(options) {
   };
 
 
-	// Toggles the elements state
-	const toggleState = function (element) {
+	// Toggles the state of an element
+	// const toggleState = function (element) {
+	// 	setState(!element.toggle.active, element);
+	// };	
+	
+	const toggleState = function (element = elementDefault) {
+		console.log(element, elementDefault);
 		setState(!element.toggle.active, element);
 	};
 
@@ -377,9 +375,6 @@ const Toggle = function(options) {
 
 
 	const assignProps = function (element, elementTrigger = undefined) {
-		// element.toggle = {...element.toggle, ...options};
-		// if (elementTrigger !== undefined) element.toggle = {...element.toggle, ...elementTrigger.toggle};
-
 		if (element.toggle === undefined) {
 			element.toggle = defaultOptions;
 			if (elementTrigger !== undefined) element.toggle = {...element.toggle, ...elementTrigger.toggle};
@@ -391,8 +386,7 @@ const Toggle = function(options) {
 		element.toggle.type = !elementTrigger ? 'trigger' : 'target';
 		element.toggle.active = element.classList.contains(element.toggle.activeClass);
 		element.toggle.events = {};
-		element.toggle.wrapper = getElement(element.toggle.wrapper);
-
+		
 
 		let datasetOptions = {...element.dataset};
 
@@ -408,6 +402,7 @@ const Toggle = function(options) {
 			element.toggle.target = getTarget();
 			element.toggle.isInsideTarget = (element.toggle.target.length === 1) ? element.toggle.target[0].contains(element) : false;
 			element.toggle.group = getElement(element.toggle.group, 'all', true);
+			element.toggle.wrapper = getElement(element.toggle.wrapper);
 		}
 
 		if (element.toggle.type === 'target') {
@@ -432,22 +427,22 @@ const Toggle = function(options) {
 	};
 
 
-  const setup = function() {
+  const setup = function(element, elementTrigger = undefined) {
 		if (element.toggle !== undefined) removeEventListeners(element);
-    assignProps(element);
-
-		for (const item of element.toggle.target) {
-			if (item.toggle !== undefined) removeEventListeners(item);
-			assignProps(item, element);
-		};
-
-		addEventListeners();
+    assignProps(element, elementTrigger);
   };
-
 
   const init = function() {
 		element = getElement(defaultOptions.selector);
-    if (element !== null) setup();
+    if (element === null) return;
+
+    setup(element);
+		for (const item of element.toggle.target) {
+			setup(item, element);
+		};
+
+		addEventListeners();
+		elementDefault = element;
   };
 
 	init();

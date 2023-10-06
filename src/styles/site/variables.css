@@ -1,0 +1,44 @@
+/* https://oklch-palette.vercel.app/#53.67,0.257,262.51,100, https://oklch.com/#53.67,0.257,262.51,100 */
+:root {
+  --color-50: oklch(97.89% 0.01 267.36);
+  --color-100: oklch(93.51% 0.031 263.52);
+  --color-200: oklch(79.69% 0.102 262.19);
+  --color-300: oklch(71% 0.151 262.38);
+  --color-400: oklch(62.26% 0.203 262.51);
+  --color-500: oklch(53.67% 0.257 262.51);
+  --color-600: oklch(47.18% 0.226 262.46);
+  --color-700: oklch(38.31% 0.185 262.52);
+  --color-800: oklch(29.19% 0.141 262.52);
+  --color-900: oklch(20.92% 0.101 262.51);
+
+  --color-accent: #28d1b4;
+
+  --layout-space-xxs: .25rem;
+  --layout-space-xs: .5rem;
+  --layout-space-sm: 1rem;
+  --layout-space-md: 2rem;
+  --layout-space-lg: 4rem;
+
+  --bg-grid-color: rgba(238, 238, 238, .5);
+  --bg-grid-line: 2px;
+  --bg-grid-box: 48px;
+}
+
+@supports not (background-color: oklch(0%, 0, 0)) {
+  :root {
+    /* --color-50: #f0f5ff; */
+    --color-50: #f5f8ff;
+    /* --color-100: #c5d9ff; */
+    --color-100: #dfeaff;
+    --color-200: #99bdff;
+    --color-300: #6d9fff;
+    --color-400: #3f7eff;
+    --color-500: #0157ff;
+    --color-600: #0048d7;
+    --color-700: #0034a3;
+    --color-800: #002170;
+    --color-900: #001145;
+
+    --color-accent: #28d1b4;
+  }
+}

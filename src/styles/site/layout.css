@@ -1,0 +1,57 @@
+.fullwidth {
+  --layout-space: var(--layout-space-md);
+
+  > .container {
+    padding-block: var(--layout-space);
+  }
+
+  &:not(.header) > .container {
+    background-color: #fff;
+    border-inline: calc(var(--bg-grid-line)/2) solid var(--bg-grid-color);
+  }
+}
+
+.fullwidth--sm {
+  --layout-space: var(--layout-space-sm);
+}
+
+  .container {
+    width: 100%;
+    max-width: 768px;
+    margin-inline: auto;
+    padding-inline: var(--layout-space-sm);
+  }
+
+
+  .flow > * + * {
+    margin-block-start: var(--flow-space, 1.5rem);
+  }
+
+  /* Large gap before headings */
+  .flow :is(h2, h3, h4) {
+    --flow-space: var(--layout-space-lg);
+  }
+
+  /* Medium gap if a heading follows a heading */
+  .flow :is(h2 + h3, h3 + h4, .heading + h2, .heading + h3) {
+    --flow-space: var(--layout-space-md);
+  }
+
+  /* Small gap directly after heading */
+  .flow :is(h2 + *, h3 + *, h4 + *, .heading + *) {
+    --flow-space: var(--layout-space-sm);
+  }
+
+  
+  .group {
+    display: flex;
+    gap: var(--layout-space-md);
+    flex-wrap: wrap;
+
+      > * > *:first-child {
+        &, & > *:first-child {
+          min-width: 144px;
+          text-align: center;
+        }
+      }
+  }

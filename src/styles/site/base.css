@@ -1,0 +1,63 @@
+body {
+  font-family: 'Work Sans', system-ui, sans-serif;
+  font-size: 1rem;
+  color: var(--color-700);
+  background-color: #fff;
+  background-image: repeating-linear-gradient(90deg, var(--bg-grid-color) 0, var(--bg-grid-color) var(--bg-grid-line), transparent 0, transparent 50%), repeating-linear-gradient(180deg, var(--bg-grid-color) 0, var(--bg-grid-color) var(--bg-grid-line), transparent 0, transparent 50%);
+  background-size: var(--bg-grid-box) var(--bg-grid-box);
+  background-position: calc(50% - (var(--bg-grid-line)/2)) top;
+}
+
+::selection {
+  color: #fff;
+  background-color: var(--color-700);
+}
+
+h1, h2, h3, h4, h5, h6, pre, code {
+  font-family: 'Source Code Pro', monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+}
+
+h1, h2, h3 {
+  letter-spacing: -.025em;
+}
+
+h1, h2 {
+  font-weight: 600;
+}
+
+h1 { font-size: 2.5rem; font-size: clamp(2rem, 1.5229rem + 2.0356vw, 2.5rem); }
+h2 { font-size: 2rem; font-size: clamp(1.5rem, 1.0229rem + 2.0356vw, 2rem); }
+h3 { font-size: 1.5rem; font-size: clamp(1.25rem, 1.0115rem + 1.0178vw, 1.5rem); }
+h4 { font-size: 1.25rem; font-size: clamp(1.125rem, 1.0057rem + 0.5089vw, 1.25rem); }
+h5 { font-size: 1rem; }
+h6 { font-size: 1rem; }
+
+p {
+
+}
+
+ul, ol {
+  padding-inline-start: var(--layout-space-sm);
+}
+
+a {
+  color: var(--color-500);
+  transition: color 0.3s;
+
+  &:hover, &:focus {
+    color: var(--color-700);
+  }
+
+  &:focus-within {
+    outline: 2px solid var(--color-500);
+  }
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}

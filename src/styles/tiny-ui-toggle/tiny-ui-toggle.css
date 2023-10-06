@@ -1,3 +1,4 @@
+/* Variables */
 :root {
   --toggle-transition-duration: .35s;
   --toggle-transition-duration-sm: .15s;
@@ -21,26 +22,12 @@
 }
 
 
+/* Essential styles */
 .toggle-outer {
   position: relative;
 }
 
-.toggle {
-  transition: all var(--toggle-transition-duration) ease-out;
-}
 
-summary.toggle {
-  &::marker {
-    content: '';
-  }
-}
-
-
-// Basic styling for toggle buttons and panels
-.toggle, .toggle-panel-content, .toggle-dialog-content, .toggle-tooltip-content {
-  padding: var(--toggle-padding-sm) var(--toggle-padding-md);
-  background-color: var(--toggle-background-color);
-}
 
 .toggle {
   color: var(--toggle-color);
@@ -49,15 +36,24 @@ summary.toggle {
   background-color: var(--toggle-background-color);
   border: none;
   cursor: pointer;
+  transition: all var(--toggle-transition-duration) ease-out;
 
   &:hover, &:focus {
     color: var(--toggle-color-hover);
     background-color: var(--toggle-background-color-hover);
   }
 
+  &:focus-visible {
+    outline: 2px solid var(--toggle-background-color-active);
+  }
+
   &.is-active:not(.is-reset)  {
     color: var(--toggle-color-active);
     background-color: var(--toggle-background-color-active);
+  }
+
+  &:where(summary)::marker {
+    content: '';
   }
 }
 
@@ -65,50 +61,59 @@ summary.toggle {
 
 .toggle-panel {
   transition: all var(--toggle-transition-duration) ease-out;
-  transition-timing-function: cubic-bezier(0.05, 0.7, 0.1, 1.0); // Emphasized decelerate
-  // transition-timing-function: cubic-bezier(0, 0, 0, 1); // Standard decelerate 
+  /* Emphasized decelerate */
+  transition-timing-function: cubic-bezier(.05, .7, .1, 1); 
+  /* Standard decelerate */
+  /* transition-timing-function: cubic-bezier(0, 0, 0, 1);  */
   overflow: hidden;
 
   &:where(:not(details)) {
     height: 0; 
   }
 
-  // Closing, Closed
-  // Other animations e.g. opacity and closing transitions can be added here
+  /* Closing, Closed */
+  /* Other animations e.g. opacity and closing transitions can be added here */
   &:where(:not(.is-active)) {
     transition-duration: var(--toggle-transition-duration-close);
   } 
 
-  // Closed
+  /* Closed */
   &:where(:not(.is-active):not(.is-anim):not(details)) {
     display: none; 
   }
 
-  // Opening, Open, Closing
+  /* Opening, Open, Closing */
   &:where(.is-active, .is-anim) {
   }
 
-  // Opening
+  /* Opening */
   &:where(.is-active.is-anim) {
   }
 
-  // Open
+  /* Open */
   &:where(.is-active:not(.is-anim)) {
     height: auto;
     overflow: visible;
   }
   
-  // Opening, Open
+  /* Opening, Open */
   &:where(.is-active) {
   }
 
-  // Closing
+  /* Closing */
   &:where(.is-anim:not(.is-active)) {
   }
 }
 
 
-// Animation variants
+/* Basic styling for toggle buttons and panels */
+.toggle, .toggle-panel-content, .toggle-dialog-content, .toggle-tooltip-content {
+  padding: var(--toggle-padding-sm) var(--toggle-padding-md);
+  background-color: var(--toggle-background-color);
+}
+
+
+/* Animation variants */
 .toggle-panel--partial {
   display: block;
   height: calc(2.5em + .75rem);
@@ -126,7 +131,7 @@ summary.toggle {
 }
 
 
-// Dropdown
+/* Dropdown */
 .toggle-panel--dropdown {
   position: absolute;
   top: 100%;
@@ -144,9 +149,9 @@ summary.toggle {
 
 
 
-// Dialog / Modal
+/* Dialog / Modal */
 
-// Reset UA styles for dialog
+/* Reset UA styles for dialog */
 .toggle-dialog {
   &:where(dialog, [popover]) {
     margin: 0;
@@ -169,25 +174,25 @@ summary.toggle {
   height: fit-content;
   transition: all var(--toggle-transition-duration) ease-out;
 
-  // Closed, Closing
+  /* Closed, Closing */
   &:where(:not(.is-active)) {
     opacity: 0;
     transition-duration: var(--toggle-transition-duration-sm);
   }
 
-  // Closed
-  &:is(:not(.is-active):not(.is-anim)) {
+  /* Closed */
+  &:where(:not(.is-active):not(.is-anim)) {
     display: none;
   }
 
-  // Optional animation on dialog content
+  /* Optional animation on dialog content */
   > * {
     animation-name: slideInUp;
     animation-duration: var(--toggle-transition-duration);
     animation-fill-mode: forwards;
   }
 
-  // Closed, Closing
+  /* Closed, Closing */
   &:where(:not(.is-active)) {
     > * {  
       animation-name: slideOutUp; 
