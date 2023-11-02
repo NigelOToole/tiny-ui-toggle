@@ -1,5 +1,6 @@
 /* https://oklch-palette.vercel.app/#53.67,0.257,262.51,100, https://oklch.com/#53.67,0.257,262.51,100 */
 :root {
+  /* Colours */
   --color-50: oklch(97.89% 0.01 267.36);
   --color-100: oklch(93.51% 0.031 263.52);
   --color-200: oklch(79.69% 0.102 262.19);
@@ -11,15 +12,42 @@
   --color-800: oklch(29.19% 0.141 262.52);
   --color-900: oklch(20.92% 0.101 262.51);
 
-  --color-accent: #28d1b4;
+  --color-accent-500: oklch(77.31% 0.136 177.29);
+  --color-accent-700: oklch(50.9% 0.094 177.27);
+  
+  /* Type */
+  --sans-serif-font-family: system-ui, Arial, sans-serif;
+  --serif-font-family: 'Times New Roman', Times, serif;
+  --body-font-family: 'Work Sans', var(--sans-serif-font-family);
+  --heading-font-family: 'Source Code Pro', var(--sans-serif-font-family);
 
-  --layout-space-xxs: .25rem;
-  --layout-space-xs: .5rem;
-  --layout-space-sm: 1rem;
-  --layout-space-md: 2rem;
-  --layout-space-lg: 4rem;
+  --text-color: var(--color-700);
+  --link-color: var(--color-500);
+  --link-color-hover: var(--color-700);
 
-  --bg-grid-color: rgba(238, 238, 238, .5);
+  /* Layout */
+  --layout-breakpoint-xs: 0;
+  --layout-breakpoint-sm: 576px;
+  --layout-breakpoint-md: 768px;
+  --layout-breakpoint-lg: 992px;
+  --layout-breakpoint-xl: 1200px;
+  --layout-breakpoint-xxl: 1400px;
+
+  --layout-gutter-inline: 16px;
+  --layout-gutter-block: 0px;
+
+  --layout-space-xxs: 4px;
+  --layout-space-xs: 8px;
+  --layout-space-sm: 16px;
+  --layout-space-md: 32px;
+  --layout-space-lg: 48px;
+  --layout-space-xl: 64px;
+  --layout-space-xxl: 80px;
+
+  --ease-out-cubic: cubic-bezier(.215, .610, .355, 1);
+  --ease-in-out-cubic: cubic-bezier(.65, .05, .36, 1);
+
+  --bg-grid-color: rgba(238, 238, 238, .75);
   --bg-grid-line: 2px;
   --bg-grid-box: 48px;
 }
@@ -39,6 +67,19 @@
     --color-800: #002170;
     --color-900: #001145;
 
-    --color-accent: #28d1b4;
+    --color-accent-500: #28d1b4;
+    --color-accent-700: #007765;
   }
 }
+
+/* Custom media queries */
+@custom-media --viewport-sm-up (min-width: 576px);
+@custom-media --viewport-sm-down (max-width: 575px);
+@custom-media --viewport-md-up (min-width: 768px);
+@custom-media --viewport-md-down (max-width: 767px);
+@custom-media --viewport-lg-up (min-width: 992px);
+@custom-media --viewport-lg-down (max-width: 991px);
+@custom-media --viewport-xl-up (min-width: 1200px);
+@custom-media --viewport-xl-down (max-width: 1199px);
+@custom-media --viewport-xxl-up (min-width: 1400px);
+@custom-media --viewport-xxl-down (max-width: 1399px);

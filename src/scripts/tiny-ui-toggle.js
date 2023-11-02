@@ -238,15 +238,8 @@ const Toggle = function (options) {
 		setState(state, trigger);
 		setState(state, target);
   };
-
-
-	// Toggles the state of an element
-	// const toggleState = function (element) {
-	// 	setState(!element.toggle.active, element);
-	// };	
 	
 	const toggleState = function (element = elementDefault) {
-		console.log(element, elementDefault);
 		setState(!element.toggle.active, element);
 	};
 

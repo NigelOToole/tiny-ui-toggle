@@ -1,6 +1,6 @@
+/* Type and background */
 body {
-  font-family: 'Work Sans', system-ui, sans-serif;
-  font-size: 1rem;
+  font-family: var(--body-font-family);
   color: var(--color-700);
   background-color: #fff;
   background-image: repeating-linear-gradient(90deg, var(--bg-grid-color) 0, var(--bg-grid-color) var(--bg-grid-line), transparent 0, transparent 50%), repeating-linear-gradient(180deg, var(--bg-grid-color) 0, var(--bg-grid-color) var(--bg-grid-line), transparent 0, transparent 50%);
@@ -8,17 +8,20 @@ body {
   background-position: calc(50% - (var(--bg-grid-line)/2)) top;
 }
 
+  .content {
+    background-color: #fff;
+    border-inline: calc(var(--bg-grid-line)/2) solid var(--bg-grid-color);
+  }
+
 ::selection {
   color: #fff;
   background-color: var(--color-700);
 }
 
-h1, h2, h3, h4, h5, h6, pre, code {
-  font-family: 'Source Code Pro', monospace;
-}
-
-h1, h2, h3, h4, h5, h6 {
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  font-family: var(--heading-font-family);
   font-weight: 400;
+  word-spacing: -.5ch;
 }
 
 h1, h2, h3 {
@@ -29,7 +32,8 @@ h1, h2 {
   font-weight: 600;
 }
 
-h1 { font-size: 2.5rem; font-size: clamp(2rem, 1.5229rem + 2.0356vw, 2.5rem); }
+/* Clamp from 375 - 768px */
+h1 { font-size: 3rem; font-size: clamp(2.5rem, 2.0229rem + 2.0356vw, 3rem); }
 h2 { font-size: 2rem; font-size: clamp(1.5rem, 1.0229rem + 2.0356vw, 2rem); }
 h3 { font-size: 1.5rem; font-size: clamp(1.25rem, 1.0115rem + 1.0178vw, 1.5rem); }
 h4 { font-size: 1.25rem; font-size: clamp(1.125rem, 1.0057rem + 0.5089vw, 1.25rem); }
@@ -44,20 +48,112 @@ ul, ol {
   padding-inline-start: var(--layout-space-sm);
 }
 
+pre, code {
+  font-family: var(--heading-font-family);
+}
+
 a {
-  color: var(--color-500);
+  color: var(--link-color);
   transition: color 0.3s;
 
   &:hover, &:focus {
-    color: var(--color-700);
+    color: var(--link-color-hover);
   }
 
   &:focus-within {
-    outline: 2px solid var(--color-500);
+    outline: 2px solid var(--link-color);
   }
 }
 
+
+/* Elements and utilities */
 .img-fluid {
   max-width: 100%;
   height: auto;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+
+code {
+  padding: .125rem;
+  background-color: var(--color-50);
+
+  pre & {
+    display: block;
+    padding: 1rem;
+    white-space: pre;
+    overflow: auto;
+    border: 1px solid var(--color-500);
+  }
+}
+
+
+.table-outer {
+  display: block;
+  width: 100%;
+}
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: var(--layout-space-sm);
+      text-align: left;
+      vertical-align: top;
+      border: 1px solid var(--color-500);   
+    }
+
+    th {
+      background-color: var(--color-100);
+    }
+  }
+
+/* Inline overflow elements */
+/* https://daverupert.com/2023/08/animation-timeline-scroll-shadows/, https://www.bram.us/2023/09/16/solved-by-css-scroll-driven-animations-detect-if-an-element-can-scroll-or-not/  */
+.overflow-inline {
+  --shadow-color: rgb(0 0 0 / .15);
+  --shadow-size: 8px;
+
+  animation: scroll-shadow-inset linear;
+  scroll-timeline: --scroll-timeline inline;
+  animation-timeline: --scroll-timeline;
+
+  overflow-x: auto;
+  overflow-inline: auto;
+  border: 1px solid var(--color-500);  
+
+  > * {
+    mix-blend-mode: multiply;
+  }
+
+  &.table-outer {
+    border-inline: 2px solid var(--color-500);
+
+    th, td {
+      &:first-child {
+        border-inline-start: none;
+      }
+
+      &:last-child {
+        border-inline-end: none;
+      } 
+    }
+  }
+}
+
+/* Negative spread to stop the shadow on the top and bottom of the element */
+@keyframes scroll-shadow-inset {
+  from {
+    box-shadow: inset calc(var(--shadow-size) * -2) 0 var(--shadow-size) calc(var(--shadow-size) * -.5) var(--shadow-color), inset calc(var(--shadow-size) * 0) 0 var(--shadow-size) calc(var(--shadow-size) * -.5) var(--shadow-color);
+  }  
+  10%, 90% {
+    box-shadow: inset calc(var(--shadow-size) * -1) 0 var(--shadow-size) calc(var(--shadow-size) * -.5) var(--shadow-color), inset calc(var(--shadow-size) * 1) 0 var(--shadow-size) calc(var(--shadow-size) * -.5) var(--shadow-color);
+  }
+  to {
+    box-shadow: inset calc(var(--shadow-size) * 0) 0 var(--shadow-size) calc(var(--shadow-size) * -.5) var(--shadow-color), inset calc(var(--shadow-size) * 2) 0 var(--shadow-size) calc(var(--shadow-size) * -.5) var(--shadow-color);
+  }
 }

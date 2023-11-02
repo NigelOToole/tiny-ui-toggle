@@ -52,8 +52,9 @@
     background-color: var(--toggle-background-color-active);
   }
 
-  &:where(summary)::marker {
+  &:where(summary)::marker, &:where(summary)::-webkit-details-marker {
     content: '';
+    display: none;
   }
 }
 

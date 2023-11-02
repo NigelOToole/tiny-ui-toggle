@@ -53,8 +53,9 @@
     background-color: #0157ff;
     background-color: var(--toggle-background-color-active);
   }
-.toggle:where(summary)::marker {
+.toggle:where(summary)::marker, .toggle:where(summary)::-webkit-details-marker {
     content: '';
+    display: none;
   }
 .toggle-panel {
   transition: all .35s ease-out;
