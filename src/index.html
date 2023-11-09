@@ -6,17 +6,25 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     
     <title>Tiny UI Toggle</title>
     <meta name="description" content="Toggle the state of a UI element to easily create components e.g. collapse, accordion, tabs, dropdown, dialog / modal.">
 
+    <meta property="og:title" content="Tiny UI Toggle"> 
+    <meta property="og:description" content="Toggle the state of a UI element to easily create components e.g. collapse, accordion, tabs, dropdown, dialog / modal.">
+    <meta property="og:site_name" content="Tiny UI Toggle">
+    <meta property="og:url" content="https://nigelotoole.github.io/tiny-ui-toggle/">
+    <meta property="og:image" content="https://nigelotoole.github.io/tiny-ui-toggle/images/tiny-ui-toggle-social.png"> 
+    <meta property="og:image:alt" content="Tiny UI Toggle">
+    <meta name="twitter:card" content="summary_large_image">
+  
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">  
+
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&family=Work+Sans&display=swap">
-
     <link rel="stylesheet" href="styles/tiny-ui-toggle.css">
   </head>
 
@@ -27,12 +35,14 @@
         <h1 class="logo-text">Tiny UI Toggle</h1> 
 
         <nav class="nav header-nav">
-          <a href="https://github.com/NigelOToole/tiny-ui-toggle/archive/master.zip" class="btn btn--green btn--ghost"><span>Download</span></a>
-          <a href="https://github.com/NigelOToole/tiny-ui-toggle" target="_blank" rel="noopener" class="btn btn--green btn--ghost"><span>GitHub <svg class="icon" viewbox="0 0 24 24"><path d="M7 7h8.586L5.293 17.293l1.414 1.414L17 8.414V17h2V5H7v2z"/></svg></span> 
+          <a href="https://github.com/nigelotoole/tiny-ui-toggle/archive/master.zip" class="btn btn--green btn--ghost"><span>Download</span></a>
+          <a href="https://github.com/nigelotoole/tiny-ui-toggle" target="_blank" rel="noopener" class="btn btn--green btn--ghost"><span>GitHub <svg class="icon" viewbox="0 0 24 24"><path d="M7 7h8.586L5.293 17.293l1.414 1.414L17 8.414V17h2V5H7v2z"/></svg></span> 
             </a>
         </nav>
       </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <section class="fullwidth intro">
@@ -342,14 +352,14 @@
             <h2>Installation</h2>
 
   <pre>
-  <code class="overflow-inline">$ npm install tiny-ui-toggle --save-dev</code>
+  <code class="overflow-inline" tabindex="0">$ npm install tiny-ui-toggle --save-dev</code>
   </pre>
 
             <h2>Usage</h2>
 
             <h3>Import script</h3>
 
-  <pre><code class="overflow-inline">import { Toggle, toggleAutoInit } from 'tiny-ui-toggle.js';
+  <pre><code class="overflow-inline" tabindex="0">import { Toggle, toggleAutoInit } from 'tiny-ui-toggle.js';
 
 // Initialize all elements with default options, these can be overridden by reinitializing or by data attributes on the element.
 toggleAutoInit();
@@ -367,7 +377,7 @@ const defaultToggle = Toggle({ selector: '.toggle' });
           <h3>Options</h3>
           <p>The options can be set via initialization in the JS or by data attributes on the elements with the prefix 'toggle'. e.g. data-toggle-active-class="is-open". Data attributes will be given the higher priority.</p>
 
-          <div class="table-outer overflow-inline">
+          <div class="table-outer overflow-inline" tabindex="0">
           <table class="table">
             <tr>
               <th>Property</th>
@@ -464,7 +474,7 @@ const defaultToggle = Toggle({ selector: '.toggle' });
 
           <h3>API</h3>
 
-          <div class="table-outer overflow-inline">
+          <div class="table-outer overflow-inline" tabindex="0">
             <table class="table">
             <tr>
               <th>Property</th>
@@ -504,12 +514,12 @@ const defaultToggle = Toggle({ selector: '.toggle' });
 
           <p>The essential styles are in src/styles/tiny-ui-toggle.css with additional styles specific to the demos e.g. the menu demo in src/styles/site/demo.css.</p>
 
-          <pre><code class="overflow-inline">@import "node_modules/tiny-ui-toggle/src/styles/tiny-ui-toggle.css";</code></pre>
+          <pre><code class="overflow-inline" tabindex="0">@import "node_modules/tiny-ui-toggle/src/styles/tiny-ui-toggle.css";</code></pre>
 
 
           <h3>Markup</h3>
 
-          <pre><code class="overflow-inline">&lt;button class="toggle" data-toggle-target="#demo-panel-collapse" aria-expanded="false"&gt;Toggle panel&lt;/button&gt;
+          <pre><code class="overflow-inline" tabindex="0">&lt;button class="toggle" data-toggle-target="#demo-panel-collapse" aria-expanded="false"&gt;Toggle panel&lt;/button&gt;
 
 &lt;div id="demo-panel-collapse" class="toggle-panel" aria-hidden="true"&gt;
   ...
@@ -521,7 +531,7 @@ const defaultToggle = Toggle({ selector: '.toggle' });
 
             <p>A toggle fires an event on each toggle state i.e. toggleOpening, toggleOpened, toggleClosing and toggleClosed. This can be observed on the element itself or the document.</p>
 
-            <pre><code class="overflow-inline">document.querySelector('.toggle').addEventListener('toggleOpening', (event) => { 
+            <pre><code class="overflow-inline" tabindex="0">document.querySelector('.toggle').addEventListener('toggleOpening', (event) => { 
   console.log('Toggle Opening', event.target);
 });
 </code></pre>
@@ -535,7 +545,7 @@ const defaultToggle = Toggle({ selector: '.toggle' });
             <h2>Demo site</h2>
             <p>Clone the repo from Github and run the commands below.</p>
 
-            <pre><code class="overflow-inline">$ npm install
+            <pre><code class="overflow-inline" tabindex="0">$ npm install
 $ npm run dev
 </code></pre>
 

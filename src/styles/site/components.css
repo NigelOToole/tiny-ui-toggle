@@ -251,6 +251,13 @@ a, button {
       }
   
     }
+
+    .btn {
+      @media (--viewport-sm-down) { 
+        width: calc(50% - (var(--layout-space) / 2));
+        --padding-block: var(--layout-space-xxs);
+      }
+    }
   }
 
 
@@ -258,7 +265,9 @@ a, button {
     text-align: center;
 
   .container > * {
-    margin-block-start: var(--layout-space);
+    &:not(:first-child) {
+      margin-block-start: var(--layout-space);
+    }
     padding-block-start: var(--layout-space);
     border-block-start: 2px solid var(--color-500);
   }
@@ -289,12 +298,14 @@ a, button {
 }
 
   .page-heading {
+    flex-grow: 1;
     text-wrap: pretty;
   }
 
   .page-intro-img {
     width: 80px;
     height: auto;
+    border-radius: 50%;
   }
 
   .columns-sm-2 {

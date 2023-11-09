@@ -113,10 +113,11 @@ code {
   }
 
 /* Inline overflow elements */
-/* https://daverupert.com/2023/08/animation-timeline-scroll-shadows/, https://www.bram.us/2023/09/16/solved-by-css-scroll-driven-animations-detect-if-an-element-can-scroll-or-not/  */
+/* https://daverupert.com/2023/08/animation-timeline-scroll-shadows/ */
 .overflow-inline {
   --shadow-color: rgb(0 0 0 / .15);
   --shadow-size: 8px;
+  --shadow-spread: calc(var(--shadow-size) * -.5);
 
   animation: scroll-shadow-inset linear;
   scroll-timeline: --scroll-timeline inline;
@@ -148,12 +149,18 @@ code {
 /* Negative spread to stop the shadow on the top and bottom of the element */
 @keyframes scroll-shadow-inset {
   from {
-    box-shadow: inset calc(var(--shadow-size) * -2) 0 var(--shadow-size) calc(var(--shadow-size) * -.5) var(--shadow-color), inset calc(var(--shadow-size) * 0) 0 var(--shadow-size) calc(var(--shadow-size) * -.5) var(--shadow-color);
+    box-shadow: 
+    inset calc(var(--shadow-size) * -2) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color), 
+    inset calc(var(--shadow-size) * 0) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color);
   }  
   10%, 90% {
-    box-shadow: inset calc(var(--shadow-size) * -1) 0 var(--shadow-size) calc(var(--shadow-size) * -.5) var(--shadow-color), inset calc(var(--shadow-size) * 1) 0 var(--shadow-size) calc(var(--shadow-size) * -.5) var(--shadow-color);
+    box-shadow: 
+    inset calc(var(--shadow-size) * -1) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color), 
+    inset calc(var(--shadow-size) * 1) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color);
   }
   to {
-    box-shadow: inset calc(var(--shadow-size) * 0) 0 var(--shadow-size) calc(var(--shadow-size) * -.5) var(--shadow-color), inset calc(var(--shadow-size) * 2) 0 var(--shadow-size) calc(var(--shadow-size) * -.5) var(--shadow-color);
+    box-shadow: 
+    inset calc(var(--shadow-size) * 0) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color), 
+    inset calc(var(--shadow-size) * 2) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color);
   }
 }

@@ -72,19 +72,21 @@
     margin-block-start: var(--flow-space, 1.5rem);
   }
 
-  /* Large gap before headings */
-  .flow :is(h1, h2, h3, h4), .flow :is(.heading:has(h1) + *) {
-    --flow-space: var(--layout-space-lg);
-  }
+  .flow {
+    /* Large gap before headings and after h1 */
+    h1, h2, h3, h4, .group, h1 + *, :is(.group, .heading:has(h1)) + * {
+      --flow-space: var(--layout-space-lg);
+    }
 
-  /* Medium gap if a heading follows a heading */
-  .flow :is(h1 + h2, h2 + h3, h3 + h4, .heading + h2, .heading + h3, .heading + h4) {
-    --flow-space: var(--layout-space-md);
-  }
+    /* Medium gap if a heading follows a heading */
+    h1 + h2, h2 + h3, h3 + h4, .heading + :is(h2, h3, h4) {
+      --flow-space: var(--layout-space-md);
+    }
 
-  /* Small gap directly after heading */
-  .flow :is(h2 + *, h3 + *, h4 + *, .heading + *) {
-    --flow-space: var(--layout-space-sm);
+    /* Small gap directly after heading and inside heading wrapper */
+    :is(h2, h3, h4, .heading) + *, &.heading > * + * {
+      --flow-space: var(--layout-space-sm);
+    }
   }
 
 
