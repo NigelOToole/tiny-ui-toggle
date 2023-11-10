@@ -1,0 +1,108 @@
+/* Spacing of components */
+.space, .fullwidth {
+  --layout-space: var(--layout-space-md);
+}
+.group, .nav {
+  --layout-space: var(--layout-space-sm);
+}
+
+.space--zero {
+  --layout-space: var(--layout-space-md);
+}
+.space--xxs {
+  --layout-space: var(--layout-space-xxs);
+}
+.space--xs {
+  --layout-space: var(--layout-space-xs);
+}
+.space--sm {
+  --layout-space: var(--layout-space-sm);
+}
+.space--md {
+  --layout-space: var(--layout-space-md);
+}
+.space--lg {
+  --layout-space: var(--layout-space-lg);
+}
+.space--xl {
+  --layout-space: var(--layout-space-xl);
+}
+.space--xxl {
+  --layout-space: var(--layout-space-xxl);
+}
+
+.space {
+  padding: var(--layout-space);
+}
+
+.fullwidth > .container {
+  padding-block: var(--layout-space);
+}
+
+.space--block {
+  padding-inline: 0;
+}
+
+.space--inline {
+  padding-block: 0;
+}
+
+
+/* Fullwidth */
+.fullwidth {
+
+}
+
+.main {
+  @media (--viewport-sm-up) {
+    padding-inline: var(--layout-gutter-inline);
+  }
+}
+
+  .container {
+    /* max-width: var(--layout-breakpoint-xl); */
+    max-width: var(--layout-breakpoint-md);
+    padding-inline: var(--layout-gutter-inline);
+    margin-inline: auto;
+  }
+
+
+/* Flow */
+  .flow > * + * {
+    margin-block-start: var(--flow-space, 1.5rem);
+  }
+
+  .flow {
+    /* Large gap before headings and after h1 */
+    h1, h2, h3, h4, .group, h1 + *, :is(.group, .heading:has(h1)) + * {
+      --flow-space: var(--layout-space-lg);
+    }
+
+    /* Medium gap if a heading follows a heading */
+    h1 + h2, h2 + h3, h3 + h4, .heading + :is(h2, h3, h4) {
+      --flow-space: var(--layout-space-md);
+    }
+
+    /* Small gap directly after heading and inside heading wrapper */
+    :is(h2, h3, h4, .heading) + *, &.heading > * + * {
+      --flow-space: var(--layout-space-sm);
+    }
+  }
+
+
+
+/* Group */
+.group, .nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--layout-space);
+}
+
+.group--min {
+  > * > *:first-child {
+    &, & > *:first-child {
+      min-width: 144px;
+      text-align: center;
+    }
+  }
+}

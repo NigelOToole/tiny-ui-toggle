@@ -1,0 +1,35 @@
+@import "reset.css";
+@import "variables.css";
+@import "base.css";
+@import "layout.css";
+
+@import "components.css";
+@import "demo.css";
+
+/* Social image */
+/* body {
+  scale: 1.5;
+  transform-origin: top center;
+}
+
+.header-nav {
+  display: none;
+}
+
+.page-intro {
+  padding-block: 40px 74px;
+}
+
+.page-intro-img {
+  width: 159px;
+} */
+
+/* Portfolio Image */
+/* body {
+  scale: 1.565;
+  transform-origin: top center;
+}
+
+.header {
+  display: none;
+} */
