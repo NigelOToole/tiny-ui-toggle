@@ -34,9 +34,18 @@ button, input, label {
 h1, h2, h3, h4 {
   text-wrap: balance;
 }
-/* https://oklch-palette.vercel.app/#53.67,0.257,262.51,100, https://oklch.com/#53.67,0.257,262.51,100 */
+@font-face {
+  font-family: 'Source Code Pro';
+  src: url('../fonts/source-code-pro.woff2') format('woff2');
+  display: swap;
+}
+@font-face {
+  font-family: 'Work Sans';
+  src: url('../fonts/work-sans.woff2') format('woff2');
+  display: swap;
+}
 :root {
-  /* Colours */
+  /* https://oklch-palette.vercel.app/#53.67,0.257,262.51,100, https://oklch.com/#53.67,0.257,262.51,100 */
   --color-50: rgb(245, 248, 255);
   --color-100: rgb(223, 234, 255);
   --color-200: rgb(153, 189, 255);
@@ -54,8 +63,10 @@ h1, h2, h3, h4 {
   /* Type */
   --sans-serif-font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Arial, sans-serif;
   --serif-font-family: 'Times New Roman', Times, serif;
-  --body-font-family: 'Work Sans', var(--sans-serif-font-family);
-  --heading-font-family: 'Source Code Pro', var(--sans-serif-font-family);
+  /* --body-font-family: 'Work Sans', var(--sans-serif-font-family);
+  --heading-font-family: 'Source Code Pro', var(--sans-serif-font-family); */
+  --body-font-family: 'Work Sans', sans-serif;
+  --heading-font-family: 'Source Code Pro', monospace;
 
   --text-color: var(--color-700);
   --link-color: var(--color-500);
@@ -86,6 +97,7 @@ h1, h2, h3, h4 {
   --bg-grid-color: rgba(238, 238, 238, .75);
   --bg-grid-line: 2px;
   --bg-grid-box: 48px;
+  /* Colours */
 }
 @supports (color: color(display-p3 0 0 0)) {
 :root {
@@ -97,6 +109,11 @@ h1, h2, h3, h4 {
   --color-900: color(display-p3 0.01272 0.0648 0.25957);
 }
 }
+@media (min-width: 768px) {
+:root {
+    --layout-gutter-inline: 24px;
+}
+  }
 @supports not (background-color: oklch(0%, 0, 0)) {
   :root {
     /* --color-50: #f0f5ff; */
@@ -119,7 +136,7 @@ h1, h2, h3, h4 {
 /* Custom media queries */
 /* Type and background */
 body {
-  font-family: 'Work Sans', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Arial, sans-serif;
+  font-family: 'Work Sans', sans-serif;
   font-family: var(--body-font-family);
   color: rgb(0, 52, 163);
   color: color(display-p3 0.07062 0.20014 0.6152);
@@ -152,7 +169,7 @@ body {
   background-color: var(--color-700);
 }
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
-  font-family: 'Source Code Pro', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Arial, sans-serif;
+  font-family: 'Source Code Pro', monospace;
   font-family: var(--heading-font-family);
   font-weight: 400;
   word-spacing: -.5ch;
@@ -174,11 +191,11 @@ p {
 
 }
 ul, ol {
-  padding-left: 16px;
-  padding-left: var(--layout-space-sm);
+  padding-left: 32px;
+  padding-left: var(--layout-space-md);
 }
 pre, code {
-  font-family: 'Source Code Pro', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Arial, sans-serif;
+  font-family: 'Source Code Pro', monospace;
   font-family: var(--heading-font-family);
 }
 a {
@@ -293,11 +310,8 @@ pre code {
 .space, .fullwidth {
   --layout-space: var(--layout-space-md);
 }
-.group, .nav {
-  --layout-space: var(--layout-space-sm);
-}
 .space--zero {
-  --layout-space: var(--layout-space-md);
+  --layout-space: 0;
 }
 .space--xxs {
   --layout-space: var(--layout-space-xxs);
@@ -323,10 +337,6 @@ pre code {
 .space {
   padding: var(--layout-space);
 }
-.fullwidth > .container {
-  padding-top: var(--layout-space);
-  padding-bottom: var(--layout-space);
-}
 .space--block {
   padding-left: 0;
   padding-right: 0;
@@ -340,7 +350,7 @@ pre code {
 
 }
 @media (min-width: 576px) {
-.main {
+.main, .footer {
     padding-left: 16px;
     padding-right: 16px;
     padding-left: var(--layout-gutter-inline);
@@ -348,7 +358,6 @@ pre code {
 }
   }
 .container {
-    /* max-width: var(--layout-breakpoint-xl); */
     max-width: 768px;
     max-width: var(--layout-breakpoint-md);
     padding-left: 16px;
@@ -358,6 +367,50 @@ pre code {
     margin-left: auto;
     margin-right: auto;
   }
+.fullwidth > .container {
+    padding-top: var(--layout-space);
+    padding-bottom: var(--layout-space);
+  }
+/* Grid */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: calc(-1 * 16px);
+  margin-right: calc(-1 * 16px);
+  margin-left: calc(-1 * var(--layout-gutter-inline));
+  margin-right: calc(-1 * var(--layout-gutter-inline));
+}
+.row > * {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-left: var(--layout-gutter-inline);
+    padding-right: var(--layout-gutter-inline);
+  }
+@media (min-width: 768px) {
+  .col-md-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+  }
+
+  .col-md-8 {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+}
+@media (min-width: 992px) {
+  .col-lg-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+  }
+
+  .col-lg-8 {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+}
 /* Flow */
 .flow > * + * {
     margin-top: 1.5rem;
@@ -367,7 +420,7 @@ pre code {
 .flow .heading:has(h1) + * {
       --flow-space: var(--layout-space-lg);
     }
-.flow h1, .flow h2, .flow h3, .flow h4, .flow .group, .flow h1 + *, .flow .group:not(does-not-exist) + * {
+.flow h1, .flow h2, .flow h3, .flow h4, .flow h1 + * {
       --flow-space: var(--layout-space-lg);
     }
 /* Medium gap if a heading follows a heading */
@@ -380,8 +433,11 @@ pre code {
     }
 /* Group */
 .group, .nav {
+  --layout-space: var(--layout-space-sm);
+
   display: flex;
   flex-wrap: wrap;
+  gap: 16px;
   gap: var(--layout-space);
 }
 .group--min > * > *:first-child, .group--min > * > *:first-child > *:first-child {
@@ -427,6 +483,10 @@ pre code {
   position: relative;
   overflow: hidden;
 }
+.btn > span:not(.does-not-exist), .btn > .icon {
+    position: relative;
+    z-index: 1;
+  }
 .btn > span {
     position: relative;
     z-index: 1;
@@ -528,11 +588,11 @@ a:hover .btn::after {
   border-radius: 50%;
   aspect-ratio: 1 / 1;
 }
-.btn--icon-multi:not(.is-active) .icon use:last-child {
+.btn--icon-multi:not(.is-active) .icon use:last-child, .btn--icon-multi.is-active .icon use:first-child {
     opacity: 0;
   }
-.btn--icon-multi.is-active .icon use:first-child {
-    opacity: 0;
+.btn--icon-multi:not(.is-active) .icon:last-of-type, .btn--icon-multi.is-active .icon:first-of-type {
+    display: none;
   }
 .icon {
   display: inline-flex;
@@ -551,6 +611,9 @@ a .icon, button .icon {
     pointer-events: none;
   }
 /* ----- Header and footer ----- */
+.header .container, .footer .container {
+    --layout-space: var(--layout-space-sm);
+  }
 .header {
   position: sticky;
   top: 0;
@@ -584,8 +647,9 @@ a .icon, button .icon {
       color: var(--color-100);
     }
 .logo-text {
+    flex: 1 0 0%;
     margin: 0;
-    font-family: 'Source Code Pro', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Arial, sans-serif;
+    font-family: 'Source Code Pro', monospace;
     font-family: var(--heading-font-family);
     color: #fff;
 

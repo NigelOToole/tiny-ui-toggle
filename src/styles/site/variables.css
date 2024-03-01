@@ -1,6 +1,19 @@
-/* https://oklch-palette.vercel.app/#53.67,0.257,262.51,100, https://oklch.com/#53.67,0.257,262.51,100 */
+@font-face {
+  font-family: 'Source Code Pro';
+  src: url('../fonts/source-code-pro.woff2') format('woff2');
+  display: swap;
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  src: url('../fonts/work-sans.woff2') format('woff2');
+  display: swap;
+}
+
+
 :root {
   /* Colours */
+  /* https://oklch-palette.vercel.app/#53.67,0.257,262.51,100, https://oklch.com/#53.67,0.257,262.51,100 */
   --color-50: oklch(97.89% 0.01 267.36);
   --color-100: oklch(93.51% 0.031 263.52);
   --color-200: oklch(79.69% 0.102 262.19);
@@ -18,8 +31,10 @@
   /* Type */
   --sans-serif-font-family: system-ui, Arial, sans-serif;
   --serif-font-family: 'Times New Roman', Times, serif;
-  --body-font-family: 'Work Sans', var(--sans-serif-font-family);
-  --heading-font-family: 'Source Code Pro', var(--sans-serif-font-family);
+  /* --body-font-family: 'Work Sans', var(--sans-serif-font-family);
+  --heading-font-family: 'Source Code Pro', var(--sans-serif-font-family); */
+  --body-font-family: 'Work Sans', sans-serif;
+  --heading-font-family: 'Source Code Pro', monospace;
 
   --text-color: var(--color-700);
   --link-color: var(--color-500);
@@ -50,6 +65,10 @@
   --bg-grid-color: rgba(238, 238, 238, .75);
   --bg-grid-line: 2px;
   --bg-grid-box: 48px;
+
+  @media (--viewport-md-up) {
+    --layout-gutter-inline: 24px;
+  }
 }
 
 @supports not (background-color: oklch(0%, 0, 0)) {

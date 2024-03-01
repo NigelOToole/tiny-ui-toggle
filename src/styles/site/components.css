@@ -31,6 +31,11 @@
   position: relative;
   overflow: hidden;
 
+  > :is(span, .icon) {
+    position: relative;
+    z-index: 1;
+  }
+    
   > span {
     position: relative;
     z-index: 1;
@@ -135,12 +140,11 @@
 }
 
 .btn--icon-multi {
-  &:not(.is-active) .icon use:last-child {
+  &:not(.is-active) .icon use:last-child, &.is-active .icon use:first-child {
     opacity: 0;
   }
-
-  &.is-active .icon use:first-child {
-    opacity: 0;
+  &:not(.is-active) .icon:last-of-type, &.is-active .icon:first-of-type {
+    display: none;
   }
 }
 
@@ -169,6 +173,12 @@ a, button {
 
 
 /* ----- Header and footer ----- */
+.header, .footer {
+  .container {
+    --layout-space: var(--layout-space-sm);
+  }
+}
+
 .header {
   position: sticky;
   top: 0;
@@ -200,6 +210,7 @@ a, button {
 }
 
   .logo-text {
+    flex: 1 0 0%;
     margin: 0;
     font-family: var(--heading-font-family);
     color: #fff;

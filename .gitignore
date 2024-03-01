@@ -1,7 +1,6 @@
-# Dependencies
 node_modules
 
-# System Files
 .DS_Store
 Thumbs.db
-.map
+
+*.map

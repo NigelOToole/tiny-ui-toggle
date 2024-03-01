@@ -51,7 +51,7 @@
           <div class="heading page-intro">
             <h2 class="page-heading">Toggle the state of a UI element to easily create components like collapse, accordion, tabs, dropdown and dialog / modal.</h2>
 
-            <img src="images/logo.svg" class="page-intro-img" width="80" height="80" alt="Tiny UI Toggle logo">
+            <img src="images/tiny-ui-toggle-logo.svg" class="page-intro-img" width="80" height="80" alt="Tiny UI Toggle logo">
           </div>
 
           <h3>Features</h3> 
@@ -352,15 +352,19 @@
 
             <h2>Installation</h2>
 
-  <pre>
-  <code class="overflow-inline" tabindex="0">$ npm install tiny-ui-toggle --save-dev</code>
-  </pre>
+<pre><code class="overflow-inline" tabindex="0">$ npm install tiny-ui-toggle --save-dev</code></pre>
 
-            <h2>Usage</h2>
+            <p>Import the files into your project, add the elements to your markup and initialize the plugin.</p>
 
-            <h3>Import script</h3>
+            <ul>
+              <li><strong>JS:</strong> <code>node_modules/tiny-ui-toggle/src/scripts/tiny-ui-toggle.js</code></li>
+              <li><strong>CSS:</strong> <code>node_modules/tiny-ui-toggle/src/styles/tiny-ui-toggle/tiny-ui-toggle.css</code></li>
+              <li><strong>Compiled CSS:</strong> <code>node_modules/tiny-ui-toggle/src/styles/tiny-ui-toggle.css</code></li>
+            </ul>
 
-  <pre><code class="overflow-inline" tabindex="0">import { Toggle, toggleAutoInit } from 'tiny-ui-toggle.js';
+            <h3>JavaScript</h3>
+
+<pre><code class="overflow-inline" tabindex="0">import { Toggle, toggleAutoInit } from 'tiny-ui-toggle.js';
 
 // Initialize all elements with default options, these can be overridden by reinitializing or by data attributes on the element.
 toggleAutoInit();
@@ -376,7 +380,7 @@ const defaultToggle = Toggle({ selector: '.toggle' });
 </code></pre>
 
           <h3>Options</h3>
-          <p>The options can be set via initialization in the JS or by data attributes on the elements with the prefix 'toggle'. e.g. data-toggle-active-class="is-open". Data attributes will be given the higher priority.</p>
+          <p>The options can be set via initialization in the JS or by data attributes on the elements with the prefix 'toggle'. e.g. data-toggle-active-class="is-open". Attributes will be given the highest priority.</p>
 
           <div class="table-outer overflow-inline" tabindex="0">
           <table class="table">
@@ -503,19 +507,12 @@ const defaultToggle = Toggle({ selector: '.toggle' });
               <td>Sets the state of the element.</td>
             </tr>
             <tr>
-              <td><code>instance['element']</code></td>
+              <td><code>instance.getInfo()</code></td>
               <td>Object</td>
               <td>Returns the element and its properties.</td>
             </tr>
           </table>
           </div>
-
-
-          <h3>Import styles</h3>
-
-          <p>The essential styles are src/styles/tiny-ui-toggle/tiny-ui-toggle.css with additional styles specific to the demos in src/styles/site/demo.css. A compiled version of the styles are src/styles/tiny-ui-toggle.css.</p>
-
-          <pre><code class="overflow-inline" tabindex="0">@import "node_modules/tiny-ui-toggle/src/styles/tiny-ui-toggle/tiny-ui-toggle.css";</code></pre>
 
 
           <h3>Markup</h3>
@@ -539,7 +536,6 @@ const defaultToggle = Toggle({ selector: '.toggle' });
 
 
             <h2>Compatibility</h2>
-
             <p>Supports all modern browsers at the time of release.</p>
 
 
@@ -560,10 +556,19 @@ $ npm run dev
         <div class="group share">
           <h4 class="share-title">Share this</h4>
 
-          <button class="btn share-action" data-share-action="share"><span>Share link <svg  class="icon" viewbox="0 0 24 24"><path d="m3.293 11.293 1.414 1.414L11 6.414V20h2V6.414l6.293 6.293 1.414-1.414L12 2.586l-8.707 8.707z"/></svg></span></button>
+          <button class="btn btn--icon-multi share-url" data-share-text-selector="span" data-share-maintain-size="true">
+            <span>Share link</span> 
+            <svg class="icon" aria-hidden="true" viewbox="0 0 24 24"><path d="m3.293 11.293 1.414 1.414L11 6.414V20h2V6.414l6.293 6.293 1.414-1.414L12 2.586l-8.707 8.707z"/></svg>
+            <svg class="icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" fill="none" /><path d="M22 4 12 14.01l-3-3" fill="none"/></svg>
+          </button>
           
-          <button class="btn share-action" data-share-action="clipboard"><span>Copy link <svg class="icon" viewbox="0 0 24 24"><rect x="8" y="3" width="13" height="13" rx="0" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs" fill="none"></rect><path d="M4 7v12c0 .6.4 1 1 1h12" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs" fill="none"></path></svg></span></button>
-        </div>
+          <button class="btn btn--icon-multi share-url" data-share-text-selector="span" data-share-maintain-size="true" data-share-action="clipboard" data-share-text-success="Copied">
+            <span>Copy link</span> 
+            <svg class="icon" aria-hidden="true" viewbox="0 0 24 24"><rect x="8" y="3" width="13" height="13" rx="0" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs" fill="none"></rect><path d="M4 7v12c0 .6.4 1 1 1h12" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs" fill="none"></path></svg>
+            
+            <svg class="icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" fill="none" /><path d="M22 4 12 14.01l-3-3" fill="none"/></svg>
+          </button>
+    </div>
 
         <nav class="nav footer-nav">
           <a href="http://www.purestructure.com/nigelotoole" rel="author">Made by Nigel O Toole</a>

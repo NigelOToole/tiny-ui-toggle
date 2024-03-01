@@ -1,5 +1,5 @@
+import { ShareUrl, ShareUrlAuto } from './share-url.js';
 import { Toggle, toggleAutoInit } from './tiny-ui-toggle.js';
-import Share from './share.js';
 
 window.addEventListener('DOMContentLoaded', (event) => {
 
@@ -71,7 +71,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 
   // Share links
-  Share();
+  ShareUrlAuto();
   
   // Encoded text
   const encodeElements = document.querySelectorAll('.encode');
