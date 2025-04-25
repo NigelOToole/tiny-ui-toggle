@@ -52,10 +52,16 @@ const Toggle = function (options) {
 		let elements;
 		if (selector === '') return returnArray ? [] : null;
 
+		// String
 		if (typeof selector === 'string') {
 			elements = (scope === 'single') ? document.querySelector(selector) : document.querySelectorAll(selector);
 			elements = returnArray ? [...elements] : elements;
 		}
+		// Array
+		else if (typeof selector === 'object') {
+			elements = selector;
+		}
+		// Element
 		else {
 			elements = selector;
 			elements = returnArray ? [elements] : elements;

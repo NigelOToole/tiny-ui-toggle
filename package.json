@@ -15,7 +15,7 @@
     "javascript"
   ],
   "main": "src/scripts/tiny-ui-toggle.js",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "license": "MIT",
   "engines": {
     "node": ">=14"
