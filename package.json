@@ -48,6 +48,6 @@
     "dev:styles": "postcss src/styles/site/main.css src/styles/tiny-ui-toggle/tiny-ui-toggle.css --dir src/styles --watch",
     "build": "npm run clean && cross-env NODE_ENV=production concurrently \"npm:build:*\"",
     "build:styles": "postcss src/styles/site/main.css src/styles/tiny-ui-toggle/tiny-ui-toggle.css --dir src/styles",
-    "publish": "npm run build && npm publish"
+    "publish:npm": "npm run build && npm publish"
   }
 }
